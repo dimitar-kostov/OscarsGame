@@ -1,0 +1,83 @@
+﻿body {
+    background-color: ghostwhite;
+}
+
+.adminMemuButton {
+    background-color: ghostwhite;
+    border: none;
+    width: 160px;
+    height: 30px;
+    color: grey;
+    font-size: 16px;    
+}
+
+.adminButton {
+    background-color: ghostwhite;
+    width: 130px;
+    height: 30px;    
+    font-size: 16px;
+    color:grey;
+    margin:3px;
+}
+
+.item {
+    width: 250px;
+    align-items: center;
+    justify-content: center;
+    display: inline;
+    margin: 7px;
+    padding: 5px;
+    display: inline-block;
+    border: 1px solid grey;
+    border-radius: 7px;
+}
+
+.title {
+    color: gray;
+    font-size: 16px;
+    margin:5px;
+}
+.categoryTitle {
+    color: rgb(237,192,116);
+    font-size:18px;
+    font-weight:bold;
+}
+.calendarTitle {
+    color: rgb(196, 0, 0);
+    margin-left: 20px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.calendar {
+   
+    display:inline-block;
+    margin:20px;
+
+}
+ .changeDate:empty {
+      background-color: ghostwhite;
+  }
+
+.saveButton {
+    width: 150px;
+    margin-left: 200px;
+    margin-right: 100px;
+    padding: 3px;
+    color: rgb(196, 0, 0);
+    font-weight: bold;
+    font-size: 18px;
+    background-color: rgb(237,192,116);
+}
+
+.hidden{
+    visibility:hidden;
+}
+.errorMessage {
+    color: rgb(196, 0, 0);
+    font-size: 18px;
+    font-weight: bold;
+}
+
+
+

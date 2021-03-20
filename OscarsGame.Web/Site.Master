@@ -1,0 +1,129 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="OscarsGame.SiteMaster" %>
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head runat="server">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%: Page.Title %> Choose your favorite movie</title>
+
+    <asp:PlaceHolder runat="server">
+        <%: Scripts.Render("~/bundles/modernizr") %>
+    </asp:PlaceHolder>
+    <webopt:BundleReference runat="server" Path="~/Content/css" />
+    <link href="/images/icons/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <link href="/Content/SiteMaster.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+    <form runat="server">
+        <asp:ScriptManager runat="server">
+            <Scripts>
+                <%--To learn more about bundling scripts in ScriptManager see https://go.microsoft.com/fwlink/?LinkID=301884 --%>
+                <%--Framework Scripts--%>
+                <asp:ScriptReference Name="MsAjaxBundle" />
+                <asp:ScriptReference Name="jquery" />
+                <asp:ScriptReference Name="bootstrap" />
+                <asp:ScriptReference Name="respond" />
+                <asp:ScriptReference Name="WebForms.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebForms.js" />
+                <asp:ScriptReference Name="WebUIValidation.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebUIValidation.js" />
+                <asp:ScriptReference Name="MenuStandards.js" Assembly="System.Web" Path="~/Scripts/WebForms/MenuStandards.js" />
+                <asp:ScriptReference Name="GridView.js" Assembly="System.Web" Path="~/Scripts/WebForms/GridView.js" />
+                <asp:ScriptReference Name="DetailsView.js" Assembly="System.Web" Path="~/Scripts/WebForms/DetailsView.js" />
+                <asp:ScriptReference Name="TreeView.js" Assembly="System.Web" Path="~/Scripts/WebForms/TreeView.js" />
+                <asp:ScriptReference Name="WebParts.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebParts.js" />
+                <asp:ScriptReference Name="Focus.js" Assembly="System.Web" Path="~/Scripts/WebForms/Focus.js" />
+                <asp:ScriptReference Name="WebFormsBundle" />
+                <%--Site Scripts--%>
+            </Scripts>
+        </asp:ScriptManager>
+         <asp:ObjectDataSource
+            ID="ObjectDataSource1"
+            runat="server"
+            SelectMethod="GetAll"
+            TypeName="OscarsGame.Business.Interfaces.ICategoryService"
+            OnObjectCreating="ObjectDataSource1_ObjectCreating"></asp:ObjectDataSource>
+
+        <div class="navbar navbar-inverse ">
+            <div class="" id="top-content">
+                <img id="logo" src="/images/oscar.ico" />
+                <asp:Label ID="stopGameLabel" runat="server" CssClass="showIfGameStopped"></asp:Label>
+            </div>
+
+            <div class="container">
+                <p class="text-center">
+                    <asp:Label ID="lblRemaining" runat="server" CssClass="remaining-time-label"></asp:Label>
+                </p>
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+
+                <div class="navbar-collapse collapse">
+
+                    <ul class="nav navbar-nav">
+                        <li><a runat="server" id="Admin" class="adminLink" href="~/Admin/Categories">Admin panel</a></li>
+                        <li><a runat="server" id="Home" href="~/Default">Home</a></li>
+                        <li>
+                            <div class="dropdown">
+                                <a class="dropdown-a" runat="server" href="~/CommonPages/ShowCategories">Categories
+                                    <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <asp:Repeater runat="server" DataSourceID="ObjectDataSource1" ItemType="OscarsGame.Entities.Category">
+                                        <ItemTemplate>                                           
+                                            <li>
+                                                <a runat="server" href='<%# GetCategoryUrl(Item.Id) %>' > <%# Item.CategoryTtle %> </a>                                      
+                                            </li>
+                                        </ItemTemplate>
+                                    </asp:Repeater>
+                                </ul>
+                            </div>
+                        </li>
+                        <li><a runat="server" href="~/CommonPages/ShowAllDBMovies">Movies</a></li>
+                        <li><a runat="server" id="Leaderboard" href="~/CommonPages/Leaderboard">Leaderboard</a></li>
+                    </ul>
+
+                    <asp:LoginView runat="server" ViewStateMode="Disabled">
+                        <AnonymousTemplate>
+                            <ul class="nav navbar-nav navbar-right">
+                                <li><a runat="server" visible="false" href="~/Account/Register">Register</a></li>
+                                <li><a runat="server" href="~/Account/Login">Log in with Office 365</a></li>
+                            </ul>
+                        </AnonymousTemplate>
+                        <LoggedInTemplate>
+                            <ul class="nav navbar-nav navbar-right">
+                                <li><a runat="server" href="~/Account/ManageOpenId" title="Manage your account">Hello, <%: GetOpenIdUserName()  %> !</a></li>
+                                <li>
+                                    <asp:LoginStatus runat="server" LogoutAction="Redirect" LogoutText="Log off" LogoutPageUrl="~/" OnLoggingOut="Unnamed_LoggingOut" />
+                                </li>
+                            </ul>
+                        </LoggedInTemplate>
+                    </asp:LoginView>
+                </div>
+            </div>
+        </div>
+        <div class="container body-content">
+            <asp:ContentPlaceHolder ID="MainContent" runat="server">
+            </asp:ContentPlaceHolder>
+            <hr />
+            <footer>
+                <p>&copy; <%: DateTime.Now.Year %> - Oscars Bets ASP.NET Application.</p>
+                <a href="https://www.themoviedb.org" target="_newtab">
+                        <img style="margin-top: 5px;" 
+                            src="https://www.themoviedb.org/assets/1/v4/logos/powered-by-rectangle-blue-61ce76f69ce1e4f68a6031d975df16cc184d5f04fa7f9f58ae6412646f2481c1.svg" 
+                            alt="POWERED BY tHE MOVIE DB"
+                            width="152" />
+                </a>
+                <a style="margin-left: 10px;" href="https://www.statuscake.com" title="Website Uptime Monitoring">
+                    <img src="https://app.statuscake.com/button/index.php?Track=ZC84x0akbQ&Days=1&Design=2" />
+                </a>
+            </footer>
+        </div>
+    </form>
+</body>
+</html>

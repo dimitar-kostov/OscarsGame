@@ -1,0 +1,8 @@
+﻿.leaderboardGrid {
+    width: auto;
+    font-weight: bold;
+}
+
+    .leaderboardGrid th {
+        word-wrap: break-word;
+    }
