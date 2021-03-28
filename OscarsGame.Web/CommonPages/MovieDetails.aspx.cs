@@ -1,12 +1,9 @@
-﻿using Microsoft.Practices.Unity;
-using OscarsGame.Business;
-using OscarsGame.Business.Interfaces;
+﻿using OscarsGame.Business.Interfaces;
 using OscarsGame.Entities;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.UI;
@@ -16,6 +13,16 @@ namespace OscarsGame
 {
     public partial class MovieDetails : BasePage
     {
+        private readonly IMovieService MovieService;
+        private readonly ICategoryService CategoryService;
+
+        public MovieDetails(
+            IMovieService movieService,
+            ICategoryService categoryService)
+        {
+            MovieService = movieService;
+            CategoryService = categoryService;
+        }
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -57,10 +64,9 @@ namespace OscarsGame
 
         private void LoadLocalMovieDetails()
         {
-            var movieService = GetBuisnessService<IMovieService>();
             if (int.TryParse(Request.QueryString["id"], out int id))
             {
-                var movie = movieService.GetMovie(id);
+                var movie = MovieService.GetMovie(id);
 
                 DetailsView1.DataSource = new Movie[] { movie };
                 DetailsView1.DataBind();
@@ -139,8 +145,7 @@ namespace OscarsGame
                 creditIds.AddRange(GetCredits(RptCrew));
 
                 var categoryId = Int32.Parse(Request.QueryString["categoryId"]);
-                var categoryService = GetBuisnessService<ICategoryService>();
-                categoryService.AddMovieInCategory(categoryId, movie, creditIds);
+                CategoryService.AddMovieInCategory(categoryId, movie, creditIds);
 
                 Response.Redirect("/Admin/EditMoviesInThisCategory?categoryId=" + categoryId);
             }

@@ -1,10 +1,10 @@
-﻿using System;
+﻿using OscarsGame.Business.Enums;
+using OscarsGame.Business.Interfaces;
+using OscarsGame.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.UI.WebControls;
-using OscarsGame.Business.Enums;
-using OscarsGame.Business.Interfaces;
-using OscarsGame.Entities;
 
 namespace OscarsGame.CommonPages
 {
@@ -13,9 +13,22 @@ namespace OscarsGame.CommonPages
         private const string NormalOpacity = "opacity: 1";
         private const string FadedOpacity = "opacity: 0.3";
 
+        private readonly IGamePropertyService GamePropertyService;
+        private readonly IMovieService MovieService;
+        private readonly IWatchedMovieService WatchedMovieService;
+
+        public ShowAllDBMovies(
+            IGamePropertyService gamePropertyService,
+            IMovieService movieService,
+            IWatchedMovieService watchedMovieService)
+        {
+            GamePropertyService = gamePropertyService;
+            MovieService = movieService;
+            WatchedMovieService = watchedMovieService;
+        }
+
         protected void Page_Load(object sender, EventArgs e)
         {
-            var gamePropertyService = GetBuisnessService<IGamePropertyService>();
             if (!User.Identity.IsAuthenticated)
             {
                 GreatingLabel.Text = "You must be logged in to mark a movie as watched!";
@@ -25,12 +38,36 @@ namespace OscarsGame.CommonPages
                 GreatingLabel.CssClass = "hidden";
                 Session["CurrentUser"] = User.Identity.Name;
             }
-            if (gamePropertyService.IsGameNotStartedYet())
+            if (IsGameNotStartedYet())
             {
                 GreatingLabel.CssClass = "hidden";
                 WarningLabel.CssClass = "hidden";
             }
         }
+
+        private bool? _isGameRunning = null;
+        protected bool IsGameRunning()
+        {
+            if (!_isGameRunning.HasValue)
+            {
+                _isGameRunning = !GamePropertyService.IsGameStopped();
+            }
+
+            return _isGameRunning.Value;
+        }
+
+
+        private bool? _isGameNotStartedYet = null;
+        protected bool IsGameNotStartedYet()
+        {
+            if (!_isGameNotStartedYet.HasValue)
+            {
+                _isGameNotStartedYet = GamePropertyService.IsGameNotStartedYet();
+            }
+
+            return _isGameNotStartedYet.Value;
+        }
+
 
         public string BuildPosterUrl(string path)
         {
@@ -64,6 +101,8 @@ namespace OscarsGame.CommonPages
             return "http://www.imdb.com/title/" + movieId;
         }
 
+
+
         protected void Repeater1_ItemCommand(object source, RepeaterCommandEventArgs e)
         {
             if (e.CommandName == "MarkAsWatchedOrUnwatched")
@@ -73,16 +112,13 @@ namespace OscarsGame.CommonPages
                     var userId = User.Identity.Name;
                     int movieId = int.Parse((e.CommandArgument).ToString());
 
-
-                    var watchedMovieService = GetBuisnessService<IWatchedMovieService>();
-                    var movieService = GetBuisnessService<IMovieService>();
-                    if (watchedMovieService.GetUserWatchedEntity(userId) == null)
+                    if (WatchedMovieService.GetUserWatchedEntity(userId) == null)
                     {
                         var watchedEntity = new Watched() { UserId = userId, Movies = new List<Movie>() };
-                        watchedEntity = watchedMovieService.AddWatchedEntity(watchedEntity);
+                        WatchedMovieService.AddWatchedEntity(watchedEntity);
                     }
 
-                    movieService.ChangeMovieStatus(userId, movieId);
+                    MovieService.ChangeMovieStatus(userId, movieId);
                     Repeater1.DataBind();
                     System.Threading.Thread.Sleep(500);
                 }
@@ -138,7 +174,7 @@ namespace OscarsGame.CommonPages
             var watchedMovies = movies.Sum(x => x.UsersWatchedThisMovie.Count(u => u.UserId == currentUsereId));
 
             var missedMovies = moviesCount - watchedMovies;
-            if (CheckIfTheUserIsLogged() == true)
+            if (CheckIfTheUserIsLogged())
             {
                 if (missedMovies > 0)
                 {
@@ -167,7 +203,7 @@ namespace OscarsGame.CommonPages
 
         protected void ObjectDataSource1_ObjectCreating(object sender, ObjectDataSourceEventArgs e)
         {
-            e.ObjectInstance = GetBuisnessService<IMovieService>();
+            e.ObjectInstance = MovieService;
         }
 
         protected string SetFadeFilter(Movie movie)

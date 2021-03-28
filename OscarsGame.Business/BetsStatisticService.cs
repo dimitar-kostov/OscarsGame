@@ -1,26 +1,21 @@
-﻿using Microsoft.Practices.Unity;
-using OscarsGame.Business.Interfaces;
-using OscarsGame.Data;
+﻿using OscarsGame.Business.Interfaces;
 using OscarsGame.Data.Interfaces;
 using OscarsGame.Entities.StatisticsModels;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OscarsGame.Business
 {
-    public class BetsStatisticService: IBetStatisticService
+    public class BetsStatisticService : IBetStatisticService
     {
         private readonly IViewModelsRepository _viewModelsRepository;
-
 
         public BetsStatisticService(IViewModelsRepository viewModelsRepository)
         {
             _viewModelsRepository = viewModelsRepository;
-        }       
+        }
 
         public List<BetObject> GetData()
         {
@@ -57,21 +52,21 @@ namespace OscarsGame.Business
 
         public string GetWinner()
         {
-            var users = GetData();            
+            var users = GetData();
             List<Winners> winners = _viewModelsRepository.GetWinner();
-            List<string[]> winningUsers = new List<string[]>();           
+            List<string[]> winningUsers = new List<string[]>();
             string currentWinnerName = String.Empty;
             int currentWinnerScores = 0;
 
             foreach (var user in users)
-            {                
+            {
                 int scores = 0;
                 foreach (var bet in user.UserBets)
                 {
                     if (bet.IsRightGuess)
                     {
                         scores++;
-                    }                  
+                    }
                 }
 
                 if (scores == currentWinnerScores)
@@ -97,7 +92,7 @@ namespace OscarsGame.Business
 
             }
 
-            return DisplayWinner(winningUsers);         
+            return DisplayWinner(winningUsers);
         }
 
         private string DisplayWinner(List<string[]> winningUsers)
@@ -191,7 +186,7 @@ namespace OscarsGame.Business
         {
             List<Winners> winners = _viewModelsRepository.GetWinner();
             return winners;
-        }      
+        }
 
     }
 }

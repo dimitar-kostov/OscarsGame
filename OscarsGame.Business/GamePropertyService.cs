@@ -1,12 +1,11 @@
 ﻿using OscarsGame.Business.Interfaces;
-using OscarsGame.Data;
 using OscarsGame.Data.Interfaces;
 using OscarsGame.Entities;
 using System;
 
 namespace OscarsGame.Business
 {
-    public class GamePropertyService: IGamePropertyService
+    public class GamePropertyService : IGamePropertyService
     {
         private readonly IGamePropertyRepository _gamePropertyRepository;
 
@@ -32,22 +31,24 @@ namespace OscarsGame.Business
         }
 
         public DateTime GetGameStopDate()
-        {           
+        {
             return _gamePropertyRepository.GetGameStopDate();
         }
 
         public bool IsGameNotStartedYet()
         {
+            DateTime now = DateTime.Now;
             GameProperties dateObject = _gamePropertyRepository.GetDate();
-            DateTime startDate = (dateObject != null ? dateObject.StartGameDate : DateTime.Now);
-            return (startDate > DateTime.Now);
+            DateTime startDate = (dateObject != null ? dateObject.StartGameDate : now);
+            return (startDate > now);
         }
 
         public bool IsGameStopped()
         {
+            DateTime now = DateTime.Now;
             GameProperties stopDateObject = _gamePropertyRepository.GetDate();
-            DateTime stopDate = (stopDateObject != null ? stopDateObject.StopGameDate : DateTime.Now);
-            return (stopDate < DateTime.Now);
+            DateTime stopDate = (stopDateObject != null ? stopDateObject.StopGameDate : now);
+            return (stopDate < now);
         }
     }
 }

@@ -12,6 +12,23 @@ namespace OscarsGame.CommonPages
     {
         private const string UserColumnName = "Email";
 
+        private readonly IGamePropertyService GamePropertyService;
+        private readonly ICategoryService CategoryService;
+        private readonly IBetService BetService;
+        private readonly IWatcheMoviesStatisticService WatcheMoviesStatisticService;
+
+        public ShowCategory(
+            IGamePropertyService gamePropertyService,
+            ICategoryService categoryService,
+            IBetService betService,
+            IWatcheMoviesStatisticService watcheMoviesStatisticService)
+        {
+            GamePropertyService = gamePropertyService;
+            CategoryService = categoryService;
+            BetService = betService;
+            WatcheMoviesStatisticService = watcheMoviesStatisticService;
+        }
+
         #region SortDirectionProperties
 
         private SortDirection MoviesScoresGridViewSortDirection
@@ -55,6 +72,28 @@ namespace OscarsGame.CommonPages
 
         #endregion
 
+        private bool? _isGameRunning = null;
+        protected bool IsGameRunning()
+        {
+            if (!_isGameRunning.HasValue)
+            {
+                _isGameRunning = !GamePropertyService.IsGameStopped();
+            }
+
+            return _isGameRunning.Value;
+        }
+
+        private bool? _isGameNotStartedYet = null;
+        protected bool IsGameNotStartedYet()
+        {
+            if (!_isGameNotStartedYet.HasValue)
+            {
+                _isGameNotStartedYet = GamePropertyService.IsGameNotStartedYet();
+            }
+
+            return _isGameNotStartedYet.Value;
+        }
+
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
@@ -62,7 +101,7 @@ namespace OscarsGame.CommonPages
                 BindCategory();
                 DataBind();
             }
-            
+
             if (!CheckIfTheUserIsLogged())
             {
                 GreatingLabel.Text = "You must be logged in to bet!";
@@ -72,7 +111,7 @@ namespace OscarsGame.CommonPages
                 GreatingLabel.CssClass = "hidden";
             }
 
-            if (GetBuisnessService<IGamePropertyService>().IsGameNotStartedYet())
+            if (IsGameNotStartedYet())
             {
                 WarningLabel.CssClass = WarningLabel.CssClass.Replace("warning", "");
                 GreatingLabel.CssClass = "hidden";
@@ -98,7 +137,7 @@ namespace OscarsGame.CommonPages
         private Category GetCurrentCategory()
         {
             int.TryParse(Request.QueryString["ID"], out int id);
-            return GetBuisnessService<ICategoryService>().GetCategory(id);
+            return CategoryService.GetCategory(id);
         }
 
         public string BuildPosterUrl(string path)
@@ -133,7 +172,7 @@ namespace OscarsGame.CommonPages
             }
 
             var dataTable = CreateUserMoviesDataTable(moviesFromCategory);
-            dataTable = FillWatchedDataTable(dataTable, currentCategory.Nominations.Select(n => n.Movie.Title).ToList(), currentCategory);
+            dataTable = FillWatchedDataTable(dataTable, currentCategory);
             DataView sortedView = GetDefaultTableSort(dataTable, UserColumnName, UserWatchedGridViewSortDirection);
             UserWatchedGridView.DataSource = sortedView;
         }
@@ -210,28 +249,21 @@ namespace OscarsGame.CommonPages
 
         private DataTable FillVotesDataTable(DataTable dataTable, Category currentCategory)
         {
-            var betService = GetBuisnessService<IBetService>();
-            var bets = betService.GetAllBetsByCategory(currentCategory.Id);
+            var bets = BetService.GetAllBetsByCategory(currentCategory.Id);
 
             foreach (var bet in bets)
             {
                 var row = dataTable.NewRow();
                 row[UserColumnName] = bet.UserId.Split('@')[0];
-
-                int scores = 0;
-
                 row[bet.Nomination.Id.ToString()] = "<span class='glyphicon glyphicon-ok'></span>";
-                scores++;
-
                 dataTable.Rows.Add(row);
             }
             return dataTable;
         }
 
-        private DataTable FillWatchedDataTable(DataTable dataTable, List<string> titles, Category currentCategory)
+        private DataTable FillWatchedDataTable(DataTable dataTable, Category currentCategory)
         {
-            var watchedMoviesStatistic = GetBuisnessService<IWatcheMoviesStatisticService>();
-            var users = watchedMoviesStatistic.GetData();
+            var users = WatcheMoviesStatisticService.GetData();
 
             foreach (var user in users)
             {
@@ -320,8 +352,7 @@ namespace OscarsGame.CommonPages
                     var userId = User.Identity.Name;
                     var nominationId = int.Parse(e.CommandArgument.ToString());
 
-                    var betService = GetBuisnessService<IBetService>();
-                    betService.MakeBetEntity(userId, nominationId);
+                    BetService.MakeBetEntity(userId, nominationId);
 
                     BindCategory();
                     DataBind();
@@ -365,7 +396,7 @@ namespace OscarsGame.CommonPages
         {
             var currentUsereId = User.Identity.Name;
 
-            var categories = GetBuisnessService<ICategoryService>().GetAll();
+            var categories = CategoryService.GetAll();
             int categoryCount = categories.Count();
 
             var bets = categories.SelectMany(x => x.Nominations).SelectMany(x => x.Bets).Where(x => x.UserId == currentUsereId).ToList();

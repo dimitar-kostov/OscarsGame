@@ -10,18 +10,24 @@ namespace OscarsGame.CommonPages
         private const string UserColumnName = "Email";
         private const string ScoresColumnName = "Scores";
 
+        private readonly IWatcheMoviesStatisticService WatcheMoviesStatisticService;
+
+        public MoviesStatistic(IWatcheMoviesStatisticService watcheMoviesStatisticService)
+        {
+            WatcheMoviesStatisticService = watcheMoviesStatisticService;
+        }
+
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!this.IsPostBack)
-            {                
+            {
                 GridViewInit();
             }
         }
 
         private void GridViewInit()
         {
-            var watcheMoviesStatisticService = GetBuisnessService<IWatcheMoviesStatisticService>();
-            string[] titles = watcheMoviesStatisticService.GetTitles();
+            string[] titles = WatcheMoviesStatisticService.GetTitles();
 
             InitGridViewColumns(titles);
 
@@ -40,7 +46,7 @@ namespace OscarsGame.CommonPages
 
         // CreateGridViewColumns()
         private void InitGridViewColumns(string[] titles)
-        {   
+        {
             Array.Sort(titles, StringComparer.InvariantCulture);
             var field = new BoundField();
             field.HeaderText = "User";
@@ -52,14 +58,14 @@ namespace OscarsGame.CommonPages
             field.HeaderText = "Scores";
             field.DataField = ScoresColumnName;
             field.SortExpression = ScoresColumnName;
-            
+
             GridView1.Columns.Add(field);
 
             foreach (string title in titles)
             {
                 field = new BoundField();
                 field.HeaderStyle.Width = Unit.Pixel(100);
-                field.HeaderText = "<span class='redFont'>" + title + "</span>";                            
+                field.HeaderText = "<span class='redFont'>" + title + "</span>";
                 field.DataField = title;
                 field.HtmlEncode = false;
                 GridView1.Columns.Add(field);
@@ -83,8 +89,7 @@ namespace OscarsGame.CommonPages
         // FillDataTable()
         private DataTable FillDataTable(DataTable dt)
         {
-            var watcheMoviesStatisticService = GetBuisnessService<IWatcheMoviesStatisticService>();
-            var users = watcheMoviesStatisticService.GetData();
+            var users = WatcheMoviesStatisticService.GetData();
             foreach (var user in users)
             {
                 var row = dt.NewRow();
@@ -92,9 +97,9 @@ namespace OscarsGame.CommonPages
 
                 int scores = 0;
                 foreach (var title in user.MovieTitles)
-                {                  
-                        row[title] = "<span class='	glyphicon glyphicon-ok'></span>";
-                        scores++;                 
+                {
+                    row[title] = "<span class='	glyphicon glyphicon-ok'></span>";
+                    scores++;
                 }
 
                 row[ScoresColumnName] = scores;
@@ -111,9 +116,8 @@ namespace OscarsGame.CommonPages
         }
 
         protected void GridView1_Sorting(object sender, GridViewSortEventArgs e)
-        {            
-            var watcheMoviesStatisticService = GetBuisnessService<IWatcheMoviesStatisticService>();
-            var titles = watcheMoviesStatisticService.GetTitles();
+        {
+            var titles = WatcheMoviesStatisticService.GetTitles();
 
             DataTable dt = CreateDataTable(titles);
             dt = FillDataTable(dt);
@@ -129,7 +133,7 @@ namespace OscarsGame.CommonPages
         }
 
         private SortDirection CalculateSortDiraction(string sortExpression)
-        {          
+        {
             SortDirection res;
 
             if (sortExpression == GridViewSortExpression)
@@ -166,7 +170,7 @@ namespace OscarsGame.CommonPages
 
         private string GridViewSortExpression
         {
-            get { return ViewState["SortExpression"] as string;}
+            get { return ViewState["SortExpression"] as string; }
             set { ViewState["SortExpression"] = value; }
         }
     }

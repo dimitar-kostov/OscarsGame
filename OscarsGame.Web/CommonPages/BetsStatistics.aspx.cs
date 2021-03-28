@@ -1,10 +1,10 @@
-﻿using System;
+﻿using OscarsGame.Business.Interfaces;
+using OscarsGame.Entities.StatisticsModels;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Web.UI.WebControls;
-using OscarsGame.Business.Interfaces;
-using OscarsGame.Entities.StatisticsModels;
 
 namespace OscarsGame.CommonPages
 {
@@ -13,32 +13,45 @@ namespace OscarsGame.CommonPages
         private const string UserColumnName = "Email";
         private const string ScoresColumnName = "Scores";
 
+        private readonly IGamePropertyService GamePropertyService;
+        private readonly INominationService NominationService;
+        private readonly IBetStatisticService BetStatisticService;
+
+        public BetsStatistics(
+            IGamePropertyService gamePropertyService,
+            INominationService nominationService,
+            IBetStatisticService betStatisticService)
+        {
+            GamePropertyService = gamePropertyService;
+            NominationService = nominationService;
+            BetStatisticService = betStatisticService;
+        }
+
+
         private bool? _gameIsRunning = null;
         private bool GameIsRunning()
         {
             if (!_gameIsRunning.HasValue)
             {
-                var gamePropertyService = GetBuisnessService<IGamePropertyService>();
-                _gameIsRunning = !gamePropertyService.IsGameStopped();
+                _gameIsRunning = !GamePropertyService.IsGameStopped();
             }
 
             return _gameIsRunning.Value;
         }
 
+
         protected void Page_Load(object sender, EventArgs e)
         {
-            
+
             if (!this.IsPostBack)
             {
                 GridViewInit();
 
                 if (!GameIsRunning())
                 {
-                    var nominationService = GetBuisnessService<INominationService>();
-                    if (nominationService.AreAllWinnersSet())
+                    if (NominationService.AreAllWinnersSet())
                     {
-                        var betStatisticServices = GetBuisnessService<IBetStatisticService>();
-                        Label1.Text = betStatisticServices.GetWinner();
+                        Label1.Text = BetStatisticService.GetWinner();
                     }
                 }
             }
@@ -46,9 +59,8 @@ namespace OscarsGame.CommonPages
 
         private void GridViewInit()
         {
-            IBetStatisticService betStatisticServices = GetBuisnessService<IBetStatisticService>();
-            string[] categories = betStatisticServices.GetCategories();
-            List<Winners> winners = betStatisticServices.GetWinners();
+            string[] categories = BetStatisticService.GetCategories();
+            List<Winners> winners = BetStatisticService.GetWinners();
 
             InitGridViewColumns(categories, winners);
 
@@ -130,8 +142,7 @@ namespace OscarsGame.CommonPages
         // FillDataTable()
         private DataTable FillDataTable(DataTable dt)
         {
-            var betStatisticServices = GetBuisnessService<IBetStatisticService>();
-            var users = betStatisticServices.GetData();
+            var users = BetStatisticService.GetData();
             foreach (var user in users)
             {
                 var row = dt.NewRow();
@@ -172,8 +183,7 @@ namespace OscarsGame.CommonPages
 
         protected void GridView1_Sorting(object sender, GridViewSortEventArgs e)
         {
-            var betStatisticServices = GetBuisnessService<IBetStatisticService>();
-            var categories = betStatisticServices.GetCategories();
+            var categories = BetStatisticService.GetCategories();
 
             DataTable dt = CreateDataTable(categories);
             dt = FillDataTable(dt);

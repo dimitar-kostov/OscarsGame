@@ -1,5 +1,5 @@
-﻿using Microsoft.Practices.Unity;
-using OscarsGame.Data.Interfaces;
+﻿using OscarsGame.Data.Interfaces;
+using Unity;
 
 namespace OscarsGame.Data
 {

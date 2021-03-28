@@ -9,11 +9,22 @@ namespace OscarsGame.CommonPages
 {
     public partial class ShowCategories : BasePage
     {
-     
+        private readonly IGamePropertyService GamePropertyService;
+        private readonly IBetService BetService;
+        private readonly ICategoryService CategoryService;
+
+        public ShowCategories(
+            IGamePropertyService gamePropertyService,
+            IBetService betService,
+            ICategoryService categoryService)
+        {
+            GamePropertyService = gamePropertyService;
+            BetService = betService;
+            CategoryService = categoryService;
+        }
+
         protected void Page_Load(object sender, EventArgs e)
         {
-            var gamePropertyService = GetBuisnessService<IGamePropertyService>();
-
             if (!User.Identity.IsAuthenticated)
             {
                 GreatingLabel.Text = "You must be logged in to bet!";
@@ -23,13 +34,38 @@ namespace OscarsGame.CommonPages
                 GreatingLabel.CssClass = "hidden";
             }
 
-            if (gamePropertyService.IsGameNotStartedYet())
+            if (IsGameNotStartedYet())
             {
                 WarningLabel.CssClass = WarningLabel.CssClass.Replace("warning", "");
                 GreatingLabel.CssClass = "hidden";
                 WarningLabel.CssClass = "hidden";
             }
         }
+
+
+        private bool? _isGameRunning = null;
+        protected bool IsGameRunning()
+        {
+            if (!_isGameRunning.HasValue)
+            {
+                _isGameRunning = !GamePropertyService.IsGameStopped();
+            }
+
+            return _isGameRunning.Value;
+        }
+
+
+        private bool? _isGameNotStartedYet = null;
+        protected bool IsGameNotStartedYet()
+        {
+            if (!_isGameNotStartedYet.HasValue)
+            {
+                _isGameNotStartedYet = GamePropertyService.IsGameNotStartedYet();
+            }
+
+            return _isGameNotStartedYet.Value;
+        }
+
 
         protected void Repeater2_ItemCommand(object source, RepeaterCommandEventArgs e)
         {
@@ -40,8 +76,7 @@ namespace OscarsGame.CommonPages
                     var userId = User.Identity.Name;
                     var nominationId = int.Parse(e.CommandArgument.ToString());
 
-                    var betService = GetBuisnessService<IBetService>();
-                    betService.MakeBetEntity(userId, nominationId);
+                    BetService.MakeBetEntity(userId, nominationId);
 
                     Repeater1.DataBind();
                     System.Threading.Thread.Sleep(500);
@@ -58,11 +93,11 @@ namespace OscarsGame.CommonPages
             string currentUserId = User.Identity.Name;
             if (nominationBets.Any(x => x.UserId == currentUserId))
             {
-                return "<span class='check-button glyphicon glyphicon-check'></span>"; 
+                return "<span class='check-button glyphicon glyphicon-check'></span>";
             }
             else
             {
-                return "<span class='check-button glyphicon glyphicon-unchecked'></span>"; 
+                return "<span class='check-button glyphicon glyphicon-unchecked'></span>";
             }
         }
 
@@ -89,7 +124,7 @@ namespace OscarsGame.CommonPages
 
             int counter = bets.Count(x => x.Nomination.IsWinner);
 
-            if (CheckIfTheUserIsLogged() == true && IsGameRunning() == true)
+            if (CheckIfTheUserIsLogged() && IsGameRunning())
             {
                 if (missedCategories > 0)
                 {
@@ -118,7 +153,7 @@ namespace OscarsGame.CommonPages
 
             //////////////// Show right suggestions statistic label /////////////////////
 
-            if (CheckIfTheUserIsLogged() == true && IsGameRunning() == false)
+            if (CheckIfTheUserIsLogged() && !IsGameRunning())
             {
                 if (winnersAreSet)
                 {
@@ -158,7 +193,7 @@ namespace OscarsGame.CommonPages
 
         protected void ObjectDataSource1_ObjectCreating(object sender, ObjectDataSourceEventArgs e)
         {
-            e.ObjectInstance = GetBuisnessService<ICategoryService>();
+            e.ObjectInstance = CategoryService;
         }
 
         public string GetCategoryUrl(int categoryId)

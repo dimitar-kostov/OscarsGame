@@ -3,15 +3,18 @@ using OscarsGame.Entities.StatisticsModels;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
 
 namespace OscarsGame.CommonPages
 {
     public partial class Leaderboard : BasePage
     {
+        private readonly IBetService BetService;
+
+        public Leaderboard(IBetService betService)
+        {
+            BetService = betService;
+        }
+
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!this.IsPostBack)
@@ -52,8 +55,7 @@ namespace OscarsGame.CommonPages
 
         private DataTable FillDataTable(DataTable dt)
         {
-            var betService = GetBuisnessService<IBetService>();
-            IEnumerable<UserScore> allScores = betService.GetAllUserScores();
+            IEnumerable<UserScore> allScores = BetService.GetAllUserScores();
 
             foreach (var userScore in allScores)
             {
