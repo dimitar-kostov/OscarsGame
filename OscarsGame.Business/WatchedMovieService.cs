@@ -1,12 +1,11 @@
 ﻿using OscarsGame.Business.Interfaces;
-using OscarsGame.Data;
-using OscarsGame.Data.Interfaces;
-using OscarsGame.Entities;
+using OscarsGame.Domain.Entities;
+using OscarsGame.Domain.Repositories;
 using System.Collections.Generic;
 
 namespace OscarsGame.Business
 {
-    public class WatchedMovieService: IWatchedMovieService
+    public class WatchedMovieService : IWatchedMovieService
     {
 
         private readonly IWatchedMovieRepository _watchedMovieRepository;
@@ -18,7 +17,7 @@ namespace OscarsGame.Business
         }
 
         public Watched AddWatchedEntity(Watched watchedEntity)
-        {            
+        {
             return _watchedMovieRepository.AddWatchedEntity(watchedEntity);
         }
 

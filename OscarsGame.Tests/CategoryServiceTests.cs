@@ -1,13 +1,9 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OscarsGame.Business;
-using OscarsGame.Data.Interfaces;
-using OscarsGame.Entities;
+using OscarsGame.Domain.Entities;
+using OscarsGame.Domain.Repositories;
 using Rhino.Mocks;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace UnitTestProject
 {
@@ -107,7 +103,7 @@ namespace UnitTestProject
             var categoryService = new CategoryService(categoryRepositoryMock);
 
             //Act
-            categoryService.EditCategory(new Category { Id=1});
+            categoryService.EditCategory(new Category { Id = 1 });
 
             //Assert
             categoryRepositoryMock.VerifyAllExpectations();

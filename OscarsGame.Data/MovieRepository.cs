@@ -1,12 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using OscarsGame.Domain.Entities;
+using OscarsGame.Domain.Repositories;
+using System.Collections.Generic;
 using System.Data.Entity;
-using OscarsGame.Entities;
-using OscarsGame.Data.Interfaces;
+using System.Linq;
 
 namespace OscarsGame.Data
 {
-    public class MovieRepository: IMovieRepository
+    public class MovieRepository : IMovieRepository
     {
         public void AddMovie(Movie movie)
         {
@@ -61,7 +61,7 @@ namespace OscarsGame.Data
         public IEnumerable<Movie> GetAllMovies()
         {
             using (var ctx = new MovieContext())
-            {               
+            {
                 var movies = ctx.Movies
                     .Include(x => x.UsersWatchedThisMovie)
                     .Include(x => x.Nominations.Select(nom => nom.Category))

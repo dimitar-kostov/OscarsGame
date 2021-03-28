@@ -1,13 +1,10 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OscarsGame.Business;
-using OscarsGame.Data.Interfaces;
-using OscarsGame.Entities;
+using OscarsGame.Domain.Entities;
+using OscarsGame.Domain.Repositories;
 using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace UnitTestProject
 {

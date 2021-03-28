@@ -1,8 +1,7 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
-namespace OscarsGame.Entities
+namespace OscarsGame.Domain.Entities
 {
     [Serializable]
     public class Movie

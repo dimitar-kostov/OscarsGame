@@ -1,8 +1,7 @@
-﻿using OscarsGame.Entities.Interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
-namespace OscarsGame.Entities
+namespace OscarsGame.Domain.Entities
 {
     [Serializable]
     public class Category
@@ -14,7 +13,7 @@ namespace OscarsGame.Entities
 
         public int Id { get; set; }
         public string CategoryTtle { get; set; }
-        public string CategoryDescription { get; set; }     
+        public string CategoryDescription { get; set; }
         public virtual ICollection<Nomination> Nominations { get; set; }
     }
 }

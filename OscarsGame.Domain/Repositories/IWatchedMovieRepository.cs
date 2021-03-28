@@ -1,7 +1,7 @@
-﻿using OscarsGame.Entities;
+﻿using OscarsGame.Domain.Entities;
 using System.Collections.Generic;
 
-namespace OscarsGame.Data.Interfaces
+namespace OscarsGame.Domain.Repositories
 {
     public interface IWatchedMovieRepository
     {
@@ -11,6 +11,6 @@ namespace OscarsGame.Data.Interfaces
 
         IEnumerable<Watched> GetAllWatchedMovies(string userId);
 
-        Watched GetUserWatchedEntity(string userId);        
+        Watched GetUserWatchedEntity(string userId);
     }
 }

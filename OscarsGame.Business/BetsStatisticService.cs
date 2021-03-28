@@ -1,6 +1,6 @@
 ﻿using OscarsGame.Business.Interfaces;
-using OscarsGame.Data.Interfaces;
-using OscarsGame.Entities.StatisticsModels;
+using OscarsGame.Domain.Models;
+using OscarsGame.Domain.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Data;

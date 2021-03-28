@@ -1,11 +1,11 @@
-﻿using OscarsGame.Data.Interfaces;
+﻿using OscarsGame.Domain.Repositories;
 using Unity;
 
 namespace OscarsGame.Data
 {
-    public class DataContainerManager
+    public static class DataContainerManager
     {
-        public void RegisterTypes(IUnityContainer container)
+        public static void RegisterTypes(IUnityContainer container)
         {
             // Register repositories 
             container.RegisterType<IBetRepository, BetRepository>();

@@ -1,4 +1,4 @@
-﻿namespace OscarsGame.Entities
+﻿namespace OscarsGame.Domain.Entities
 {
     public class MoviesCollection
     {

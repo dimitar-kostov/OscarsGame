@@ -77,13 +77,9 @@
       <Project>{fed25c81-cd20-4d5f-b3d1-176c31a7fac7}</Project>
       <Name>OscarsGame.Business</Name>
     </ProjectReference>
-    <ProjectReference Include="..\OscarsGame.Data\OscarsGame.Data.csproj">
-      <Project>{de250041-2df1-41aa-8d8b-af3c2dca0594}</Project>
-      <Name>OscarsGame.Data</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\OscarsGame.Entities\OscarsGame.Entities.csproj">
-      <Project>{bb500eb4-9987-494e-9c78-b2dd47f8d49b}</Project>
-      <Name>OscarsGame.Entities</Name>
+    <ProjectReference Include="..\OscarsGame.Domain\OscarsGame.Domain.csproj">
+      <Project>{BB500EB4-9987-494E-9C78-B2DD47F8D49B}</Project>
+      <Name>OscarsGame.Domain</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />

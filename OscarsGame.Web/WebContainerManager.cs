@@ -1,14 +1,17 @@
 ﻿using OscarsGame.Business;
+using OscarsGame.Data;
 using Unity;
 
 namespace OscarsGame
 {
-    public class WebContainerManager
+    public static class WebContainerManager
     {
-        public void RegisterTypes(IUnityContainer container)
+        public static void RegisterTypes(IUnityContainer container)
         {
-            BusinessContainerManager containerManager = new BusinessContainerManager();
-            containerManager.RegisterTypes(container);
+            BusinessContainerManager.RegisterTypes(container);
+
+            // Register data types
+            DataContainerManager.RegisterTypes(container);
         }
     }
 }

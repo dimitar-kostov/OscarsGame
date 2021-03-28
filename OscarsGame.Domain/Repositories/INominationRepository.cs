@@ -1,11 +1,7 @@
-﻿using OscarsGame.Entities;
-using System;
+﻿using OscarsGame.Domain.Entities;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace OscarsGame.Data.Interfaces
+namespace OscarsGame.Domain.Repositories
 {
     public interface INominationRepository
     {

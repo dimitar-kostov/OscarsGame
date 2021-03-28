@@ -1,12 +1,12 @@
-﻿using OscarsGame.Entities;
+﻿using OscarsGame.Domain.Entities;
+using OscarsGame.Domain.Repositories;
 using System.Collections.Generic;
-using System.Linq;
 using System.Data.Entity;
-using OscarsGame.Data.Interfaces;
+using System.Linq;
 
 namespace OscarsGame.Data
 {
-    public class WatchedMovieRepository: IWatchedMovieRepository
+    public class WatchedMovieRepository : IWatchedMovieRepository
     {
         public Watched AddWatchedEntity(Watched watchedEntity)
         {
@@ -45,6 +45,6 @@ namespace OscarsGame.Data
                 return foundedEntity;
             }
         }
-       
+
     }
 }

@@ -1,12 +1,12 @@
-﻿using OscarsGame.Data.Interfaces;
-using OscarsGame.Entities;
+﻿using OscarsGame.Domain.Entities;
+using OscarsGame.Domain.Repositories;
 using System;
 using System.Linq;
 
 
 namespace OscarsGame.Data
 {
-    public class GamePropertyRepository: IGamePropertyRepository
+    public class GamePropertyRepository : IGamePropertyRepository
     {
         public void ChangeGameStartDate(DateTime startDate)
         {
@@ -62,7 +62,7 @@ namespace OscarsGame.Data
                 var foundedDate = ctx.Game.Select(x => x.StopGameDate).SingleOrDefault();
                 return foundedDate;
             }
-        }      
+        }
 
         public GameProperties GetDate()
         {

@@ -1,9 +1,8 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using OscarsGame.Entities;
-using Rhino.Mocks;
-using OscarsGame.Data.Interfaces;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OscarsGame.Business;
+using OscarsGame.Domain.Entities;
+using OscarsGame.Domain.Repositories;
+using Rhino.Mocks;
 
 namespace UnitTestProject
 {
@@ -74,11 +73,11 @@ namespace UnitTestProject
             var movieService = new MovieService(movieRepositoryMock);
 
             //Act
-            var returnedMovie= movieService.GetMovie(1);
+            var returnedMovie = movieService.GetMovie(1);
 
             //Assert           
             Assert.AreEqual(expectedMovie.Id, returnedMovie.Id);
-            
+
         }
     }
 }

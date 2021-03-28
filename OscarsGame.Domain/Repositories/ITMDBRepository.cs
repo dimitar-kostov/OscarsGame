@@ -1,7 +1,7 @@
-﻿using OscarsGame.Entities;
+﻿using OscarsGame.Domain.Entities;
 using System.Threading.Tasks;
 
-namespace OscarsGame.Data.Interfaces
+namespace OscarsGame.Domain.Repositories
 {
     public interface ITMDBRepository
     {

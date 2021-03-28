@@ -1,5 +1,5 @@
 ﻿using OscarsGame.Data.Migrations;
-using OscarsGame.Entities;
+using OscarsGame.Domain.Entities;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
 

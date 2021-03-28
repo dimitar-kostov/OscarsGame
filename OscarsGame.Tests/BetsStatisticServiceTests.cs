@@ -1,14 +1,9 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OscarsGame.Business;
-using OscarsGame.Data.Interfaces;
-using OscarsGame.Entities;
-using OscarsGame.Entities.StatisticsModels;
+using OscarsGame.Domain.Models;
+using OscarsGame.Domain.Repositories;
 using Rhino.Mocks;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace UnitTestProject
 {
@@ -28,7 +23,7 @@ namespace UnitTestProject
 
             viewModelsRepositoryMock.Expect(dao => dao.GetBetsData()).Return(betStatisticList).Repeat.Once();
             viewModelsRepositoryMock.Expect(dao => dao.GetWinner()).Return(winners).Repeat.Once();
-           
+
             var betService = new BetsStatisticService(viewModelsRepositoryMock);
 
             //Act
@@ -44,7 +39,7 @@ namespace UnitTestProject
             //Arrange
             var viewModelsRepositoryMock = MockRepository.GenerateMock<IViewModelsRepository>();
 
-            List<BetsStatistic> betStatisticList = new List<BetsStatistic>();                 
+            List<BetsStatistic> betStatisticList = new List<BetsStatistic>();
             List<Winners> winners = new List<Winners>();
             var betStatisticObject = new BetsStatistic { Id = 1, Email = "User1", CategoryTitle = "TestCategoryTitle", MovieTitle = "TestMovieTitle" };
             betStatisticList.Add(betStatisticObject);
@@ -58,7 +53,7 @@ namespace UnitTestProject
             var betService = new BetsStatisticService(viewModelsRepositoryMock);
 
             //Act
-           List<BetObject> resault=  betService.GetData();
+            List<BetObject> resault = betService.GetData();
 
             //Assert
             Assert.AreEqual("User1", resault[0].UserEmail);

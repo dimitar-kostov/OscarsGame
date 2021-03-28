@@ -1,11 +1,8 @@
-﻿using OscarsGame.Data.Interfaces;
-using OscarsGame.Entities;
-using System;
+﻿using OscarsGame.Domain.Entities;
+using OscarsGame.Domain.Repositories;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Data.Entity;
+using System.Linq;
 
 namespace OscarsGame.Data
 {

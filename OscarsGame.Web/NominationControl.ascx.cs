@@ -1,4 +1,4 @@
-﻿using OscarsGame.Entities;
+﻿using OscarsGame.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,7 +26,7 @@ namespace OscarsGame
         {
             get
             {
-                return  "https://image.tmdb.org/t/p/w45" + Item.Credits.FirstOrDefault()?.ProfilePath;
+                return "https://image.tmdb.org/t/p/w45" + Item.Credits.FirstOrDefault()?.ProfilePath;
             }
         }
 

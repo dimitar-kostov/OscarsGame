@@ -51,24 +51,27 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Bets.cs" />
-    <Compile Include="Interfaces\IBet.cs" />
-    <Compile Include="Interfaces\ICollection.cs" />
-    <Compile Include="Interfaces\IGameProperties.cs" />
-    <Compile Include="Interfaces\IMovie.cs" />
-    <Compile Include="Interfaces\IWatched.cs" />
-    <Compile Include="Movie.cs" />
-    <Compile Include="Category.cs" />
-    <Compile Include="MovieCredit.cs" />
-    <Compile Include="MoviesCollection.cs" />
-    <Compile Include="Nomination.cs" />
+    <Compile Include="Entities\Bets.cs" />
+    <Compile Include="Entities\Movie.cs" />
+    <Compile Include="Entities\Category.cs" />
+    <Compile Include="Entities\MovieCredit.cs" />
+    <Compile Include="Entities\MoviesCollection.cs" />
+    <Compile Include="Entities\Nomination.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StatisticsModels\BetsStatistic.cs" />
-    <Compile Include="StatisticsModels\UserScore.cs" />
-    <Compile Include="StatisticsModels\WatchedMovies.cs" />
-    <Compile Include="StatisticsModels\Winners.cs" />
-    <Compile Include="GameProperties.cs" />
-    <Compile Include="Watched.cs" />
+    <Compile Include="Entities\GameProperties.cs" />
+    <Compile Include="Entities\Watched.cs" />
+    <Compile Include="Repositories\IBetRepository.cs" />
+    <Compile Include="Repositories\ICategoryRepository.cs" />
+    <Compile Include="Repositories\IGamePropertyRepository.cs" />
+    <Compile Include="Repositories\IMovieRepository.cs" />
+    <Compile Include="Repositories\INominationRepository.cs" />
+    <Compile Include="Models\BetsStatistic.cs" />
+    <Compile Include="Models\UserScore.cs" />
+    <Compile Include="Models\WatchedMovies.cs" />
+    <Compile Include="Models\Winners.cs" />
+    <Compile Include="Repositories\ITMDBRepository.cs" />
+    <Compile Include="Repositories\IViewModelsRepository.cs" />
+    <Compile Include="Repositories\IWatchedMovieRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

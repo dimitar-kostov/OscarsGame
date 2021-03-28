@@ -1,14 +1,10 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OscarsGame.Business;
-using OscarsGame.Data.Interfaces;
-using OscarsGame.Entities;
-using OscarsGame.Entities.StatisticsModels;
+using OscarsGame.Domain.Models;
+using OscarsGame.Domain.Repositories;
 using Rhino.Mocks;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace UnitTestProject
 {
@@ -33,7 +29,7 @@ namespace UnitTestProject
             //Assert
             viewModelsRepositoryMock.VerifyAllExpectations();
         }
-     
+
 
         [TestMethod]
         public void GetData_ShouldReturnListOfAgregatedDataOfWatchedMoviesByUser_WhenSingleUserWatchedOneMovies()
@@ -42,7 +38,7 @@ namespace UnitTestProject
 
             //Arrange
             List<WatchedMovies> watchedMovies = new List<WatchedMovies>();
-            WatchedMovies entity1 = new WatchedMovies { Id = 1, Email = "Email1", Title = "Title1" };;
+            WatchedMovies entity1 = new WatchedMovies { Id = 1, Email = "Email1", Title = "Title1" }; ;
             watchedMovies.Add(entity1);
 
             viewModelsRepositoryMock.Expect(dao => dao.GetWatchedMoviesData()).Return(watchedMovies);
@@ -121,12 +117,12 @@ namespace UnitTestProject
             watchedMovies.Add(entity1);
             watchedMovies.Add(entity2);
             string[] expectedArray = new string[] { "Title1", "Title2" };
-            viewModelsRepositoryMock.Expect(dao => dao.GetWatchedMoviesData()).Return(watchedMovies); 
+            viewModelsRepositoryMock.Expect(dao => dao.GetWatchedMoviesData()).Return(watchedMovies);
 
             var watcheMoviesStatisticService = new WatcheMoviesStatisticService(viewModelsRepositoryMock);
 
             //Act
-            var resault= watcheMoviesStatisticService.GetTitles();
+            var resault = watcheMoviesStatisticService.GetTitles();
 
             //Assert
             Assert.AreEqual(expectedArray[0], resault.ToArray()[0]);

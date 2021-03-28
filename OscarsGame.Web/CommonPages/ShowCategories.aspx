@@ -12,7 +12,7 @@
     <asp:Label ID="WinnerLabel" runat="server" CssClass="greenBorder"></asp:Label>
     <div>
         <asp:Repeater ID="Repeater1" runat="server" DataSourceID="ObjectDataSource1"
-            ItemType="OscarsGame.Entities.Category">
+            ItemType="OscarsGame.Domain.Entities.Category">
             <ItemTemplate>
                 <br />
                 <asp:Label ID="CategoryTtleLabel" CssClass="categoryTitle" runat="server" ToolTip="<%# Item.CategoryDescription %>">
@@ -22,8 +22,8 @@
                 <asp:UpdatePanel ID="UpdatePanel2" runat="server">
                     <ContentTemplate>
                         <asp:Repeater ID="Repeater2" runat="server"
-                            ItemType="OscarsGame.Entities.Nomination"
-                            DataSource="<%# ((OscarsGame.Entities.Category)((IDataItemContainer)Container).DataItem).Nominations %>"
+                            ItemType="OscarsGame.Domain.Entities.Nomination"
+                            DataSource="<%# ((OscarsGame.Domain.Entities.Category)((IDataItemContainer)Container).DataItem).Nominations %>"
                             OnItemCommand="Repeater2_ItemCommand">
                             <HeaderTemplate>
                                 <div>

@@ -1,5 +1,5 @@
 ﻿using OscarsGame.Business.Interfaces;
-using OscarsGame.Entities.StatisticsModels;
+using OscarsGame.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;

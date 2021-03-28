@@ -1,13 +1,13 @@
-﻿using OscarsGame.Data.Interfaces;
-using OscarsGame.Entities;
+﻿using OscarsGame.Domain.Entities;
+using OscarsGame.Domain.Models;
+using OscarsGame.Domain.Repositories;
 using System.Collections.Generic;
-using System.Linq;
 using System.Data.Entity;
-using OscarsGame.Entities.StatisticsModels;
+using System.Linq;
 
 namespace OscarsGame.Data
 {
-    public class BetRepository: IBetRepository
+    public class BetRepository : IBetRepository
     {
         public IEnumerable<Bet> GetAllUserBets(string userId)
         {
@@ -20,10 +20,10 @@ namespace OscarsGame.Data
 
         public IEnumerable<Bet> GetAllBetsByCategory(int categoryId)
         {
-            using(var ctx = new MovieContext())
+            using (var ctx = new MovieContext())
             {
                 return ctx.Bets
-                    .Include(b=>b.Nomination).Include(b=>b.Nomination.Movie)
+                    .Include(b => b.Nomination).Include(b => b.Nomination.Movie)
                     .Where(bet => bet.Nomination.Category.Id == categoryId).ToList();
             }
         }

@@ -12,8 +12,7 @@ namespace OscarsGame
         void Application_Start(object sender, EventArgs e)
         {
             var container = this.AddUnity();
-            var webDataContainerManager = new WebContainerManager();
-            webDataContainerManager.RegisterTypes(container);
+            WebContainerManager.RegisterTypes(container);
 
             // Code that runs on application startup
             RouteConfig.RegisterRoutes(RouteTable.Routes);

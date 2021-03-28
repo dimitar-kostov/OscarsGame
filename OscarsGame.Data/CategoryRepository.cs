@@ -1,9 +1,8 @@
-﻿using OscarsGame.Entities;
-using System;
+﻿using OscarsGame.Domain.Entities;
+using OscarsGame.Domain.Repositories;
 using System.Collections.Generic;
-using System.Linq;
 using System.Data.Entity;
-using OscarsGame.Data.Interfaces;
+using System.Linq;
 
 namespace OscarsGame.Data
 {
@@ -17,7 +16,7 @@ namespace OscarsGame.Data
                 ctx.SaveChanges();
             }
         }
-        
+
 
         public void AddNomination(int categoryId, int movieId, List<string> creditIds)
         {
@@ -44,7 +43,7 @@ namespace OscarsGame.Data
                 ctx.SaveChanges();
             }
         }
-              
+
         public void DeleteCategory(int id)
         {
 
@@ -67,7 +66,7 @@ namespace OscarsGame.Data
                 ctx.SaveChanges();
             }
         }
-       
+
         public IEnumerable<Category> GetAll()
         {
             using (var ctx = new MovieContext())
@@ -81,7 +80,7 @@ namespace OscarsGame.Data
 
                 return databaseCategory;
             }
-        }                                          
+        }
 
         public Category GetCategory(int id)
         {
@@ -136,7 +135,7 @@ namespace OscarsGame.Data
                 databaseCategory.Nominations.Remove(foundNomination);
                 ctx.SaveChanges();
             }
-        }                               
+        }
 
     }
 }

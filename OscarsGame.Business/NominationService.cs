@@ -1,11 +1,8 @@
 ﻿using OscarsGame.Business.Interfaces;
-using OscarsGame.Data.Interfaces;
-using OscarsGame.Entities;
-using System;
+using OscarsGame.Domain.Entities;
+using OscarsGame.Domain.Repositories;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OscarsGame.Business
 {

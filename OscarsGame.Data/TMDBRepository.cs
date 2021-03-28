@@ -1,16 +1,13 @@
-﻿using OscarsGame.Data.Interfaces;
-using OscarsGame.Entities;
+﻿using OscarsGame.Domain.Entities;
+using OscarsGame.Domain.Repositories;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
-using System.Web;
 
 namespace OscarsGame.Data
 {
-    public class TMDBRepository: ITMDBRepository
+    public class TMDBRepository : ITMDBRepository
     {
         private const string baseUrl = "https://api.themoviedb.org";
         private const string DefaltApiVersion = "3";

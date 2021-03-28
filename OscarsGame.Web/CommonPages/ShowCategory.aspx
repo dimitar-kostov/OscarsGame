@@ -18,7 +18,7 @@
                 <hr />
                 <asp:Repeater 
                     ID="NominationsRepeater" runat="server"
-                    ItemType="OscarsGame.Entities.Nomination"
+                    ItemType="OscarsGame.Domain.Entities.Nomination"
                     OnItemCommand="NominationsRepeater_ItemCommand" 
                     OnItemDataBound="NominationsRepeater_ItemDataBound">
                     <HeaderTemplate>

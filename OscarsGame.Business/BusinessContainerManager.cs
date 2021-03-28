@@ -1,12 +1,11 @@
 ﻿using OscarsGame.Business.Interfaces;
-using OscarsGame.Data;
 using Unity;
 
 namespace OscarsGame.Business
 {
-    public class BusinessContainerManager
+    public static class BusinessContainerManager
     {
-        public void RegisterTypes(IUnityContainer container)
+        public static void RegisterTypes(IUnityContainer container)
         {
             // Register services 
             container.RegisterType<IBetService, BetService>();
@@ -17,10 +16,6 @@ namespace OscarsGame.Business
             container.RegisterType<IWatchedMovieService, WatchedMovieService>();
             container.RegisterType<IWatcheMoviesStatisticService, WatcheMoviesStatisticService>();
             container.RegisterType<INominationService, NominationService>();
-
-            // Register data types
-            DataContainerManager containerManager = new DataContainerManager();
-            containerManager.RegisterTypes(container);
         }
     }
 }

@@ -1,13 +1,9 @@
-﻿using OscarsGame.Business.Interfaces;
-using OscarsGame.Data;
-using OscarsGame.Entities;
-using System;
+﻿using OscarsGame.Business.Enums;
+using OscarsGame.Business.Interfaces;
+using OscarsGame.Domain.Entities;
+using OscarsGame.Domain.Repositories;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using OscarsGame.Data.Interfaces;
-using OscarsGame.Business.Enums;
 
 namespace OscarsGame.Business
 {
@@ -74,9 +70,9 @@ namespace OscarsGame.Business
         {
             if (filterType == FilterType.Watched)
             {
-                moviesToFilter = 
+                moviesToFilter =
                     moviesToFilter
-                    .Where(x => 
+                    .Where(x =>
                         x.UsersWatchedThisMovie
                         .Select(y => y.UserId)
                         .Contains(userId));

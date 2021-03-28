@@ -1,13 +1,12 @@
 ﻿using OscarsGame.Business.Interfaces;
-using OscarsGame.Data.Interfaces;
-using OscarsGame.Entities;
-using OscarsGame.Entities.StatisticsModels;
-using System;
+using OscarsGame.Domain.Entities;
+using OscarsGame.Domain.Models;
+using OscarsGame.Domain.Repositories;
 using System.Collections.Generic;
 
 namespace OscarsGame.Business
 {
-    public class BetService: IBetService
+    public class BetService : IBetService
     {
         private readonly IBetRepository _betRepository;
 

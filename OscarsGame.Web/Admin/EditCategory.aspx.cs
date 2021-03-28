@@ -1,5 +1,5 @@
 ﻿using OscarsGame.Business.Interfaces;
-using OscarsGame.Entities;
+using OscarsGame.Domain.Entities;
 using System;
 
 namespace OscarsGame.Admin

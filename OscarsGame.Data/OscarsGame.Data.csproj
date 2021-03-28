@@ -64,14 +64,6 @@
     <Compile Include="DataContainerManager.cs" />
     <Compile Include="CategoryRepository.cs" />
     <Compile Include="GamePropertyRepository.cs" />
-    <Compile Include="Interfaces\IBetRepository.cs" />
-    <Compile Include="Interfaces\ICategoryRepository.cs" />
-    <Compile Include="Interfaces\IGamePropertyRepository.cs" />
-    <Compile Include="Interfaces\IMovieRepository.cs" />
-    <Compile Include="Interfaces\INominationRepository.cs" />
-    <Compile Include="Interfaces\ITMDBRepository.cs" />
-    <Compile Include="Interfaces\IViewModelsRepository.cs" />
-    <Compile Include="Interfaces\IWatchedMovieRepository.cs" />
     <Compile Include="Migrations\201712291105262_InitialCreate.cs" />
     <Compile Include="Migrations\201712291105262_InitialCreate.Designer.cs">
       <DependentUpon>201712291105262_InitialCreate.cs</DependentUpon>
@@ -94,12 +86,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\OscarsGame.Entities\OscarsGame.Entities.csproj">
-      <Project>{bb500eb4-9987-494e-9c78-b2dd47f8d49b}</Project>
-      <Name>OscarsGame.Entities</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Migrations\201712291105262_InitialCreate.resx">
       <DependentUpon>201712291105262_InitialCreate.cs</DependentUpon>
     </EmbeddedResource>
@@ -107,5 +93,12 @@
       <DependentUpon>201802102215562_Nominations.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\OscarsGame.Domain\OscarsGame.Domain.csproj">
+      <Project>{BB500EB4-9987-494E-9C78-B2DD47F8D49B}</Project>
+      <Name>OscarsGame.Domain</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

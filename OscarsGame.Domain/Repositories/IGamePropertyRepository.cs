@@ -1,7 +1,7 @@
-﻿using OscarsGame.Entities;
+﻿using OscarsGame.Domain.Entities;
 using System;
 
-namespace OscarsGame.Data.Interfaces
+namespace OscarsGame.Domain.Repositories
 {
     public interface IGamePropertyRepository
     {
@@ -13,6 +13,6 @@ namespace OscarsGame.Data.Interfaces
 
         DateTime GetGameStopDate();
 
-        GameProperties GetDate();      
+        GameProperties GetDate();
     }
 }

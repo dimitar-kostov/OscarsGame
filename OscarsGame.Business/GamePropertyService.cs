@@ -1,6 +1,6 @@
 ﻿using OscarsGame.Business.Interfaces;
-using OscarsGame.Data.Interfaces;
-using OscarsGame.Entities;
+using OscarsGame.Domain.Entities;
+using OscarsGame.Domain.Repositories;
 using System;
 
 namespace OscarsGame.Business

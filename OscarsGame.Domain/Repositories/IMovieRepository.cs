@@ -1,7 +1,7 @@
-﻿using OscarsGame.Entities;
+﻿using OscarsGame.Domain.Entities;
 using System.Collections.Generic;
 
-namespace OscarsGame.Data.Interfaces
+namespace OscarsGame.Domain.Repositories
 {
     public interface IMovieRepository
     {

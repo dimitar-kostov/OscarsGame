@@ -1,11 +1,11 @@
-﻿using OscarsGame.Data.Interfaces;
-using OscarsGame.Entities.StatisticsModels;
+﻿using OscarsGame.Domain.Models;
+using OscarsGame.Domain.Repositories;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace OscarsGame.Data
 {
-    public class ViewModelsRepository: IViewModelsRepository
+    public class ViewModelsRepository : IViewModelsRepository
     {
 
         public List<WatchedMovies> GetWatchedMoviesData()

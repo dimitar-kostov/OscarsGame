@@ -1,5 +1,5 @@
 ﻿using OscarsGame.Business.Interfaces;
-using OscarsGame.Entities;
+using OscarsGame.Domain.Entities;
 using System;
 using System.Web.UI;
 using System.Web.UI.WebControls;

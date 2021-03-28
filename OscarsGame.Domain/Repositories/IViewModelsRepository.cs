@@ -1,7 +1,7 @@
-﻿using OscarsGame.Entities.StatisticsModels;
+﻿using OscarsGame.Domain.Models;
 using System.Collections.Generic;
 
-namespace OscarsGame.Data.Interfaces
+namespace OscarsGame.Domain.Repositories
 {
     public interface IViewModelsRepository
     {
@@ -10,6 +10,6 @@ namespace OscarsGame.Data.Interfaces
         List<BetsStatistic> GetBetsData();
 
         List<Winners> GetWinner();
-        
+
     }
 }
