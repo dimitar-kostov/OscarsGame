@@ -1,6 +1,6 @@
 ﻿using OscarsGame.Business.Interfaces;
+using OscarsGame.Domain;
 using OscarsGame.Domain.Models;
-using OscarsGame.Domain.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -10,20 +10,24 @@ namespace OscarsGame.Business
 {
     public class BetsStatisticService : IBetStatisticService
     {
-        private readonly IViewModelsRepository _viewModelsRepository;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IWatcheMoviesStatisticService _watcheMoviesStatisticService;
 
-        public BetsStatisticService(IViewModelsRepository viewModelsRepository)
+        public BetsStatisticService(
+            IUnitOfWork unitOfWork,
+            IWatcheMoviesStatisticService watcheMoviesStatisticService)
         {
-            _viewModelsRepository = viewModelsRepository;
+            _unitOfWork = unitOfWork;
+            _watcheMoviesStatisticService = watcheMoviesStatisticService;
         }
 
         public List<BetObject> GetData()
         {
-            List<Winners> winners = _viewModelsRepository.GetWinner();
+            List<Winners> winners = _unitOfWork.ViewModelsRepository.GetWinner();
 
             Dictionary<string, List<BetMovieObject>> betsDict = new Dictionary<string, List<BetMovieObject>>();
 
-            List<BetsStatistic> bets = _viewModelsRepository.GetBetsData();
+            List<BetsStatistic> bets = _unitOfWork.ViewModelsRepository.GetBetsData();
 
             foreach (var bet in bets)
             {
@@ -53,7 +57,7 @@ namespace OscarsGame.Business
         public string GetWinner()
         {
             var users = GetData();
-            List<Winners> winners = _viewModelsRepository.GetWinner();
+            List<Winners> winners = _unitOfWork.ViewModelsRepository.GetWinner();
             List<string[]> winningUsers = new List<string[]>();
             string currentWinnerName = String.Empty;
             int currentWinnerScores = 0;
@@ -115,8 +119,7 @@ namespace OscarsGame.Business
             {
 
                 var finalWinners = new List<string[]>();
-                var watchedMoviesService = new WatcheMoviesStatisticService(_viewModelsRepository);
-                var usersMovies = watchedMoviesService.GetData();
+                var usersMovies = _watcheMoviesStatisticService.GetData();
                 var arrayOfAllUsersWatchedMovies = usersMovies.Select(x => x.UserEmail).ToArray();
                 var bestMovieCount = 0;
                 foreach (var currentWinner in winningUsers)
@@ -176,7 +179,7 @@ namespace OscarsGame.Business
 
         public string[] GetCategories()
         {
-            var dt = _viewModelsRepository.GetBetsData();
+            var dt = _unitOfWork.ViewModelsRepository.GetBetsData();
             var stringArrCategories = dt.Select(x => x.CategoryTitle).ToArray();
             var collectionWithDistinctCategories = stringArrCategories.Distinct().ToArray();
             return collectionWithDistinctCategories;
@@ -184,7 +187,7 @@ namespace OscarsGame.Business
 
         public List<Winners> GetWinners()
         {
-            List<Winners> winners = _viewModelsRepository.GetWinner();
+            List<Winners> winners = _unitOfWork.ViewModelsRepository.GetWinner();
             return winners;
         }
 

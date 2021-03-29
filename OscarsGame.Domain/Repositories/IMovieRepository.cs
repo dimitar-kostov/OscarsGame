@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace OscarsGame.Domain.Repositories
 {
-    public interface IMovieRepository
+    public interface IMovieRepository : IRepository<Movie>
     {
         void AddMovie(Movie movie);
 

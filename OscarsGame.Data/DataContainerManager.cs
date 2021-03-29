@@ -12,7 +12,6 @@ namespace OscarsGame.Data
             container.RegisterType<IGamePropertyRepository, GamePropertyRepository>();
             container.RegisterType<ICategoryRepository, CategoryRepository>();
             container.RegisterType<IMovieRepository, MovieRepository>();
-            container.RegisterType<ITMDBRepository, TMDBRepository>();
             container.RegisterType<IViewModelsRepository, ViewModelsRepository>();
             container.RegisterType<IWatchedMovieRepository, WatchedMovieRepository>();
             container.RegisterType<INominationRepository, NominationRepository>();

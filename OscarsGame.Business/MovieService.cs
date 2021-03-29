@@ -1,7 +1,7 @@
 ﻿using OscarsGame.Business.Enums;
 using OscarsGame.Business.Interfaces;
+using OscarsGame.Domain;
 using OscarsGame.Domain.Entities;
-using OscarsGame.Domain.Repositories;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -9,21 +9,21 @@ namespace OscarsGame.Business
 {
     public class MovieService : IMovieService
     {
-        private readonly IMovieRepository _movieRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public MovieService(IMovieRepository movieRepository)
+        public MovieService(IUnitOfWork unitOfWork)
         {
-            _movieRepository = movieRepository;
+            _unitOfWork = unitOfWork;
         }
 
         public void ChangeMovieStatus(string userId, int movieId)
         {
-            _movieRepository.ChangeMovieStatus(userId, movieId);
+            _unitOfWork.MovieRepository.ChangeMovieStatus(userId, movieId);
         }
 
         public IEnumerable<Movie> GetAllMovies()
         {
-            return _movieRepository.GetAllMovies();
+            return _unitOfWork.MovieRepository.GetAllMovies();
         }
 
         public IEnumerable<Movie> GetAllMoviesByCriteria(string userId, OrderType orderType, FilterType filterType)
@@ -93,12 +93,12 @@ namespace OscarsGame.Business
 
         public Movie GetMovie(int id)
         {
-            return _movieRepository.GetMovie(id);
+            return _unitOfWork.MovieRepository.GetMovie(id);
         }
 
         public bool HasMovie(int id)
         {
-            return _movieRepository.HasMovie(id);
+            return _unitOfWork.MovieRepository.HasMovie(id);
         }
     }
 }

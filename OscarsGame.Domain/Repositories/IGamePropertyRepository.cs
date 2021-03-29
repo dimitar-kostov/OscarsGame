@@ -3,7 +3,7 @@ using System;
 
 namespace OscarsGame.Domain.Repositories
 {
-    public interface IGamePropertyRepository
+    public interface IGamePropertyRepository : IRepository<GameProperties>
     {
         void ChangeGameStartDate(DateTime startDate);
 

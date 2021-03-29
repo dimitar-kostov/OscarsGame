@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace OscarsGame.Domain.Repositories
 {
-    public interface ICategoryRepository
+    public interface ICategoryRepository : IRepository<Category>
     {
         void AddCategory(Category category);
 

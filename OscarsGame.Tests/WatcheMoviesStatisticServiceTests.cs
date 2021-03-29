@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OscarsGame.Business;
+using OscarsGame.Domain;
 using OscarsGame.Domain.Models;
 using OscarsGame.Domain.Repositories;
 using Rhino.Mocks;
@@ -14,14 +15,16 @@ namespace UnitTestProject
         [TestMethod]
         public void GetData_ShouldCalledViewModelsRepositoryMockOnce_WhenTheCorrectRepositoryIsPassed()
         {
-            var viewModelsRepositoryMock = MockRepository.GenerateMock<IViewModelsRepository>();
-            List<WatchedMovies> watchedMovies = new List<WatchedMovies>();
-
             //Arrange
+            var viewModelsRepositoryMock = MockRepository.GenerateMock<IViewModelsRepository>();
 
-            viewModelsRepositoryMock.Expect(dao => dao.GetWatchedMoviesData()).Return(watchedMovies).Repeat.Once(); ;
+            List<WatchedMovies> watchedMovies = new List<WatchedMovies>();
+            viewModelsRepositoryMock.Expect(dao => dao.GetWatchedMoviesData()).Return(watchedMovies).Repeat.Once();
 
-            var watcheMoviesStatisticService = new WatcheMoviesStatisticService(viewModelsRepositoryMock);
+            var unitOfWorkMockMock = MockRepository.GenerateStub<IUnitOfWork>();
+            unitOfWorkMockMock.Stub(uow => uow.ViewModelsRepository).Return(viewModelsRepositoryMock);
+
+            var watcheMoviesStatisticService = new WatcheMoviesStatisticService(unitOfWorkMockMock);
 
             //Act
             watcheMoviesStatisticService.GetData();
@@ -34,9 +37,9 @@ namespace UnitTestProject
         [TestMethod]
         public void GetData_ShouldReturnListOfAgregatedDataOfWatchedMoviesByUser_WhenSingleUserWatchedOneMovies()
         {
+            //Arrange
             var viewModelsRepositoryMock = MockRepository.GenerateMock<IViewModelsRepository>();
 
-            //Arrange
             List<WatchedMovies> watchedMovies = new List<WatchedMovies>();
             WatchedMovies entity1 = new WatchedMovies { Id = 1, Email = "Email1", Title = "Title1" }; ;
             watchedMovies.Add(entity1);
@@ -44,8 +47,12 @@ namespace UnitTestProject
             viewModelsRepositoryMock.Expect(dao => dao.GetWatchedMoviesData()).Return(watchedMovies);
             var expectedTitlesList = new List<string> { "Title1" };
 
+            var unitOfWorkMockMock = MockRepository.GenerateStub<IUnitOfWork>();
+            unitOfWorkMockMock.Stub(uow => uow.ViewModelsRepository).Return(viewModelsRepositoryMock);
+
+            var watcheMoviesStatisticService = new WatcheMoviesStatisticService(unitOfWorkMockMock);
+
             //Act
-            var watcheMoviesStatisticService = new WatcheMoviesStatisticService(viewModelsRepositoryMock);
             var resault = watcheMoviesStatisticService.GetData();
 
             //Assert
@@ -56,9 +63,9 @@ namespace UnitTestProject
         [TestMethod]
         public void GetData_ShouldReturnListOfAgregatedDataOfWatchedMoviesByUser_WhenMultiplesUsersWatchedMultiplesMovie()
         {
+            //Arrange
             var viewModelsRepositoryMock = MockRepository.GenerateMock<IViewModelsRepository>();
 
-            //Arrange
             List<WatchedMovies> watchedMovies = new List<WatchedMovies>();
             WatchedMovies entity1 = new WatchedMovies { Id = 1, Email = "User1", Title = "User1Title1" };
             WatchedMovies entity2 = new WatchedMovies { Id = 2, Email = "User1", Title = "User1Title2" };
@@ -74,7 +81,10 @@ namespace UnitTestProject
             var firstUserTitlesList = new List<string> { "User1Title1", "User1Title2" };
             var secondUserTitlesList = new List<string> { "User2Title1", "User2Title2" };
 
-            var watcheMoviesStatisticService = new WatcheMoviesStatisticService(viewModelsRepositoryMock);
+            var unitOfWorkMockMock = MockRepository.GenerateStub<IUnitOfWork>();
+            unitOfWorkMockMock.Stub(uow => uow.ViewModelsRepository).Return(viewModelsRepositoryMock);
+
+            var watcheMoviesStatisticService = new WatcheMoviesStatisticService(unitOfWorkMockMock);
 
             //Act
             var resault = watcheMoviesStatisticService.GetData();
@@ -90,13 +100,16 @@ namespace UnitTestProject
         [TestMethod]
         public void GetTitles_ShouldCalledViewModelsRepositoryMockOnce_WhenTheCorrectRepositoryIsPassed()
         {
+            //Arrange
             var viewModelsRepositoryMock = MockRepository.GenerateMock<IViewModelsRepository>();
 
-            //Arrange
             List<WatchedMovies> watchedMovies = new List<WatchedMovies>();
             viewModelsRepositoryMock.Expect(dao => dao.GetWatchedMoviesData()).Return(watchedMovies).Repeat.Once(); ;
 
-            var watcheMoviesStatisticService = new WatcheMoviesStatisticService(viewModelsRepositoryMock);
+            var unitOfWorkMockMock = MockRepository.GenerateStub<IUnitOfWork>();
+            unitOfWorkMockMock.Stub(uow => uow.ViewModelsRepository).Return(viewModelsRepositoryMock);
+
+            var watcheMoviesStatisticService = new WatcheMoviesStatisticService(unitOfWorkMockMock);
 
             //Act
             watcheMoviesStatisticService.GetTitles();
@@ -108,9 +121,9 @@ namespace UnitTestProject
         [TestMethod]
         public void GetTitles_ShouldReturnArrayOftitles_WhenTheRepositoryPassWatchedMoviesData()
         {
+            //Arrange
             var viewModelsRepositoryMock = MockRepository.GenerateMock<IViewModelsRepository>();
 
-            //Arrange
             List<WatchedMovies> watchedMovies = new List<WatchedMovies>();
             WatchedMovies entity1 = new WatchedMovies { Id = 1, Email = "Email1", Title = "Title1" };
             WatchedMovies entity2 = new WatchedMovies { Id = 2, Email = "Email2", Title = "Title2" };
@@ -119,7 +132,10 @@ namespace UnitTestProject
             string[] expectedArray = new string[] { "Title1", "Title2" };
             viewModelsRepositoryMock.Expect(dao => dao.GetWatchedMoviesData()).Return(watchedMovies);
 
-            var watcheMoviesStatisticService = new WatcheMoviesStatisticService(viewModelsRepositoryMock);
+            var unitOfWorkMockMock = MockRepository.GenerateStub<IUnitOfWork>();
+            unitOfWorkMockMock.Stub(uow => uow.ViewModelsRepository).Return(viewModelsRepositoryMock);
+
+            var watcheMoviesStatisticService = new WatcheMoviesStatisticService(unitOfWorkMockMock);
 
             //Act
             var resault = watcheMoviesStatisticService.GetTitles();

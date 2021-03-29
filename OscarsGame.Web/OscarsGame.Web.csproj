@@ -553,7 +553,7 @@
     <Compile Include="StatisticBase.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="WebContainerManager.cs" />
+    <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

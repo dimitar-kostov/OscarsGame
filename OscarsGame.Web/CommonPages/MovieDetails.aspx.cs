@@ -170,7 +170,7 @@ namespace OscarsGame
 
         protected bool IsCheckBoxNominationVisible
         {
-            get { return HttpContext.Current.User.IsInRole("admin") & Request.QueryString["categoryId"] != null; }
+            get { return HttpContext.Current.User.IsInRole("admin") && Request.QueryString["categoryId"] != null; }
         }
 
         protected string GetNominationInfo(Nomination nomination)

@@ -1,18 +1,15 @@
 namespace OscarsGame.Data.Migrations
 {
-    using System;
-    using System.Data.Entity;
     using System.Data.Entity.Migrations;
-    using System.Linq;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<OscarsGame.Data.MovieContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<ApplicationDbContext>
     {
         public Configuration()
         {
-            ContextKey = "OscarsGame.Data.MovieContext";
+            ContextKey = nameof(ApplicationDbContext);
         }
 
-        protected override void Seed(OscarsGame.Data.MovieContext context)
+        protected override void Seed(ApplicationDbContext context)
         {
             //  This method will be called after migrating to the latest version.
 

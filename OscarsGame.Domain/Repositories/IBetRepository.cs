@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace OscarsGame.Domain.Repositories
 {
-    public interface IBetRepository
+    public interface IBetRepository : IRepository<Bet>
     {
         IEnumerable<Bet> GetAllUserBets(string userId);
 

@@ -1,6 +1,6 @@
 ﻿using OscarsGame.Business.Interfaces;
+using OscarsGame.Domain;
 using OscarsGame.Domain.Entities;
-using OscarsGame.Domain.Repositories;
 using System.Collections.Generic;
 
 namespace OscarsGame.Business
@@ -8,32 +8,32 @@ namespace OscarsGame.Business
     public class WatchedMovieService : IWatchedMovieService
     {
 
-        private readonly IWatchedMovieRepository _watchedMovieRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
 
-        public WatchedMovieService(IWatchedMovieRepository watchedMovieRepository)
+        public WatchedMovieService(IUnitOfWork unitOfWork)
         {
-            _watchedMovieRepository = watchedMovieRepository;
+            _unitOfWork = unitOfWork;
         }
 
         public Watched AddWatchedEntity(Watched watchedEntity)
         {
-            return _watchedMovieRepository.AddWatchedEntity(watchedEntity);
+            return _unitOfWork.WatchedMovieRepository.AddWatchedEntity(watchedEntity);
         }
 
         public IEnumerable<Watched> GetAllUsersWatchedAMovie()
         {
-            return _watchedMovieRepository.GetAllUsersWatchedAMovie();
+            return _unitOfWork.WatchedMovieRepository.GetAllUsersWatchedAMovie();
         }
 
         public IEnumerable<Watched> GetAllWatchedMovies(string userId)
         {
-            return _watchedMovieRepository.GetAllWatchedMovies(userId);
+            return _unitOfWork.WatchedMovieRepository.GetAllWatchedMovies(userId);
         }
 
         public Watched GetUserWatchedEntity(string userId)
         {
-            return _watchedMovieRepository.GetUserWatchedEntity(userId);
+            return _unitOfWork.WatchedMovieRepository.GetUserWatchedEntity(userId);
         }
     }
 }

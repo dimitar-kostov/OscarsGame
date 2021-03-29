@@ -60,10 +60,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BetRepository.cs" />
+    <Compile Include="ApplicationDbContext.cs" />
+    <Compile Include="Repositories\BetRepository.cs" />
     <Compile Include="DataContainerManager.cs" />
-    <Compile Include="CategoryRepository.cs" />
-    <Compile Include="GamePropertyRepository.cs" />
+    <Compile Include="Repositories\CategoryRepository.cs" />
+    <Compile Include="Repositories\GamePropertyRepository.cs" />
     <Compile Include="Migrations\201712291105262_InitialCreate.cs" />
     <Compile Include="Migrations\201712291105262_InitialCreate.Designer.cs">
       <DependentUpon>201712291105262_InitialCreate.cs</DependentUpon>
@@ -73,13 +74,13 @@
       <DependentUpon>201802102215562_Nominations.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="MovieContext.cs" />
-    <Compile Include="MovieRepository.cs" />
-    <Compile Include="NominationRepository.cs" />
+    <Compile Include="Repositories\MovieRepository.cs" />
+    <Compile Include="Repositories\NominationRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TMDBRepository.cs" />
-    <Compile Include="ViewModelsRepository.cs" />
-    <Compile Include="WatchedMovieRepository.cs" />
+    <Compile Include="Repositories\Repository.cs" />
+    <Compile Include="Repositories\ViewModelsRepository.cs" />
+    <Compile Include="Repositories\WatchedMovieRepository.cs" />
+    <Compile Include="UnitOfWork.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

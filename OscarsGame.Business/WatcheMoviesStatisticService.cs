@@ -1,6 +1,6 @@
 ﻿using OscarsGame.Business.Interfaces;
+using OscarsGame.Domain;
 using OscarsGame.Domain.Models;
-using OscarsGame.Domain.Repositories;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -9,17 +9,17 @@ namespace OscarsGame.Business
 {
     public class WatcheMoviesStatisticService : IWatcheMoviesStatisticService
     {
-        private readonly IViewModelsRepository _viewModelsRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
 
-        public WatcheMoviesStatisticService(IViewModelsRepository viewModelsRepository)
+        public WatcheMoviesStatisticService(IUnitOfWork unitOfWork)
         {
-            _viewModelsRepository = viewModelsRepository;
+            _unitOfWork = unitOfWork;
         }
 
         public List<WatchedObject> GetData()
         {
-            List<WatchedMovies> watchedEntities = _viewModelsRepository.GetWatchedMoviesData();
+            List<WatchedMovies> watchedEntities = _unitOfWork.ViewModelsRepository.GetWatchedMoviesData();
 
             Dictionary<string, List<string>> watchedDict = new Dictionary<string, List<string>>();
 
@@ -44,7 +44,7 @@ namespace OscarsGame.Business
 
         public string[] GetTitles()
         {
-            var watchedMovies = _viewModelsRepository.GetWatchedMoviesData();
+            var watchedMovies = _unitOfWork.ViewModelsRepository.GetWatchedMoviesData();
             var stringArrTitles = watchedMovies.Select(m => m.Title).ToArray();
             var collectionWithDistinctTitles = stringArrTitles.Distinct().ToArray();
             int titlesCount = collectionWithDistinctTitles.Count();

@@ -5,19 +5,22 @@ using System.Linq;
 
 namespace OscarsGame.Data
 {
-    public class ViewModelsRepository : IViewModelsRepository
+    internal class ViewModelsRepository : IViewModelsRepository
     {
+        private readonly ApplicationDbContext Context;
+
+        internal ViewModelsRepository(ApplicationDbContext context)
+        {
+            Context = context;
+        }
 
         public List<WatchedMovies> GetWatchedMoviesData()
         {
             string query = @"SELECT distinct Movies.Id, Movies.Title, WatchedMovies.Watched_UserId as Email 
 FROM Movies LEFT JOIN WatchedMovies on Movies.Id = WatchedMovies.Movie_Id 
 Join Nominations on Nominations.Movie_Id = WatchedMovies.Movie_Id";
-            using (var ctx = new MovieContext())
-            {
-                List<WatchedMovies> resaults = ctx.Database.SqlQuery<WatchedMovies>(query).ToList();
-                return resaults;
-            }
+
+            return Context.Database.SqlQuery<WatchedMovies>(query).ToList();
         }
 
         public List<BetsStatistic> GetBetsData()
@@ -28,11 +31,8 @@ FROM Bets
 INNER JOIN Nominations ON Bets.Nomination_Id = Nominations.Id 
 INNER JOIN Movies ON Nominations.Movie_Id = Movies.Id 
 INNER JOIN Categories ON Nominations.Category_Id = Categories.Id";
-            using (var ctx = new MovieContext())
-            {
-                List<BetsStatistic> resaults = ctx.Database.SqlQuery<BetsStatistic>(query).ToList();
-                return resaults;
-            }
+
+            return Context.Database.SqlQuery<BetsStatistic>(query).ToList();
         }
 
 
@@ -43,11 +43,8 @@ FROM Nominations
 INNER JOIN Movies ON Nominations.Movie_Id = Movies.Id 
 INNER JOIN Categories ON Nominations.Category_Id = Categories.Id 
 WHERE Nominations.IsWinner = 'True'";
-            using (var ctx = new MovieContext())
-            {
-                List<Winners> resaults = ctx.Database.SqlQuery<Winners>(query).ToList();
-                return resaults;
-            }
+
+            return Context.Database.SqlQuery<Winners>(query).ToList();
         }
     }
 }
