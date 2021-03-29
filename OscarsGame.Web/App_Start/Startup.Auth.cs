@@ -1,14 +1,15 @@
-﻿using System;
+﻿using Microsoft.Owin.Extensions;
+using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
+using Microsoft.Owin.Security.OpenIdConnect;
+using OscarsGame.Web.Identity;
 using Owin;
 using System.Configuration;
-using Microsoft.Owin.Security;
-using Microsoft.Owin.Extensions;
-using Microsoft.Owin.Security.OpenIdConnect;
 
 namespace OscarsGame
 {
-    public partial class Startup {
+    public partial class Startup
+    {
 
         private static string clientId = ConfigurationManager.AppSettings["ida:ClientId"];
         private static string aadInstance = ConfigurationManager.AppSettings["ida:AADInstance"];
@@ -22,9 +23,9 @@ namespace OscarsGame
         public void ConfigureAuth(IAppBuilder app)
         {
             // Configure the db context, user manager and signin manager to use a single instance per request
-            //app.CreatePerOwinContext(ApplicationDbContext.Create);
-            //app.CreatePerOwinContext<ApplicationUserManager>(ApplicationUserManager.Create);
-            //app.CreatePerOwinContext<ApplicationSignInManager>(ApplicationSignInManager.Create);
+            app.CreatePerOwinContext(IdentityConfig.CreateUnitOfWork);
+            app.CreatePerOwinContext<ApplicationUserManager>(IdentityConfig.CreateApplicationUserManager);
+            app.CreatePerOwinContext<ApplicationSignInManager>(IdentityConfig.CreateApplicationSignInManager);
 
             app.SetDefaultSignInAsAuthenticationType(CookieAuthenticationDefaults.AuthenticationType);
 

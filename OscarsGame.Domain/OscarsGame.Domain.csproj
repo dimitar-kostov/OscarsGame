@@ -7,8 +7,8 @@
     <ProjectGuid>{BB500EB4-9987-494E-9C78-B2DD47F8D49B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MovieScrapper.Entities</RootNamespace>
-    <AssemblyName>MovieScrapper.Entities</AssemblyName>
+    <RootNamespace>OscarsGame.Domain</RootNamespace>
+    <AssemblyName>OscarsGame.Domain</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -31,9 +31,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\CommonServiceLocator.1.3\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
-    </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -52,17 +49,21 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entities\Bets.cs" />
+    <Compile Include="Entities\Claim.cs" />
+    <Compile Include="Entities\ExternalLogin.cs" />
     <Compile Include="Entities\Movie.cs" />
     <Compile Include="Entities\Category.cs" />
     <Compile Include="Entities\MovieCredit.cs" />
     <Compile Include="Entities\MoviesCollection.cs" />
     <Compile Include="Entities\Nomination.cs" />
+    <Compile Include="Entities\User.cs" />
     <Compile Include="IUnitOfWork.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Entities\GameProperties.cs" />
     <Compile Include="Entities\Watched.cs" />
     <Compile Include="Repositories\IBetRepository.cs" />
     <Compile Include="Repositories\ICategoryRepository.cs" />
+    <Compile Include="Repositories\IExternalLoginRepository.cs" />
     <Compile Include="Repositories\IGamePropertyRepository.cs" />
     <Compile Include="Repositories\IMovieRepository.cs" />
     <Compile Include="Repositories\INominationRepository.cs" />
@@ -71,6 +72,7 @@
     <Compile Include="Models\WatchedMovies.cs" />
     <Compile Include="Models\Winners.cs" />
     <Compile Include="Repositories\IRepository.cs" />
+    <Compile Include="Repositories\IUserRepository.cs" />
     <Compile Include="Repositories\IViewModelsRepository.cs" />
     <Compile Include="Repositories\IWatchedMovieRepository.cs" />
   </ItemGroup>

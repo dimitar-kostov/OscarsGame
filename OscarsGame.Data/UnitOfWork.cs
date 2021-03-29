@@ -17,10 +17,8 @@ namespace OscarsGame.Data
         private IViewModelsRepository _viewModelsRepository;
         private IWatchedMovieRepository _watchedMovieRepository;
 
-
-        //private IExternalLoginRepository _externalLoginRepository;
-        //private IRoleRepository _roleRepository;
-        //private IUserRepository _userRepository;
+        private IExternalLoginRepository _externalLoginRepository;
+        private IUserRepository _userRepository;
         #endregion
 
         #region Constructors
@@ -53,20 +51,11 @@ namespace OscarsGame.Data
         public IWatchedMovieRepository WatchedMovieRepository =>
             _watchedMovieRepository ?? (_watchedMovieRepository = new WatchedMovieRepository(_context));
 
-        //public IExternalLoginRepository ExternalLoginRepository
-        //{
-        //    get { return _externalLoginRepository ?? (_externalLoginRepository = new ExternalLoginRepository(_context)); }
-        //}
+        public IExternalLoginRepository ExternalLoginRepository =>
+            _externalLoginRepository ?? (_externalLoginRepository = new ExternalLoginRepository(_context));
 
-        //public IRoleRepository RoleRepository
-        //{
-        //    get { return _roleRepository ?? (_roleRepository = new RoleRepository(_context)); }
-        //}
-
-        //public IUserRepository UserRepository
-        //{
-        //    get { return _userRepository ?? (_userRepository = new UserRepository(_context)); }
-        //}
+        public IUserRepository UserRepository =>
+            _userRepository ?? (_userRepository = new UserRepository(_context));
 
         public int SaveChanges()
         {
@@ -87,9 +76,17 @@ namespace OscarsGame.Data
         #region IDisposable Members
         public void Dispose()
         {
-            //_externalLoginRepository = null;
-            //_roleRepository = null;
-            //_userRepository = null;
+            _betRepository = null;
+            _categoryRepository = null;
+            _gamePropertyRepository = null;
+            _movieRepository = null;
+            _nominationRepository = null;
+            _viewModelsRepository = null;
+            _watchedMovieRepository = null;
+
+            _externalLoginRepository = null;
+            _userRepository = null;
+
             _context.Dispose();
         }
         #endregion

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace WebFormsIdentity.Domain.Entities
+namespace OscarsGame.Domain.Entities
 {
     public class ExternalLogin
     {

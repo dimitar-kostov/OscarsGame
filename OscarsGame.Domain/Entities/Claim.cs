@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace WebFormsIdentity.Domain.Entities
+namespace OscarsGame.Domain.Entities
 {
     public class Claim
     {
@@ -19,9 +19,7 @@ namespace WebFormsIdentity.Domain.Entities
             get { return _user; }
             set
             {
-                if (value == null)
-                    throw new ArgumentNullException("value");
-                _user = value;
+                _user = value ?? throw new ArgumentNullException(nameof(value));
                 UserId = value.UserId;
             }
         }

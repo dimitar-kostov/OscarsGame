@@ -1,8 +1,8 @@
-﻿using System.Threading;
+﻿using OscarsGame.Domain.Entities;
+using System.Threading;
 using System.Threading.Tasks;
-using WebFormsIdentity.Domain.Entities;
 
-namespace WebFormsIdentity.Domain.Repositories
+namespace OscarsGame.Domain.Repositories
 {
     public interface IExternalLoginRepository : IRepository<ExternalLogin>
     {

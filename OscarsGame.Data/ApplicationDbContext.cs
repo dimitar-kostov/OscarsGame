@@ -1,16 +1,19 @@
-﻿using OscarsGame.Data.Migrations;
+﻿using OscarsGame.Data.Configurations;
+using OscarsGame.Data.Migrations;
 using OscarsGame.Domain.Entities;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
 
 namespace OscarsGame.Data
 {
-    internal class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : DbContext
     {
         internal ApplicationDbContext(string nameOrConnectionString)
             : base(nameOrConnectionString)
         {
-            Database.SetInitializer(new MigrateDatabaseToLatestVersion<ApplicationDbContext, Configuration>(useSuppliedContext: true));
+            Database.SetInitializer(
+                new MigrateDatabaseToLatestVersion<ApplicationDbContext, MigrationsConfiguration>(
+                    useSuppliedContext: true));
         }
 
         public IDbSet<Movie> Movies { get; set; }
@@ -21,9 +24,8 @@ namespace OscarsGame.Data
         public IDbSet<MovieCredit> Credits { get; set; }
         public IDbSet<Nomination> Nominations { get; set; }
 
-        //internal IDbSet<User> Users { get; set; }
-        //internal IDbSet<Role> Roles { get; set; }
-        //internal IDbSet<ExternalLogin> Logins { get; set; }
+        internal IDbSet<User> Users { get; set; }
+        internal IDbSet<ExternalLogin> Logins { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -35,10 +37,9 @@ namespace OscarsGame.Data
                 .Property(t => t.Id)
                 .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
 
-            //modelBuilder.Configurations.Add(new UserConfiguration());
-            //modelBuilder.Configurations.Add(new RoleConfiguration());
-            //modelBuilder.Configurations.Add(new ExternalLoginConfiguration());
-            //modelBuilder.Configurations.Add(new ClaimConfiguration());
+            modelBuilder.Configurations.Add(new UserConfiguration());
+            modelBuilder.Configurations.Add(new ExternalLoginConfiguration());
+            modelBuilder.Configurations.Add(new ClaimConfiguration());
         }
     }
 }

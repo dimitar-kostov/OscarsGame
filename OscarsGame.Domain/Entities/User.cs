@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace WebFormsIdentity.Domain.Entities
+namespace OscarsGame.Domain.Entities
 {
     public class User
     {
         #region Fields
         private ICollection<Claim> _claims;
         private ICollection<ExternalLogin> _externalLogins;
-        private ICollection<Role> _roles;
         #endregion
 
         #region Scalar Properties
@@ -35,12 +34,6 @@ namespace WebFormsIdentity.Domain.Entities
                     (_externalLogins = new List<ExternalLogin>());
             }
             set { _externalLogins = value; }
-        }
-
-        public virtual ICollection<Role> Roles
-        {
-            get { return _roles ?? (_roles = new List<Role>()); }
-            set { _roles = value; }
         }
         #endregion
     }

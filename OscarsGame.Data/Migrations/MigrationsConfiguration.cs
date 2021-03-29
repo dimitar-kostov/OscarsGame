@@ -2,9 +2,9 @@ namespace OscarsGame.Data.Migrations
 {
     using System.Data.Entity.Migrations;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<ApplicationDbContext>
+    internal sealed class MigrationsConfiguration : DbMigrationsConfiguration<ApplicationDbContext>
     {
-        public Configuration()
+        public MigrationsConfiguration()
         {
             ContextKey = nameof(ApplicationDbContext);
         }

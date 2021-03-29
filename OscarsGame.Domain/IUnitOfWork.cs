@@ -7,6 +7,7 @@ namespace OscarsGame.Domain
 {
     public interface IUnitOfWork : IDisposable
     {
+        #region Properties
         IBetRepository BetRepository { get; }
         ICategoryRepository CategoryRepository { get; }
         IGamePropertyRepository GamePropertyRepository { get; }
@@ -15,10 +16,8 @@ namespace OscarsGame.Domain
         IViewModelsRepository ViewModelsRepository { get; }
         IWatchedMovieRepository WatchedMovieRepository { get; }
 
-        #region Properties
-        //IExternalLoginRepository ExternalLoginRepository { get; }
-        //IRoleRepository RoleRepository { get; }
-        //IUserRepository UserRepository { get; }
+        IExternalLoginRepository ExternalLoginRepository { get; }
+        IUserRepository UserRepository { get; }
         #endregion
 
         #region Methods

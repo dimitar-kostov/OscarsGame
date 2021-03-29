@@ -1,9 +1,11 @@
-﻿using OscarsGame.Business;
+﻿using Microsoft.AspNet.Identity.Owin;
+using OscarsGame.Business;
 using OscarsGame.Data;
 using OscarsGame.Domain;
+using OscarsGame.Web.Identity;
+using System.Web;
 using Unity;
 using Unity.Injection;
-using Unity.Lifetime;
 
 namespace OscarsGame
 {
@@ -11,16 +13,25 @@ namespace OscarsGame
     {
         public static void RegisterTypes(IUnityContainer container)
         {
-            // Register data types
+            container.RegisterType<IUnitOfWork>(
+                new InjectionFactory(x =>
+                    HttpContext.Current
+                               .GetOwinContext()
+                               .Get<IUnitOfWork>()));
 
-            container.RegisterType<IUnitOfWork, UnitOfWork>(
-                new PerThreadLifetimeManager(),
-                new InjectionConstructor("DefaultConnection"));
+            container.RegisterType<ApplicationUserManager>(
+                new InjectionFactory(x =>
+                    HttpContext.Current
+                               .GetOwinContext()
+                               .Get<ApplicationUserManager>()));
 
+            container.RegisterType<ApplicationSignInManager>(
+                new InjectionFactory(x =>
+                    HttpContext.Current
+                               .GetOwinContext()
+                               .Get<ApplicationSignInManager>()));
 
             DataContainerManager.RegisterTypes(container);
-
-            // Register service types
             BusinessContainerManager.RegisterTypes(container);
         }
     }
