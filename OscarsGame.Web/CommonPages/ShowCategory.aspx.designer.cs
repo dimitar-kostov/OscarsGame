@@ -7,11 +7,13 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace OscarsGame.CommonPages {
-    
-    
-    public partial class ShowCategory {
-        
+namespace OscarsGame.CommonPages
+{
+
+
+    public partial class ShowCategory
+    {
+
         /// <summary>
         /// CategoryDataUpdatePanel control.
         /// </summary>
@@ -20,7 +22,7 @@ namespace OscarsGame.CommonPages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UpdatePanel CategoryDataUpdatePanel;
-        
+
         /// <summary>
         /// GreatingLabel control.
         /// </summary>
@@ -29,7 +31,7 @@ namespace OscarsGame.CommonPages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label GreatingLabel;
-        
+
         /// <summary>
         /// WarningLabel control.
         /// </summary>
@@ -38,7 +40,7 @@ namespace OscarsGame.CommonPages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label WarningLabel;
-        
+
         /// <summary>
         /// WinnerLabel control.
         /// </summary>
@@ -47,7 +49,7 @@ namespace OscarsGame.CommonPages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label WinnerLabel;
-        
+
         /// <summary>
         /// CategoryTtleLabel control.
         /// </summary>
@@ -56,7 +58,7 @@ namespace OscarsGame.CommonPages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label CategoryTtleLabel;
-        
+
         /// <summary>
         /// NominationsRepeater control.
         /// </summary>
@@ -65,16 +67,16 @@ namespace OscarsGame.CommonPages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Repeater NominationsRepeater;
-        
+
         /// <summary>
-        /// GridsUpdatePanel control.
+        /// MoviesScoresGridUpdatePanel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UpdatePanel GridsUpdatePanel;
-        
+        protected global::System.Web.UI.UpdatePanel MoviesScoresGridUpdatePanel;
+
         /// <summary>
         /// MoviesScoresGridView control.
         /// </summary>
@@ -83,7 +85,16 @@ namespace OscarsGame.CommonPages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView MoviesScoresGridView;
-        
+
+        /// <summary>
+        /// UserVotesGridUpdatePanel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel UserVotesGridUpdatePanel;
+
         /// <summary>
         /// UserVotesGridView control.
         /// </summary>
@@ -92,7 +103,16 @@ namespace OscarsGame.CommonPages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView UserVotesGridView;
-        
+
+        /// <summary>
+        /// UserWatchedGridUpdatePanel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel UserWatchedGridUpdatePanel;
+
         /// <summary>
         /// UserWatchedGridView control.
         /// </summary>
@@ -101,7 +121,7 @@ namespace OscarsGame.CommonPages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView UserWatchedGridView;
-        
+
         /// <summary>
         /// updateProgress control.
         /// </summary>

@@ -1,4 +1,5 @@
 ﻿using OscarsGame.Domain.Entities;
+using System;
 using System.Collections.Generic;
 
 namespace OscarsGame.Domain.Repositories
@@ -9,7 +10,7 @@ namespace OscarsGame.Domain.Repositories
 
         void OverrideMovie(Movie movie);
 
-        void ChangeMovieStatus(string userId, int movieId);
+        void ChangeMovieStatus(Guid userId, int movieId);
 
         IEnumerable<Movie> GetAllMovies();
 

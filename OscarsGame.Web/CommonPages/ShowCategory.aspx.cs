@@ -1,5 +1,7 @@
-﻿using OscarsGame.Business.Interfaces;
+﻿using Microsoft.AspNet.Identity;
+using OscarsGame.Business.Interfaces;
 using OscarsGame.Domain.Entities;
+using OscarsGame.Web.Identity;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -16,6 +18,8 @@ namespace OscarsGame.CommonPages
         private readonly ICategoryService CategoryService;
         private readonly IBetService BetService;
         private readonly IWatcheMoviesStatisticService WatcheMoviesStatisticService;
+
+        private Guid CurrentUsereId { get; set; }
 
         public ShowCategory(
             IGamePropertyService gamePropertyService,
@@ -96,6 +100,11 @@ namespace OscarsGame.CommonPages
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                CurrentUsereId = User.Identity.GetUserId().ToGuid();
+            }
+
             if (!IsPostBack)
             {
                 BindCategory();
@@ -123,15 +132,16 @@ namespace OscarsGame.CommonPages
         {
             Category currentCategory = GetCurrentCategory();
 
-            NominationsRepeater.DataSource = currentCategory.Nominations;
+            var nominations = currentCategory.Nominations.OrderBy(x => x.Id).ToList();
+            NominationsRepeater.DataSource = nominations;
 
             CategoryTtleLabel.Text = currentCategory.CategoryTtle;
             CategoryTtleLabel.ToolTip = currentCategory.CategoryDescription;
 
-            MoviesScoresGridView.DataSource = currentCategory.Nominations;
+            MoviesScoresGridView.DataSource = nominations;
 
-            CreateAndFillUserVotesDataTable(currentCategory);
-            CreateAndFillUserWatchedDataTable(currentCategory);
+            CreateAndFillUserVotesDataTable(currentCategory.Id, nominations);
+            CreateAndFillUserWatchedDataTable(nominations);
         }
 
         private Category GetCurrentCategory()
@@ -149,22 +159,30 @@ namespace OscarsGame.CommonPages
 
         private void CreateAndFillUserVotesDataTable(Category currentCategory)
         {
-            var nominationsFromCategory = currentCategory.Nominations.ToList();
+            CreateAndFillUserVotesDataTable(currentCategory.Id, currentCategory.Nominations.OrderBy(x => x.Id).ToList());
+        }
 
+        private void CreateAndFillUserVotesDataTable(int categoryId, IList<Nomination> nominations)
+        {
             if (!IsPostBack)
             {
-                InitUserVotesGridViewColumns(nominationsFromCategory);
+                InitUserVotesGridViewColumns(nominations);
             }
 
-            var dataTable = CreateUserBetsDataTable(nominationsFromCategory);
-            dataTable = FillVotesDataTable(dataTable, currentCategory);
+            var dataTable = CreateUserBetsDataTable(nominations);
+            dataTable = FillVotesDataTable(dataTable, categoryId);
             DataView sortedView = GetDefaultTableSort(dataTable, UserColumnName, UserVotesGridViewSortDirection);
             UserVotesGridView.DataSource = sortedView;
         }
 
         private void CreateAndFillUserWatchedDataTable(Category currentCategory)
         {
-            var moviesFromCategory = currentCategory.Nominations.Select(n => n.Movie).Distinct().ToList();
+            CreateAndFillUserWatchedDataTable(currentCategory.Nominations.OrderBy(x => x.Id).ToList());
+        }
+
+        private void CreateAndFillUserWatchedDataTable(IList<Nomination> nominations)
+        {
+            var moviesFromCategory = nominations.Select(n => n.Movie).Distinct().ToList();
 
             if (!IsPostBack)
             {
@@ -172,7 +190,7 @@ namespace OscarsGame.CommonPages
             }
 
             var dataTable = CreateUserMoviesDataTable(moviesFromCategory);
-            dataTable = FillWatchedDataTable(dataTable, currentCategory);
+            dataTable = FillWatchedDataTable(dataTable, nominations);
             DataView sortedView = GetDefaultTableSort(dataTable, UserColumnName, UserWatchedGridViewSortDirection);
             UserWatchedGridView.DataSource = sortedView;
         }
@@ -247,21 +265,21 @@ namespace OscarsGame.CommonPages
 
         #region FillGridViews
 
-        private DataTable FillVotesDataTable(DataTable dataTable, Category currentCategory)
+        private DataTable FillVotesDataTable(DataTable dataTable, int categoryId)
         {
-            var bets = BetService.GetAllBetsByCategory(currentCategory.Id);
+            var bets = BetService.GetAllBetsByCategory(categoryId);
 
             foreach (var bet in bets)
             {
                 var row = dataTable.NewRow();
-                row[UserColumnName] = bet.UserId.Split('@')[0];
+                row[UserColumnName] = bet.User.Email.Split('@')[0];
                 row[bet.Nomination.Id.ToString()] = "<span class='glyphicon glyphicon-ok'></span>";
                 dataTable.Rows.Add(row);
             }
             return dataTable;
         }
 
-        private DataTable FillWatchedDataTable(DataTable dataTable, Category currentCategory)
+        private DataTable FillWatchedDataTable(DataTable dataTable, IList<Nomination> nominations)
         {
             var users = WatcheMoviesStatisticService.GetData();
 
@@ -270,7 +288,7 @@ namespace OscarsGame.CommonPages
                 var row = dataTable.NewRow();
                 row[UserColumnName] = user.UserEmail.Split('@')[0];
 
-                foreach (var movie in user.MovieTitles.Where(m => currentCategory.Nominations.Any(n => n.Movie.Title.Contains(m))))
+                foreach (var movie in user.MovieTitles.Where(title => nominations.Any(n => n.Movie.Title == title)))
                 {
                     row[movie] = "<span class='glyphicon glyphicon-ok'></span>";
                 }
@@ -292,19 +310,42 @@ namespace OscarsGame.CommonPages
 
             if (MoviesScoresGridViewSortDirection == SortDirection.Ascending)
             {
-                MoviesScoresGridView.DataSource = e.SortExpression == "Movie" ?
-                    currentCategory.Nominations.OrderBy(n => n.Movie.Title) : currentCategory.Nominations.OrderBy(n => n.Bets.Count);
+                switch (e.SortExpression)
+                {
+                    case "Movie":
+                        MoviesScoresGridView.DataSource = currentCategory.Nominations.OrderBy(n => n.Movie.Title);
+                        break;
+                    case "Bets":
+                        MoviesScoresGridView.DataSource = currentCategory.Nominations.OrderBy(n => n.Bets.Count);
+                        break;
+                    case "Watched":
+                        MoviesScoresGridView.DataSource = currentCategory.Nominations.OrderBy(n => n.Movie.UsersWatchedThisMovie.Count);
+                        break;
+                    default:
+                        MoviesScoresGridView.DataSource = currentCategory.Nominations.OrderBy(n => n.Id);
+                        break;
+                }
             }
             else
             {
-                MoviesScoresGridView.DataSource = e.SortExpression == "Movie" ?
-                    currentCategory.Nominations.OrderByDescending(n => n.Movie.Title) : currentCategory.Nominations.OrderByDescending(n => n.Bets.Count);
+                switch (e.SortExpression)
+                {
+                    case "Movie":
+                        MoviesScoresGridView.DataSource = currentCategory.Nominations.OrderByDescending(n => n.Movie.Title);
+                        break;
+                    case "Bets":
+                        MoviesScoresGridView.DataSource = currentCategory.Nominations.OrderByDescending(n => n.Bets.Count);
+                        break;
+                    case "Watched":
+                        MoviesScoresGridView.DataSource = currentCategory.Nominations.OrderByDescending(n => n.Movie.UsersWatchedThisMovie.Count);
+                        break;
+                    default:
+                        MoviesScoresGridView.DataSource = currentCategory.Nominations.OrderBy(n => n.Id);
+                        break;
+                }
             }
 
             MoviesScoresGridView.DataBind();
-
-            NominationsRepeater.DataSource = currentCategory.Nominations;
-            NominationsRepeater.DataBind();
 
             SetSortingArrows(MoviesScoresGridView, MoviesScoresGridViewSortDirection, e.SortExpression);
         }
@@ -318,9 +359,6 @@ namespace OscarsGame.CommonPages
             CreateAndFillUserVotesDataTable(currentCategory);
             UserVotesGridView.DataBind();
 
-            NominationsRepeater.DataSource = currentCategory.Nominations;
-            NominationsRepeater.DataBind();
-
             SetSortingArrows(UserVotesGridView, UserVotesGridViewSortDirection, e.SortExpression);
         }
 
@@ -332,9 +370,6 @@ namespace OscarsGame.CommonPages
 
             CreateAndFillUserWatchedDataTable(currentCategory);
             UserWatchedGridView.DataBind();
-
-            NominationsRepeater.DataSource = currentCategory.Nominations;
-            NominationsRepeater.DataBind();
 
             SetSortingArrows(UserWatchedGridView, UserWatchedGridViewSortDirection, e.SortExpression);
         }
@@ -349,13 +384,16 @@ namespace OscarsGame.CommonPages
             {
                 if (IsGameRunning())
                 {
-                    var userId = User.Identity.Name;
                     var nominationId = int.Parse(e.CommandArgument.ToString());
 
-                    BetService.MakeBetEntity(userId, nominationId);
+                    BetService.MakeBetEntity(CurrentUsereId, nominationId);
 
                     BindCategory();
                     DataBind();
+                    MoviesScoresGridUpdatePanel.Update();
+                    UserVotesGridUpdatePanel.Update();
+                    UserWatchedGridUpdatePanel.Update();
+                    System.Threading.Thread.Sleep(500);
                 }
                 else
                 {
@@ -375,9 +413,7 @@ namespace OscarsGame.CommonPages
 
         protected string ChangeTextIfUserBettedOnThisNomination(ICollection<Bet> nominationBets)
         {
-            string currentUserId = User.Identity.Name;
-
-            if (nominationBets.Any(x => x.UserId == currentUserId))
+            if (nominationBets.Any(x => x.UserId == CurrentUsereId))
             {
                 return "<span class='check-button glyphicon glyphicon-check'></span>";
             }
@@ -394,12 +430,10 @@ namespace OscarsGame.CommonPages
 
         private void BetUpdate()
         {
-            var currentUsereId = User.Identity.Name;
-
             var categories = CategoryService.GetAll();
             int categoryCount = categories.Count();
 
-            var bets = categories.SelectMany(x => x.Nominations).SelectMany(x => x.Bets).Where(x => x.UserId == currentUsereId).ToList();
+            var bets = categories.SelectMany(x => x.Nominations).SelectMany(x => x.Bets).Where(x => x.UserId == CurrentUsereId).ToList();
 
             int missedCategories = categoryCount - bets.Count;
 
@@ -408,7 +442,7 @@ namespace OscarsGame.CommonPages
 
             int counter = bets.Count(x => x.Nomination.IsWinner);
 
-            if (CheckIfTheUserIsLogged() == true && IsGameRunning() == true)
+            if (CheckIfTheUserIsLogged() && IsGameRunning())
             {
                 if (missedCategories > 0)
                 {
@@ -436,7 +470,7 @@ namespace OscarsGame.CommonPages
 
             //////////////// Show right suggestions statistic label /////////////////////
 
-            if (CheckIfTheUserIsLogged() == true && IsGameRunning() == false)
+            if (CheckIfTheUserIsLogged() && IsGameRunning())
             {
                 if (winnersAreSet)
                 {

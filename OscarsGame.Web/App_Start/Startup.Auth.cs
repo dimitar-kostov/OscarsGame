@@ -1,9 +1,12 @@
-﻿using Microsoft.Owin.Extensions;
-using Microsoft.Owin.Security;
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.Owin;
+using Microsoft.Owin.Extensions;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OpenIdConnect;
 using OscarsGame.Web.Identity;
 using Owin;
+using System;
 using System.Configuration;
 
 namespace OscarsGame
@@ -27,35 +30,32 @@ namespace OscarsGame
             app.CreatePerOwinContext<ApplicationUserManager>(IdentityConfig.CreateApplicationUserManager);
             app.CreatePerOwinContext<ApplicationSignInManager>(IdentityConfig.CreateApplicationSignInManager);
 
-            app.SetDefaultSignInAsAuthenticationType(CookieAuthenticationDefaults.AuthenticationType);
-
             // Enable the application to use a cookie to store information for the signed in user
             // and to use a cookie to temporarily store information about a user logging in with a third party login provider
             // Configure the sign in cookie
-            //app.UseCookieAuthentication(new CookieAuthenticationOptions
-            //{
-            //    AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
-            //    LoginPath = new PathString("/Account/Login"),
-            //    Provider = new CookieAuthenticationProvider
-            //    {
-            //        OnValidateIdentity = SecurityStampValidator.OnValidateIdentity<ApplicationUserManager, ApplicationUser>(
-            //            validateInterval: TimeSpan.FromMinutes(30),
-            //            regenerateIdentity: (manager, user) => user.GenerateUserIdentityAsync(manager))
-            //    }
-            //});
-
-            app.UseCookieAuthentication(new CookieAuthenticationOptions());
+            app.UseCookieAuthentication(new CookieAuthenticationOptions
+            {
+                AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
+                LoginPath = new PathString("/Account/Login"),
+                Provider = new CookieAuthenticationProvider
+                {
+                    OnValidateIdentity = SecurityStampValidator.OnValidateIdentity<ApplicationUserManager, IdentityUser, Guid>(
+                        validateInterval: TimeSpan.FromMinutes(30),
+                        regenerateIdentityCallback: (manager, user) => manager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie),
+                        getUserIdCallback: (claimsIdentity) => claimsIdentity.GetUserId().ToGuid())
+                }
+            });
 
             // Use a cookie to temporarily store information about a user logging in with a third party login provider
-            //app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
+            app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
 
             // Enables the application to temporarily store user information when they are verifying the second factor in the two-factor authentication process.
-            //app.UseTwoFactorSignInCookie(DefaultAuthenticationTypes.TwoFactorCookie, TimeSpan.FromMinutes(5));
+            app.UseTwoFactorSignInCookie(DefaultAuthenticationTypes.TwoFactorCookie, TimeSpan.FromMinutes(5));
 
             // Enables the application to remember the second login verification factor such as phone or email.
             // Once you check this option, your second step of verification during the login process will be remembered on the device where you logged in from.
             // This is similar to the RememberMe option when you log in.
-            //app.UseTwoFactorRememberBrowserCookie(DefaultAuthenticationTypes.TwoFactorRememberBrowserCookie);
+            app.UseTwoFactorRememberBrowserCookie(DefaultAuthenticationTypes.TwoFactorRememberBrowserCookie);
 
             // Uncomment the following lines to enable logging in with third party login providers
             //app.UseMicrosoftAccountAuthentication(
@@ -76,24 +76,28 @@ namespace OscarsGame
             //    ClientSecret = ""
             //});
 
-            app.UseOpenIdConnectAuthentication(
-                new OpenIdConnectAuthenticationOptions
-                {
-                    ClientId = clientId,
-                    Authority = authority,
-                    PostLogoutRedirectUri = postLogoutRedirectUri,
-                    RedirectUri = RedirectUri,
-
-                    Notifications = new OpenIdConnectAuthenticationNotifications()
+            if (IdentityHelper.IsProxiadClient())
+            {
+                app.UseOpenIdConnectAuthentication(
+                    new OpenIdConnectAuthenticationOptions
                     {
-                        AuthenticationFailed = (context) =>
-                        {
-                            return System.Threading.Tasks.Task.FromResult(0);
-                        }
-                    }
+                        ClientId = clientId,
+                        Authority = authority,
+                        PostLogoutRedirectUri = postLogoutRedirectUri,
+                        RedirectUri = RedirectUri,
+                        Scope = "./Default",
 
-                }
+                        Notifications = new OpenIdConnectAuthenticationNotifications()
+                        {
+                            AuthenticationFailed = (context) =>
+                            {
+                                return System.Threading.Tasks.Task.FromResult(0);
+                            }
+                        }
+
+                    }
                 );
+            }
 
             // This makes any middleware defined above this line run before the Authorization rule is applied in web.config
             app.UseStageMarker(PipelineStage.Authenticate);

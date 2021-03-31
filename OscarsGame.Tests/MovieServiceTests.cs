@@ -15,7 +15,7 @@ namespace UnitTestProject
         {
             //Arrange
             var movieRepositoryMock = MockRepository.GenerateMock<IMovieRepository>();
-            movieRepositoryMock.Expect(dao => dao.ChangeMovieStatus(Arg<string>.Is.Anything, Arg<int>.Is.Anything)).Repeat.Once();
+            movieRepositoryMock.Expect(dao => dao.ChangeMovieStatus(default, default)).Repeat.Once();
 
             var unitOfWorkMockMock = MockRepository.GenerateStub<IUnitOfWork>();
             unitOfWorkMockMock.Stub(uow => uow.MovieRepository).Return(movieRepositoryMock);
@@ -23,7 +23,7 @@ namespace UnitTestProject
             var movieService = new MovieService(unitOfWorkMockMock);
 
             //Act
-            movieService.ChangeMovieStatus("1", 1);
+            movieService.ChangeMovieStatus(default, default);
 
             //Assert           
             movieRepositoryMock.VerifyAllExpectations();

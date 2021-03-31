@@ -24,7 +24,7 @@ namespace UnitTestProject
             var watchedMovieService = new WatchedMovieService(unitOfWorkMockMock);
 
             //Act
-            var watched = new Watched { UserId = "test", Movies = new List<Movie>() };
+            var watched = new Watched { UserId = default, Movies = new List<Movie>() };
             watchedMovieService.AddWatchedEntity(watched);
 
             //Assert
@@ -55,7 +55,7 @@ namespace UnitTestProject
         {
             //Arrange
             var watchedMovieRepositoryMock = MockRepository.GenerateMock<IWatchedMovieRepository>();
-            watchedMovieRepositoryMock.Expect(dao => dao.GetAllWatchedMovies(Arg<string>.Is.Anything)).Return(Arg<IEnumerable<Watched>>.Is.Anything).Repeat.Once();
+            watchedMovieRepositoryMock.Expect(dao => dao.GetAllWatchedMovies(default)).Return(default).Repeat.Once();
 
             var unitOfWorkMockMock = MockRepository.GenerateStub<IUnitOfWork>();
             unitOfWorkMockMock.Stub(uow => uow.WatchedMovieRepository).Return(watchedMovieRepositoryMock);
@@ -63,7 +63,7 @@ namespace UnitTestProject
             var watchedMovieService = new WatchedMovieService(unitOfWorkMockMock);
 
             //Act
-            watchedMovieService.GetAllWatchedMovies("test");
+            watchedMovieService.GetAllWatchedMovies(default);
 
             //Assert
             watchedMovieRepositoryMock.VerifyAllExpectations();
@@ -74,7 +74,7 @@ namespace UnitTestProject
         {
             //Arrange
             var watchedMovieRepositoryMock = MockRepository.GenerateMock<IWatchedMovieRepository>();
-            watchedMovieRepositoryMock.Expect(dao => dao.GetUserWatchedEntity(Arg<string>.Is.Anything)).Return(Arg<Watched>.Is.Anything).Repeat.Once();
+            watchedMovieRepositoryMock.Expect(dao => dao.GetUserWatchedEntity(default)).Return(default).Repeat.Once();
 
             var unitOfWorkMockMock = MockRepository.GenerateStub<IUnitOfWork>();
             unitOfWorkMockMock.Stub(uow => uow.WatchedMovieRepository).Return(watchedMovieRepositoryMock);
@@ -82,7 +82,7 @@ namespace UnitTestProject
             var watchedMovieService = new WatchedMovieService(unitOfWorkMockMock);
 
             //Act
-            watchedMovieService.GetUserWatchedEntity("test");
+            watchedMovieService.GetUserWatchedEntity(default);
 
             //Assert
             watchedMovieRepositoryMock.VerifyAllExpectations();

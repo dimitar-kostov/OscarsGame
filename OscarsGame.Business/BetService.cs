@@ -2,6 +2,7 @@
 using OscarsGame.Domain;
 using OscarsGame.Domain.Entities;
 using OscarsGame.Domain.Models;
+using System;
 using System.Collections.Generic;
 
 namespace OscarsGame.Business
@@ -15,7 +16,7 @@ namespace OscarsGame.Business
             _unitOfWork = unitOfWork;
         }
 
-        public IEnumerable<Bet> GetAllUserBets(string userId)
+        public IEnumerable<Bet> GetAllUserBets(Guid userId)
         {
             return _unitOfWork.BetRepository.GetAllUserBets(userId);
         }
@@ -25,7 +26,7 @@ namespace OscarsGame.Business
             return _unitOfWork.BetRepository.GetAllBetsByCategory(categoryId);
         }
 
-        public void MakeBetEntity(string userId, int nominationId)
+        public void MakeBetEntity(Guid userId, int nominationId)
         {
             _unitOfWork.BetRepository.MakeBetEntity(userId, nominationId);
         }

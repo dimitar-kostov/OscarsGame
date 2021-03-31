@@ -2,6 +2,7 @@
 using OscarsGame.Business.Interfaces;
 using OscarsGame.Domain;
 using OscarsGame.Domain.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -16,7 +17,7 @@ namespace OscarsGame.Business
             _unitOfWork = unitOfWork;
         }
 
-        public void ChangeMovieStatus(string userId, int movieId)
+        public void ChangeMovieStatus(Guid userId, int movieId)
         {
             _unitOfWork.MovieRepository.ChangeMovieStatus(userId, movieId);
         }
@@ -26,7 +27,7 @@ namespace OscarsGame.Business
             return _unitOfWork.MovieRepository.GetAllMovies();
         }
 
-        public IEnumerable<Movie> GetAllMoviesByCriteria(string userId, OrderType orderType, FilterType filterType)
+        public IEnumerable<Movie> GetAllMoviesByCriteria(Guid userId, OrderType orderType, FilterType filterType)
         {
             IEnumerable<Movie> allMovies = new List<Movie>();
 
@@ -54,8 +55,7 @@ namespace OscarsGame.Business
         {
             return GetAllMovies()
                 .OrderByDescending(x => x.Nominations.Count)
-                .ThenByDescending(x => x.UsersWatchedThisMovie.Count)
-                .ThenByDescending(x => x.Title);
+                .ThenBy(x => x.Title);
         }
 
         private IEnumerable<Movie> MoviesByProxiadPopularity()
@@ -63,10 +63,10 @@ namespace OscarsGame.Business
             return GetAllMovies()
                 .OrderByDescending(x => x.UsersWatchedThisMovie.Count)
                 .ThenByDescending(x => x.Nominations.Count)
-                .ThenByDescending(x => x.Title);
+                .ThenBy(x => x.Title);
         }
 
-        private IEnumerable<Movie> FilterMovies(string userId, IEnumerable<Movie> moviesToFilter, FilterType filterType)
+        private IEnumerable<Movie> FilterMovies(Guid userId, IEnumerable<Movie> moviesToFilter, FilterType filterType)
         {
             if (filterType == FilterType.Watched)
             {

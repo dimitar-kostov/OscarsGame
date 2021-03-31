@@ -1,4 +1,5 @@
 ﻿using OscarsGame.Domain.Entities;
+using System;
 using System.Collections.Generic;
 
 namespace OscarsGame.Domain.Repositories
@@ -9,8 +10,8 @@ namespace OscarsGame.Domain.Repositories
 
         IEnumerable<Watched> GetAllUsersWatchedAMovie();
 
-        IEnumerable<Watched> GetAllWatchedMovies(string userId);
+        IEnumerable<Watched> GetAllWatchedMovies(Guid userId);
 
-        Watched GetUserWatchedEntity(string userId);
+        Watched GetUserWatchedEntity(Guid userId);
     }
 }

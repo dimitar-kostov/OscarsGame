@@ -3,6 +3,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using OscarsGame.Web.Identity;
 using System;
+using System.Security.Claims;
 using System.Web;
 
 namespace OscarsGame.Account
@@ -72,6 +73,31 @@ namespace OscarsGame.Account
                         return;
                     }
                 }
+                else if (IdentityHelper.IsProxiadClient())
+                {
+                    string proxiadEmailDomain = "@proxiad.com";
+                    string identityUserName = null;
+
+                    if (loginInfo.Email != null
+                        && loginInfo.Email.EndsWith(proxiadEmailDomain))
+                    {
+                        identityUserName = loginInfo.Email;
+                    }
+                    else if (loginInfo.DefaultUserName != null
+                        && loginInfo.DefaultUserName.EndsWith(proxiadEmailDomain))
+                    {
+                        identityUserName = loginInfo.DefaultUserName;
+                    }
+
+                    if (identityUserName != null)
+                    {
+                        CreateAndLoginUser(identityUserName, identityUserName);
+
+
+                    }
+
+                    IdentityHelper.RedirectToReturnUrl(Request.QueryString["ReturnUrl"], Response);
+                }
                 else
                 {
                     email.Text = loginInfo.Email;
@@ -90,9 +116,15 @@ namespace OscarsGame.Account
             {
                 return;
             }
+
+            CreateAndLoginUser(email.Text, email.Text);
+        }
+
+        private void CreateAndLoginUser(string identityUserName, string identityEmail)
+        {
             var manager = Context.GetOwinContext().GetUserManager<ApplicationUserManager>();
             var signInManager = Context.GetOwinContext().GetUserManager<ApplicationSignInManager>();
-            var user = new IdentityUser() { UserName = email.Text, Email = email.Text };
+            var user = new IdentityUser() { UserName = identityUserName, Email = identityEmail };
             IdentityResult result = manager.Create(user);
             if (result.Succeeded)
             {
@@ -105,6 +137,24 @@ namespace OscarsGame.Account
                 result = manager.AddLogin(user.Id, loginInfo.Login);
                 if (result.Succeeded)
                 {
+                    if (loginInfo.ExternalIdentity.HasClaim(c => c.Type == "name"))
+                    {
+                        manager.AddClaim(user.Id,
+                            loginInfo.ExternalIdentity.FindFirst("name"));
+                    }
+
+                    if (loginInfo.ExternalIdentity.HasClaim(c => c.Type == ClaimTypes.GivenName))
+                    {
+                        manager.AddClaim(user.Id,
+                            loginInfo.ExternalIdentity.FindFirst(ClaimTypes.GivenName));
+                    }
+
+                    if (loginInfo.ExternalIdentity.HasClaim(c => c.Type == ClaimTypes.Surname))
+                    {
+                        manager.AddClaim(user.Id,
+                            loginInfo.ExternalIdentity.FindFirst(ClaimTypes.Surname));
+                    }
+
                     signInManager.SignIn(user, isPersistent: false, rememberBrowser: false);
 
                     // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771

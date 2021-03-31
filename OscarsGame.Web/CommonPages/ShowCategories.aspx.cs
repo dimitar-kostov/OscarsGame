@@ -1,5 +1,7 @@
-﻿using OscarsGame.Business.Interfaces;
+﻿using Microsoft.AspNet.Identity;
+using OscarsGame.Business.Interfaces;
 using OscarsGame.Domain.Entities;
+using OscarsGame.Web.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +14,8 @@ namespace OscarsGame.CommonPages
         private readonly IGamePropertyService GamePropertyService;
         private readonly IBetService BetService;
         private readonly ICategoryService CategoryService;
+
+        private Guid CurrentUsereId { get; set; }
 
         public ShowCategories(
             IGamePropertyService gamePropertyService,
@@ -32,6 +36,7 @@ namespace OscarsGame.CommonPages
             else
             {
                 GreatingLabel.CssClass = "hidden";
+                CurrentUsereId = User.Identity.GetUserId().ToGuid();
             }
 
             if (IsGameNotStartedYet())
@@ -73,12 +78,12 @@ namespace OscarsGame.CommonPages
             {
                 if (IsGameRunning())
                 {
-                    var userId = User.Identity.Name;
                     var nominationId = int.Parse(e.CommandArgument.ToString());
 
-                    BetService.MakeBetEntity(userId, nominationId);
+                    BetService.MakeBetEntity(CurrentUsereId, nominationId);
 
                     Repeater1.DataBind();
+                    UpdatePanelLabels.Update();
                     System.Threading.Thread.Sleep(500);
                 }
                 else
@@ -90,8 +95,7 @@ namespace OscarsGame.CommonPages
 
         protected string ChangeTextIfUserBettedOnThisNomination(ICollection<Bet> nominationBets)
         {
-            string currentUserId = User.Identity.Name;
-            if (nominationBets.Any(x => x.UserId == currentUserId))
+            if (nominationBets.Any(x => x.UserId == CurrentUsereId))
             {
                 return "<span class='check-button glyphicon glyphicon-check'></span>";
             }
@@ -110,12 +114,10 @@ namespace OscarsGame.CommonPages
 
         protected void ObjectDataSource1_Selected(object sender, ObjectDataSourceStatusEventArgs e)
         {
-            var currentUsereId = User.Identity.Name;
-
             var categories = (IEnumerable<Category>)e.ReturnValue;
             int categoryCount = categories.Count();
 
-            var bets = categories.SelectMany(x => x.Nominations).SelectMany(x => x.Bets).Where(x => x.UserId == currentUsereId).ToList();
+            var bets = categories.SelectMany(x => x.Nominations).SelectMany(x => x.Bets).Where(x => x.UserId == CurrentUsereId).ToList();
 
             int missedCategories = categoryCount - bets.Count;
 

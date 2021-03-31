@@ -1,6 +1,7 @@
 ﻿using OscarsGame.Domain.Entities;
 using OscarsGame.Domain.Models;
 using OscarsGame.Domain.Repositories;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -14,7 +15,7 @@ namespace OscarsGame.Data
         {
         }
 
-        public IEnumerable<Bet> GetAllUserBets(string userId)
+        public IEnumerable<Bet> GetAllUserBets(Guid userId)
         {
             return Context.Bets.Where(bet => bet.UserId == userId).ToList();
         }
@@ -22,11 +23,13 @@ namespace OscarsGame.Data
         public IEnumerable<Bet> GetAllBetsByCategory(int categoryId)
         {
             return Context.Bets
-                    .Include(b => b.Nomination).Include(b => b.Nomination.Movie)
+                    .Include(b => b.Nomination)
+                    .Include(b => b.Nomination.Movie)
+                    .Include(b => b.User)
                     .Where(bet => bet.Nomination.Category.Id == categoryId).ToList();
         }
 
-        public void MakeBetEntity(string userId, int nominationId)
+        public void MakeBetEntity(Guid userId, int nominationId)
         {
             var selectedNomination = Context.Nominations
                     .Include(x => x.Category)
@@ -65,10 +68,10 @@ namespace OscarsGame.Data
         public IEnumerable<UserScore> GetAllUserScores()
         {
             var bets = Context.Bets
-                    .GroupBy(x => x.UserId)
+                    .GroupBy(x => x.User)
                     .Select(g => new
                     {
-                        UserId = g.Key,
+                        User = g.Key,
                         Score = g.Count(x => x.Nomination.IsWinner),
                         WatchedMovies = 0,
                         WatchedNominations = 0,
@@ -76,10 +79,10 @@ namespace OscarsGame.Data
                     });
 
             var watchedMovies = Context.Watched
-                .GroupBy(x => x.UserId)
+                .GroupBy(x => x.User)
                 .Select(g => new
                 {
-                    UserId = g.Key,
+                    User = g.Key,
                     Score = 0,
                     WatchedMovies = g.Sum(x => x.Movies.Count),
                     WatchedNominations = g.Sum(x => x.Movies.SelectMany(m => m.Nominations).Count()),
@@ -88,10 +91,10 @@ namespace OscarsGame.Data
 
             return bets
                 .Union(watchedMovies)
-                .GroupBy(x => x.UserId)
+                .GroupBy(x => x.User)
                 .Select(g => new UserScore
                 {
-                    Email = g.Key,
+                    Email = g.Key.Email,
                     Score = g.Sum(x => x.Score),
                     WatchedMovies = g.Sum(x => x.WatchedMovies),
                     WatchedNominations = g.Sum(x => x.WatchedNominations),

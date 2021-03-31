@@ -1,6 +1,8 @@
-﻿using OscarsGame.Business.Enums;
+﻿using Microsoft.AspNet.Identity;
+using OscarsGame.Business.Enums;
 using OscarsGame.Business.Interfaces;
 using OscarsGame.Domain.Entities;
+using OscarsGame.Web.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +18,12 @@ namespace OscarsGame.CommonPages
         private readonly IGamePropertyService GamePropertyService;
         private readonly IMovieService MovieService;
         private readonly IWatchedMovieService WatchedMovieService;
+
+        private Guid CurrentUsereId
+        {
+            get { return Session["CurrentUser"] != null ? (Guid)Session["CurrentUser"] : Guid.Empty; }
+            set { Session["CurrentUser"] = value; }
+        }
 
         public ShowAllDBMovies(
             IGamePropertyService gamePropertyService,
@@ -36,7 +44,7 @@ namespace OscarsGame.CommonPages
             else
             {
                 GreatingLabel.CssClass = "hidden";
-                Session["CurrentUser"] = User.Identity.Name;
+                CurrentUsereId = User.Identity.GetUserId().ToGuid();
             }
             if (IsGameNotStartedYet())
             {
@@ -109,16 +117,15 @@ namespace OscarsGame.CommonPages
             {
                 if (IsGameRunning())
                 {
-                    var userId = User.Identity.Name;
                     int movieId = int.Parse((e.CommandArgument).ToString());
 
-                    if (WatchedMovieService.GetUserWatchedEntity(userId) == null)
+                    if (WatchedMovieService.GetUserWatchedEntity(CurrentUsereId) == null)
                     {
-                        var watchedEntity = new Watched() { UserId = userId, Movies = new List<Movie>() };
+                        var watchedEntity = new Watched() { UserId = CurrentUsereId, Movies = new List<Movie>() };
                         WatchedMovieService.AddWatchedEntity(watchedEntity);
                     }
 
-                    MovieService.ChangeMovieStatus(userId, movieId);
+                    MovieService.ChangeMovieStatus(CurrentUsereId, movieId);
                     Repeater1.DataBind();
                     System.Threading.Thread.Sleep(500);
                 }
@@ -131,12 +138,12 @@ namespace OscarsGame.CommonPages
 
         protected bool DoesUserWatchedThisMovie(ICollection<Watched> users)
         {
-            return !users.Any(x => x.UserId == User.Identity.Name);
+            return !users.Any(x => x.UserId == CurrentUsereId);
         }
 
         protected string ChangeTextIfUserWatchedThisMovie(ICollection<Watched> users)
         {
-            if (!users.Any(x => x.UserId == User.Identity.Name))
+            if (!users.Any(x => x.UserId == CurrentUsereId))
             {
                 return "<span class='check-button glyphicon glyphicon-unchecked'></span>";
             }
@@ -166,12 +173,10 @@ namespace OscarsGame.CommonPages
 
         protected void ObjectDataSource1_Selected(object sender, ObjectDataSourceStatusEventArgs e)
         {
-            var currentUsereId = User.Identity.Name;
-
             IEnumerable<Movie> movies = (IEnumerable<Movie>)e.ReturnValue;
             var moviesCount = movies.Count();
             //var bettedCategories = categories.Sum(x => x.Bets.Count(b => b.UserId == currentUsereId));
-            var watchedMovies = movies.Sum(x => x.UsersWatchedThisMovie.Count(u => u.UserId == currentUsereId));
+            var watchedMovies = movies.Sum(x => x.UsersWatchedThisMovie.Count(u => u.UserId == CurrentUsereId));
 
             var missedMovies = moviesCount - watchedMovies;
             if (CheckIfTheUserIsLogged())
@@ -214,13 +219,13 @@ namespace OscarsGame.CommonPages
             int selectedFilter = int.Parse(DdlFilter.SelectedValue);
 
             if (selectedFilter == (int)FadeFilterType.Unwatched
-                && !movie.UsersWatchedThisMovie.Select(x => x.UserId).Contains(User.Identity.Name))
+                && !movie.UsersWatchedThisMovie.Select(x => x.UserId).Contains(CurrentUsereId))
             {
                 return FadedOpacity;
             }
 
             if (selectedFilter == (int)FadeFilterType.Watched
-                && movie.UsersWatchedThisMovie.Select(x => x.UserId).Contains(User.Identity.Name))
+                && movie.UsersWatchedThisMovie.Select(x => x.UserId).Contains(CurrentUsereId))
             {
                 return FadedOpacity;
             }

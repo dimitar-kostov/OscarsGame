@@ -1,5 +1,6 @@
 ﻿using OscarsGame.Domain.Entities;
 using OscarsGame.Domain.Repositories;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -38,7 +39,7 @@ namespace OscarsGame.Data
             Context.SaveChanges();
         }
 
-        public void ChangeMovieStatus(string userId, int movieId)
+        public void ChangeMovieStatus(Guid userId, int movieId)
         {
             var movie = Context.Movies.SingleOrDefault(x => x.Id == movieId);
             var watchedEntity = Context.Watched.Include(w => w.Movies).SingleOrDefault(x => x.UserId == userId);

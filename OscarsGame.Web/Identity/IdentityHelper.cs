@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Web;
 
 namespace OscarsGame.Web.Identity
@@ -59,6 +60,11 @@ namespace OscarsGame.Web.Identity
         {
             Guid.TryParse(value, out Guid result);
             return result;
+        }
+
+        public static bool IsProxiadClient()
+        {
+            return ConfigurationManager.AppSettings["client"] == "Proxiad";
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using OscarsGame.Business.Interfaces;
 using OscarsGame.Domain;
 using OscarsGame.Domain.Entities;
+using System;
 using System.Collections.Generic;
 
 namespace OscarsGame.Business
@@ -26,12 +27,12 @@ namespace OscarsGame.Business
             return _unitOfWork.WatchedMovieRepository.GetAllUsersWatchedAMovie();
         }
 
-        public IEnumerable<Watched> GetAllWatchedMovies(string userId)
+        public IEnumerable<Watched> GetAllWatchedMovies(Guid userId)
         {
             return _unitOfWork.WatchedMovieRepository.GetAllWatchedMovies(userId);
         }
 
-        public Watched GetUserWatchedEntity(string userId)
+        public Watched GetUserWatchedEntity(Guid userId)
         {
             return _unitOfWork.WatchedMovieRepository.GetUserWatchedEntity(userId);
         }

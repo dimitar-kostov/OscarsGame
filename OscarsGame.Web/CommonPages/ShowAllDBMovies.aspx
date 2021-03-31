@@ -28,7 +28,7 @@
                         CssClass="dropdownlist">
                         <asp:ListItem Selected="True" Value="0">Name</asp:ListItem>
                         <asp:ListItem Value="1">Nominations</asp:ListItem>
-                        <asp:ListItem Value="2">Proxiad Popularity</asp:ListItem>
+                        <asp:ListItem Value="2">Popularity</asp:ListItem>
                     </asp:DropDownList>
                 </div>
                 <div style="width: 360px"></div>
@@ -65,25 +65,21 @@
                 </HeaderTemplate>
                 <ItemTemplate>
                     <div runat="server" class="pattern" style="<%#SetFadeFilter(((OscarsGame.Domain.Entities.Movie)((IDataItemContainer)Container).DataItem))%>">
-                        <asp:UpdatePanel ID="UpdatePanel2" UpdateMode="Conditional" runat="server">
-                            <ContentTemplate>
-                                <My:MovieControl ID="MovieControl1" runat="server" Item="<%# ((OscarsGame.Domain.Entities.Movie)((IDataItemContainer)Container).DataItem) %>" />
-                                <div class="under-movie">
-                                    <asp:LinkButton ID="MarkAsWatchedButton"
-                                        runat="server"
-                                        Text=""
-                                        ClientIDMode="AutoID"
-                                        CommandName="MarkAsWatchedOrUnwatched"
-                                        CommandArgument="<%#((OscarsGame.Domain.Entities.Movie)((IDataItemContainer)Container).DataItem).Id%>"
-                                        Enabled="<%# CheckIfTheUserIsLogged() & IsGameRunning() %>"
-                                        Visible="<%#!IsGameNotStartedYet()%>">
-                                <%# ChangeTextIfUserWatchedThisMovie(((OscarsGame.Domain.Entities.Movie)((IDataItemContainer)Container).DataItem).UsersWatchedThisMovie) %>
-                                    </asp:LinkButton>
-                                    <span class="label leftLabel" visible="<%#!IsGameNotStartedYet()%>">Mark as watched</span>
-                                    <span class="label rightLabel"><%# GetNominaionsInfo(((OscarsGame.Domain.Entities.Movie)((IDataItemContainer)Container).DataItem)) %></span>
-                                </div>
-                            </ContentTemplate>
-                        </asp:UpdatePanel>
+                        <My:MovieControl ID="MovieControl1" runat="server" Item="<%# ((OscarsGame.Domain.Entities.Movie)((IDataItemContainer)Container).DataItem) %>" />
+                        <div class="under-movie">
+                            <asp:LinkButton ID="MarkAsWatchedButton"
+                                runat="server"
+                                Text=""
+                                ClientIDMode="AutoID"
+                                CommandName="MarkAsWatchedOrUnwatched"
+                                CommandArgument="<%#((OscarsGame.Domain.Entities.Movie)((IDataItemContainer)Container).DataItem).Id%>"
+                                Enabled="<%# CheckIfTheUserIsLogged() & IsGameRunning() %>"
+                                Visible="<%#!IsGameNotStartedYet()%>">
+                        <%# ChangeTextIfUserWatchedThisMovie(((OscarsGame.Domain.Entities.Movie)((IDataItemContainer)Container).DataItem).UsersWatchedThisMovie) %>
+                            </asp:LinkButton>
+                            <span class="label leftLabel" visible="<%#!IsGameNotStartedYet()%>">Mark as watched</span>
+                            <span class="label rightLabel"><%# GetNominaionsInfo(((OscarsGame.Domain.Entities.Movie)((IDataItemContainer)Container).DataItem)) %></span>
+                        </div>
                     </div>
                 </ItemTemplate>
                 <FooterTemplate>
