@@ -17,12 +17,17 @@ namespace OscarsGame.Data
         public List<WatchedMovies> GetWatchedMoviesData()
         {
             string query =
-                @"SELECT distinct Movies.Id, Movies.Title, Users.Email 
-                FROM Movies 
-                        LEFT JOIN WatchedMovies on Movies.Id = WatchedMovies.Movie_Id 
-                        Join Nominations on Nominations.Movie_Id = WatchedMovies.Movie_Id
-	                    Join Watcheds on Watcheds.Id = WatchedMovies.Watched_Id
-	                    Join Users on Users.UserId = Watcheds.UserId";
+                @"SELECT DISTINCT 
+	                Movies.Id, 
+	                Movies.Title, 
+                    ISNULL(
+		                (SELECT [ClaimValue] FROM Claims WHERE Claims.UserId=Users.UserId and Claims.ClaimType='name'), 
+		                Users.Email) Email
+                    FROM Movies 
+                            LEFT JOIN WatchedMovies on Movies.Id = WatchedMovies.Movie_Id 
+                            JOIN Nominations on Nominations.Movie_Id = WatchedMovies.Movie_Id
+	                        JOIN Watcheds on Watcheds.Id = WatchedMovies.Watched_Id
+	                        JOIN Users on Users.UserId = Watcheds.UserId;";
 
             return Context.Database.SqlQuery<WatchedMovies>(query).ToList();
         }

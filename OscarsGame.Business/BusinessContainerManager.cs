@@ -9,7 +9,6 @@ namespace OscarsGame.Business
         {
             // Register services 
             container.RegisterType<IBetService, BetService>();
-            container.RegisterType<IBetStatisticService, BetsStatisticService>();
             container.RegisterType<ICategoryService, CategoryService>();
             container.RegisterType<IGamePropertyService, GamePropertyService>();
             container.RegisterType<IMovieService, MovieService>();

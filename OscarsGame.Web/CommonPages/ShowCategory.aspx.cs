@@ -272,7 +272,7 @@ namespace OscarsGame.CommonPages
             foreach (var bet in bets)
             {
                 var row = dataTable.NewRow();
-                row[UserColumnName] = bet.User.Email.Split('@')[0];
+                row[UserColumnName] = bet.User.DisplayName();
                 row[bet.Nomination.Id.ToString()] = "<span class='glyphicon glyphicon-ok'></span>";
                 dataTable.Rows.Add(row);
             }

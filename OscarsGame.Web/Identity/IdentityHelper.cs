@@ -1,5 +1,7 @@
-﻿using System;
+﻿using OscarsGame.Domain.Entities;
+using System;
 using System.Configuration;
+using System.Linq;
 using System.Web;
 
 namespace OscarsGame.Web.Identity
@@ -65,6 +67,13 @@ namespace OscarsGame.Web.Identity
         public static bool IsProxiadClient()
         {
             return ConfigurationManager.AppSettings["client"] == "Proxiad";
+        }
+
+        public static string DisplayName(this User user)
+        {
+            return
+                user.Claims.FirstOrDefault(x => x.ClaimType == "name")?.ClaimValue
+                ?? user.UserName;
         }
     }
 }

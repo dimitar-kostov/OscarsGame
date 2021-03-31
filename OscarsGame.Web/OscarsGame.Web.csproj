@@ -213,8 +213,6 @@
     <Content Include="Admin\EditMoviesInThisCategory.aspx" />
     <Content Include="Admin\Categories.aspx" />
     <Content Include="Admin\Users.aspx" />
-    <Content Include="CommonPages\BetsStatistics.aspx" />
-    <Content Include="CommonPages\MoviesStatistic.aspx" />
     <Content Include="CommonPages\ShowAllDBMovies.aspx" />
     <Content Include="CommonPages\ShowCategories.aspx" />
     <Content Include="Content\bootstrap-theme.css" />
@@ -467,26 +465,12 @@
     <Compile Include="BasePage.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="CommonPages\BetsStatistics.aspx.cs">
-      <DependentUpon>BetsStatistics.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CommonPages\BetsStatistics.aspx.designer.cs">
-      <DependentUpon>BetsStatistics.aspx</DependentUpon>
-    </Compile>
     <Compile Include="CommonPages\Leaderboard.aspx.cs">
       <DependentUpon>Leaderboard.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CommonPages\Leaderboard.aspx.designer.cs">
       <DependentUpon>Leaderboard.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="CommonPages\MoviesStatistic.aspx.cs">
-      <DependentUpon>MoviesStatistic.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CommonPages\MoviesStatistic.aspx.designer.cs">
-      <DependentUpon>MoviesStatistic.aspx</DependentUpon>
     </Compile>
     <Compile Include="CommonPages\ShowAllDBMovies.aspx.cs">
       <DependentUpon>ShowAllDBMovies.aspx</DependentUpon>

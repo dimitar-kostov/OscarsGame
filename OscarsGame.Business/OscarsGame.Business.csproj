@@ -53,7 +53,6 @@
     <Compile Include="BetMovieObject.cs" />
     <Compile Include="BetObject.cs" />
     <Compile Include="BetService.cs" />
-    <Compile Include="BetsStatisticService.cs" />
     <Compile Include="BusinessContainerManager.cs" />
     <Compile Include="CategoryService.cs" />
     <Compile Include="Enums\FadeFilterType.cs" />
@@ -61,7 +60,6 @@
     <Compile Include="Enums\OrderType.cs" />
     <Compile Include="GamePropertyService.cs" />
     <Compile Include="Interfaces\IBetService.cs" />
-    <Compile Include="Interfaces\IBetStatisticService.cs" />
     <Compile Include="Interfaces\ICategoryService.cs" />
     <Compile Include="Interfaces\IGamePropertyService.cs" />
     <Compile Include="Interfaces\IMovieClient.cs" />

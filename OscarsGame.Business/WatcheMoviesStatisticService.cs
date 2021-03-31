@@ -42,15 +42,6 @@ namespace OscarsGame.Business
             return watchedDict.Select(x => new WatchedObject { UserEmail = x.Key, MovieTitles = x.Value }).ToList();
         }
 
-        public string[] GetTitles()
-        {
-            var watchedMovies = _unitOfWork.ViewModelsRepository.GetWatchedMoviesData();
-            var stringArrTitles = watchedMovies.Select(m => m.Title).ToArray();
-            var collectionWithDistinctTitles = stringArrTitles.Distinct().ToArray();
-            int titlesCount = collectionWithDistinctTitles.Count();
-            return collectionWithDistinctTitles;
-        }
-
     }
 }
 
