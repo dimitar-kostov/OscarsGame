@@ -1,8 +1,8 @@
 ﻿using OscarsGame.Business.Interfaces;
 using OscarsGame.Domain;
 using OscarsGame.Domain.Models;
+using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 
 namespace OscarsGame.Business
@@ -10,7 +10,6 @@ namespace OscarsGame.Business
     public class WatcheMoviesStatisticService : IWatcheMoviesStatisticService
     {
         private readonly IUnitOfWork _unitOfWork;
-
 
         public WatcheMoviesStatisticService(IUnitOfWork unitOfWork)
         {
@@ -21,25 +20,28 @@ namespace OscarsGame.Business
         {
             List<WatchedMovies> watchedEntities = _unitOfWork.ViewModelsRepository.GetWatchedMoviesData();
 
-            Dictionary<string, List<string>> watchedDict = new Dictionary<string, List<string>>();
+            var watchedDict = new Dictionary<Guid, WatchedObject>();
 
             foreach (var watchedEntity in watchedEntities)
             {
-                if (watchedEntity.Email != null)
+                if (watchedEntity.UserId.HasValue)
                 {
-                    List<string> watchedMoviesList;
-
-                    if (!watchedDict.TryGetValue(watchedEntity.Email, out watchedMoviesList))
+                    if (!watchedDict.TryGetValue(watchedEntity.UserId.Value, out WatchedObject watchedObject))
                     {
-                        watchedMoviesList = new List<string>();
-                        watchedDict.Add(watchedEntity.Email, watchedMoviesList);
+                        watchedObject = new WatchedObject
+                        {
+                            UserDisplayMail = watchedEntity.UserDisplayName,
+                            MovieTitles = new List<string>()
+                        };
+
+                        watchedDict.Add(watchedEntity.UserId.Value, watchedObject);
                     }
 
-                    watchedMoviesList.Add(watchedEntity.Title);
+                    watchedObject.MovieTitles.Add(watchedEntity.MovieTitle);
                 }
             }
 
-            return watchedDict.Select(x => new WatchedObject { UserEmail = x.Key, MovieTitles = x.Value }).ToList();
+            return watchedDict.Values.ToList();
         }
 
     }

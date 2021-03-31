@@ -1,9 +1,12 @@
-﻿namespace OscarsGame.Domain.Models
+﻿using System;
+
+namespace OscarsGame.Domain.Models
 {
     public class WatchedMovies
     {
-        public int Id { get; set; }
-        public string Title { get; set; }
-        public string Email { get; set; }
+        public int MovieId { get; set; }
+        public string MovieTitle { get; set; }
+        public Guid? UserId { get; set; }
+        public string UserDisplayName { get; set; }
     }
 }

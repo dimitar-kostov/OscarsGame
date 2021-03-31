@@ -4,7 +4,7 @@ namespace OscarsGame.Business
 {
     public class WatchedObject
     {
-        public string UserEmail { get; set; }
+        public string UserDisplayMail { get; set; }
         public List<string> MovieTitles { get; set; }
     }
 }

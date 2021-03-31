@@ -12,7 +12,7 @@
                 AutoGenerateColumns="false">
         <Columns>
             <asp:BoundField DataField="Rank" HeaderText="Rank" SortExpression="Rank"></asp:BoundField>
-            <asp:BoundField DataField="Email" HeaderText="User" SortExpression="Email"></asp:BoundField>
+            <asp:BoundField DataField="UserDisplayName" HeaderText="User" SortExpression="UserDisplayName"></asp:BoundField>
             <asp:BoundField DataField="Score" HeaderText="Score" SortExpression="Score"></asp:BoundField>
             <asp:BoundField DataField="WatchedMovies" HeaderText="Watched Movies" SortExpression="WatchedMovies"></asp:BoundField>
             <asp:BoundField DataField="WatchedNominations" HeaderText="Watched Nominations" SortExpression="WatchedNominations"></asp:BoundField>

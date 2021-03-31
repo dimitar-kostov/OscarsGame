@@ -124,7 +124,14 @@ namespace OscarsGame.Account
         {
             var manager = Context.GetOwinContext().GetUserManager<ApplicationUserManager>();
             var signInManager = Context.GetOwinContext().GetUserManager<ApplicationSignInManager>();
-            var user = new IdentityUser() { UserName = identityUserName, Email = identityEmail };
+
+            var user = new IdentityUser()
+            {
+                UserName = identityUserName,
+                Email = identityEmail,
+                DisplayName = identityUserName
+            };
+
             IdentityResult result = manager.Create(user);
             if (result.Succeeded)
             {
@@ -139,8 +146,14 @@ namespace OscarsGame.Account
                 {
                     if (loginInfo.ExternalIdentity.HasClaim(c => c.Type == "name"))
                     {
-                        manager.AddClaim(user.Id,
-                            loginInfo.ExternalIdentity.FindFirst("name"));
+                        var claim = loginInfo.ExternalIdentity.FindFirst("name");
+
+                        manager.AddClaim(user.Id, claim);
+                        if (!string.IsNullOrEmpty(claim.Value))
+                        {
+                            user.DisplayName = claim.Value;
+                            manager.Update(user);
+                        }
                     }
 
                     if (loginInfo.ExternalIdentity.HasClaim(c => c.Type == ClaimTypes.GivenName))

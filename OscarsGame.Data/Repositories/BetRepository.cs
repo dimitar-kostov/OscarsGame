@@ -94,7 +94,7 @@ namespace OscarsGame.Data
                 .GroupBy(x => x.User)
                 .Select(g => new UserScore
                 {
-                    Email = g.Key.Claims.FirstOrDefault(x => x.ClaimType == "name").ClaimValue ?? g.Key.UserName,
+                    UserDisplayName = g.Key.DisplayName,
                     Score = g.Sum(x => x.Score),
                     WatchedMovies = g.Sum(x => x.WatchedMovies),
                     WatchedNominations = g.Sum(x => x.WatchedNominations),

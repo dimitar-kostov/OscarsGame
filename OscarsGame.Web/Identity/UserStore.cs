@@ -258,6 +258,7 @@ namespace OscarsGame.Web.Identity
         {
             user.UserId = identityUser.Id;
             user.UserName = identityUser.UserName;
+            user.DisplayName = identityUser.DisplayName;
             user.Email = identityUser.Email;
             user.EmailConfirmed = identityUser.EmailConfirmed;
             user.PasswordHash = identityUser.PasswordHash;
@@ -279,6 +280,7 @@ namespace OscarsGame.Web.Identity
         {
             identityUser.Id = user.UserId;
             identityUser.UserName = user.UserName;
+            identityUser.DisplayName = user.DisplayName;
             identityUser.Email = user.Email;
             identityUser.EmailConfirmed = user.EmailConfirmed;
             identityUser.PasswordHash = user.PasswordHash;

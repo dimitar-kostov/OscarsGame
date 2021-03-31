@@ -19,6 +19,10 @@ namespace OscarsGame.Data.Configurations
                 .HasMaxLength(256)
                 .IsRequired();
 
+            Property(x => x.DisplayName)
+                .HasMaxLength(256)
+                .IsRequired();
+
             Property(x => x.Email)
                 .HasMaxLength(256)
                 .IsRequired();

@@ -4,6 +4,7 @@ using OscarsGame.Domain;
 using OscarsGame.Domain.Models;
 using OscarsGame.Domain.Repositories;
 using Rhino.Mocks;
+using System;
 using System.Collections.Generic;
 
 namespace UnitTestProject
@@ -40,7 +41,7 @@ namespace UnitTestProject
             var viewModelsRepositoryMock = MockRepository.GenerateMock<IViewModelsRepository>();
 
             List<WatchedMovies> watchedMovies = new List<WatchedMovies>();
-            WatchedMovies entity1 = new WatchedMovies { Id = 1, Email = "Email1", Title = "Title1" }; ;
+            WatchedMovies entity1 = new WatchedMovies { MovieId = 1, UserId = Guid.NewGuid(), UserDisplayName = "User1", MovieTitle = "Title1" };
             watchedMovies.Add(entity1);
 
             viewModelsRepositoryMock.Expect(dao => dao.GetWatchedMoviesData()).Return(watchedMovies);
@@ -55,7 +56,7 @@ namespace UnitTestProject
             var resault = watcheMoviesStatisticService.GetData();
 
             //Assert
-            Assert.AreEqual("Email1", resault[0].UserEmail);
+            Assert.AreEqual("User1", resault[0].UserDisplayMail);
             CollectionAssert.AreEqual(expectedTitlesList, resault[0].MovieTitles);
         }
 
@@ -65,11 +66,14 @@ namespace UnitTestProject
             //Arrange
             var viewModelsRepositoryMock = MockRepository.GenerateMock<IViewModelsRepository>();
 
+            var userId1 = Guid.NewGuid();
+            var userId2 = Guid.NewGuid();
+
             List<WatchedMovies> watchedMovies = new List<WatchedMovies>();
-            WatchedMovies entity1 = new WatchedMovies { Id = 1, Email = "User1", Title = "User1Title1" };
-            WatchedMovies entity2 = new WatchedMovies { Id = 2, Email = "User1", Title = "User1Title2" };
-            WatchedMovies entity3 = new WatchedMovies { Id = 3, Email = "User2", Title = "User2Title1" };
-            WatchedMovies entity4 = new WatchedMovies { Id = 4, Email = "User2", Title = "User2Title2" };
+            WatchedMovies entity1 = new WatchedMovies { MovieId = 1, UserId = userId1, UserDisplayName = "User1", MovieTitle = "User1Title1" };
+            WatchedMovies entity2 = new WatchedMovies { MovieId = 2, UserId = userId1, UserDisplayName = "User1", MovieTitle = "User1Title2" };
+            WatchedMovies entity3 = new WatchedMovies { MovieId = 3, UserId = userId2, UserDisplayName = "User2", MovieTitle = "User2Title1" };
+            WatchedMovies entity4 = new WatchedMovies { MovieId = 4, UserId = userId2, UserDisplayName = "User2", MovieTitle = "User2Title2" };
             watchedMovies.Add(entity1);
             watchedMovies.Add(entity2);
             watchedMovies.Add(entity3);
@@ -89,9 +93,9 @@ namespace UnitTestProject
             var resault = watcheMoviesStatisticService.GetData();
 
             //Assert
-            Assert.AreEqual("User1", resault[0].UserEmail);
+            Assert.AreEqual("User1", resault[0].UserDisplayMail);
             CollectionAssert.AreEqual(firstUserTitlesList, resault[0].MovieTitles);
-            Assert.AreEqual("User2", resault[1].UserEmail);
+            Assert.AreEqual("User2", resault[1].UserDisplayMail);
             CollectionAssert.AreEqual(secondUserTitlesList, resault[1].MovieTitles);
 
         }

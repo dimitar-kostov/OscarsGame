@@ -18,11 +18,10 @@ namespace OscarsGame.Data
         {
             string query =
                 @"SELECT DISTINCT 
-	                Movies.Id, 
-	                Movies.Title, 
-                    ISNULL(
-		                (SELECT [ClaimValue] FROM Claims WHERE Claims.UserId=Users.UserId and Claims.ClaimType='name'), 
-		                Users.Email) Email
+	                Movies.Id MovieId, 
+	                Movies.Title MovieTitle, 
+                    Users.UserId, 
+                    Users.DisplayName UserDisplayName 
                     FROM Movies 
                             LEFT JOIN WatchedMovies on Movies.Id = WatchedMovies.Movie_Id 
                             JOIN Nominations on Nominations.Movie_Id = WatchedMovies.Movie_Id

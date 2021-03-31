@@ -66,6 +66,10 @@
     <Compile Include="Migrations\202103301942048_Link_User.designer.cs">
       <DependentUpon>202103301942048_Link_User.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202103312158035_Users_Add_DisplayName.cs" />
+    <Compile Include="Migrations\202103312158035_Users_Add_DisplayName.designer.cs">
+      <DependentUpon>202103312158035_Users_Add_DisplayName.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\MigrationsContextFactory.cs" />
     <Compile Include="Repositories\BetRepository.cs" />
     <Compile Include="DataContainerManager.cs" />
@@ -106,6 +110,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202103301942048_Link_User.resx">
       <DependentUpon>202103301942048_Link_User.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202103312158035_Users_Add_DisplayName.resx">
+      <DependentUpon>202103312158035_Users_Add_DisplayName.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
