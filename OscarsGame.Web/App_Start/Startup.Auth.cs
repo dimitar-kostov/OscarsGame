@@ -15,13 +15,17 @@ namespace OscarsGame
     public partial class Startup
     {
 
-        private static string clientId = ConfigurationManager.AppSettings["ida:ClientId"];
-        private static string aadInstance = ConfigurationManager.AppSettings["ida:AADInstance"];
-        private static string tenantId = ConfigurationManager.AppSettings["ida:TenantId"];
-        private static string postLogoutRedirectUri = ConfigurationManager.AppSettings["ida:PostLogoutRedirectUri"];
-        private static string RedirectUri = ConfigurationManager.AppSettings["ida:RedirectUri"];
+        private string clientId = ConfigurationManager.AppSettings["ida:ClientId"];
+        private string aadInstance = ConfigurationManager.AppSettings["ida:AADInstance"];
+        private string tenantId = ConfigurationManager.AppSettings["ida:TenantId"];
+        private string postLogoutRedirectUri = ConfigurationManager.AppSettings["ida:PostLogoutRedirectUri"];
+        private string RedirectUri = ConfigurationManager.AppSettings["ida:RedirectUri"];
 
-        string authority = aadInstance + tenantId;
+        private string GoogleClientId = ConfigurationManager.AppSettings["Google:ClientId"];
+        private string GoogleClientSecret = ConfigurationManager.AppSettings["Google:ClientSecret"];
+
+        private string FacebookAppId = ConfigurationManager.AppSettings["Facebook:AppId"];
+        private string FacebookAppSecret = ConfigurationManager.AppSettings["Facebook:AppSecret"];
 
         // For more information on configuring authentication, please visit https://go.microsoft.com/fwlink/?LinkId=301883
         public void ConfigureAuth(IAppBuilder app)
@@ -67,18 +71,26 @@ namespace OscarsGame
             //   consumerKey: "",
             //   consumerSecret: "");
 
-            app.UseFacebookAuthentication(
-               appId: ConfigurationManager.AppSettings["Facebook:AppId"],
-               appSecret: ConfigurationManager.AppSettings["Facebook:AppSecret"]);
-
-            app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
+            if (FacebookAppId != null && FacebookAppSecret != null)
             {
-                ClientId = ConfigurationManager.AppSettings["Google:ClientId"],
-                ClientSecret = ConfigurationManager.AppSettings["Google:ClientSecret"]
-            });
+                app.UseFacebookAuthentication(
+                   appId: FacebookAppId,
+                   appSecret: FacebookAppSecret
+                );
+            }
+
+            if (GoogleClientId != null && GoogleClientSecret != null)
+            {
+                app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
+                {
+                    ClientId = GoogleClientId,
+                    ClientSecret = GoogleClientSecret
+                });
+            }
 
             if (IdentityHelper.IsProxiadClient())
             {
+                string authority = aadInstance + tenantId;
                 app.UseOpenIdConnectAuthentication(
                     new OpenIdConnectAuthenticationOptions
                     {
