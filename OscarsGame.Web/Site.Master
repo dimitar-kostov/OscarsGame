@@ -92,7 +92,7 @@
                         <AnonymousTemplate>
                             <ul class="nav navbar-nav navbar-right">
                                 <li><a runat="server" visible="false" href="~/Account/Register">Register</a></li>
-                                <li><a runat="server" href="~/Account/Login">Log in with Office 365</a></li>
+                                <li><a runat="server" href="~/Account/Login"><%: GetLoginLabel()  %></a></li>
                             </ul>
                         </AnonymousTemplate>
                         <LoggedInTemplate>

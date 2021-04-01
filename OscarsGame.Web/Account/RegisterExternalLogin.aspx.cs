@@ -92,8 +92,6 @@ namespace OscarsGame.Account
                     if (identityUserName != null)
                     {
                         CreateAndLoginUser(identityUserName, identityUserName);
-
-
                     }
 
                     IdentityHelper.RedirectToReturnUrl(Request.QueryString["ReturnUrl"], Response);
@@ -144,16 +142,22 @@ namespace OscarsGame.Account
                 result = manager.AddLogin(user.Id, loginInfo.Login);
                 if (result.Succeeded)
                 {
+                    string displayName = null;
+
                     if (loginInfo.ExternalIdentity.HasClaim(c => c.Type == "name"))
                     {
                         var claim = loginInfo.ExternalIdentity.FindFirst("name");
 
                         manager.AddClaim(user.Id, claim);
-                        if (!string.IsNullOrEmpty(claim.Value))
-                        {
-                            user.DisplayName = claim.Value;
-                            manager.Update(user);
-                        }
+                        displayName = claim.Value;
+                    }
+
+                    if (loginInfo.ExternalIdentity.HasClaim(c => c.Type == ClaimTypes.Name))
+                    {
+                        var claim = loginInfo.ExternalIdentity.FindFirst(ClaimTypes.Name);
+
+                        manager.AddClaim(user.Id, claim);
+                        displayName = claim.Value;
                     }
 
                     if (loginInfo.ExternalIdentity.HasClaim(c => c.Type == ClaimTypes.GivenName))
@@ -166,6 +170,12 @@ namespace OscarsGame.Account
                     {
                         manager.AddClaim(user.Id,
                             loginInfo.ExternalIdentity.FindFirst(ClaimTypes.Surname));
+                    }
+
+                    if (!string.IsNullOrEmpty(displayName))
+                    {
+                        user.DisplayName = displayName;
+                        manager.Update(user);
                     }
 
                     signInManager.SignIn(user, isPersistent: false, rememberBrowser: false);

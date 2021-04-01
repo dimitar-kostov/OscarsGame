@@ -2,6 +2,7 @@
 using Microsoft.Owin.Security.OpenIdConnect;
 using OscarsGame.Business.Interfaces;
 using OscarsGame.Extensions;
+using OscarsGame.Web.Identity;
 using System;
 using System.Web;
 using System.Web.Security;
@@ -130,6 +131,11 @@ namespace OscarsGame
         protected string GetOpenIdUserName()
         {
             return Context.User.Identity.GetOpenIdName();
+        }
+
+        protected string GetLoginLabel()
+        {
+            return IdentityHelper.IsProxiadClient() ? "Log in with Office 365" : "Log in";
         }
 
         protected void ObjectDataSource1_ObjectCreating(object sender, ObjectDataSourceEventArgs e)
