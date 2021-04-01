@@ -37,7 +37,7 @@
     <asp:Panel ID="PnlNominations" runat="server" CssClass="container">
         <div class="row">
             <div class="col-sm-8">
-                <asp:Repeater ID="RptNominations" runat="server" ItemType="OscarsGame.Entities.Nomination">
+                <asp:Repeater ID="RptNominations" runat="server" ItemType="OscarsGame.Domain.Entities.Nomination">
                     <HeaderTemplate>
                         <h3>Nominations</h3>
                         <div class="list-group">
@@ -60,7 +60,7 @@
     <div class="container">
         <div class="row">
             <div class="col-sm-4">
-                <asp:Repeater ID="RptCast" runat="server" ItemType="OscarsGame.Entities.MovieCredit">
+                <asp:Repeater ID="RptCast" runat="server" ItemType="OscarsGame.Domain.Entities.MovieCredit">
                     <HeaderTemplate>
                         <h3>Cast</h3>
                     </HeaderTemplate>
@@ -87,7 +87,7 @@
                 </asp:Repeater>
             </div>
             <div class="col-sm-4">
-                <asp:Repeater ID="RptCrew" runat="server" ItemType="OscarsGame.Entities.MovieCredit">
+                <asp:Repeater ID="RptCrew" runat="server" ItemType="OscarsGame.Domain.Entities.MovieCredit">
                     <HeaderTemplate>
                         <h3>Crew</h3>
                     </HeaderTemplate>

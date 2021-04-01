@@ -1,5 +1,7 @@
-﻿using OscarsGame.Business.Interfaces;
-using OscarsGame.Entities;
+﻿using Microsoft.AspNet.Identity;
+using OscarsGame.Business.Interfaces;
+using OscarsGame.Domain.Entities;
+using OscarsGame.Web.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,11 +11,24 @@ namespace OscarsGame.CommonPages
 {
     public partial class ShowCategories : BasePage
     {
-     
+        private readonly IGamePropertyService GamePropertyService;
+        private readonly IBetService BetService;
+        private readonly ICategoryService CategoryService;
+
+        private Guid CurrentUsereId { get; set; }
+
+        public ShowCategories(
+            IGamePropertyService gamePropertyService,
+            IBetService betService,
+            ICategoryService categoryService)
+        {
+            GamePropertyService = gamePropertyService;
+            BetService = betService;
+            CategoryService = categoryService;
+        }
+
         protected void Page_Load(object sender, EventArgs e)
         {
-            var gamePropertyService = GetBuisnessService<IGamePropertyService>();
-
             if (!User.Identity.IsAuthenticated)
             {
                 GreatingLabel.Text = "You must be logged in to bet!";
@@ -21,9 +36,10 @@ namespace OscarsGame.CommonPages
             else
             {
                 GreatingLabel.CssClass = "hidden";
+                CurrentUsereId = User.Identity.GetUserId().ToGuid();
             }
 
-            if (gamePropertyService.IsGameNotStartedYet())
+            if (IsGameNotStartedYet())
             {
                 WarningLabel.CssClass = WarningLabel.CssClass.Replace("warning", "");
                 GreatingLabel.CssClass = "hidden";
@@ -31,19 +47,43 @@ namespace OscarsGame.CommonPages
             }
         }
 
+
+        private bool? _isGameRunning = null;
+        protected bool IsGameRunning()
+        {
+            if (!_isGameRunning.HasValue)
+            {
+                _isGameRunning = !GamePropertyService.IsGameStopped();
+            }
+
+            return _isGameRunning.Value;
+        }
+
+
+        private bool? _isGameNotStartedYet = null;
+        protected bool IsGameNotStartedYet()
+        {
+            if (!_isGameNotStartedYet.HasValue)
+            {
+                _isGameNotStartedYet = GamePropertyService.IsGameNotStartedYet();
+            }
+
+            return _isGameNotStartedYet.Value;
+        }
+
+
         protected void Repeater2_ItemCommand(object source, RepeaterCommandEventArgs e)
         {
             if (e.CommandName == "MarkAsBetted")
             {
                 if (IsGameRunning())
                 {
-                    var userId = User.Identity.Name;
                     var nominationId = int.Parse(e.CommandArgument.ToString());
 
-                    var betService = GetBuisnessService<IBetService>();
-                    betService.MakeBetEntity(userId, nominationId);
+                    BetService.MakeBetEntity(CurrentUsereId, nominationId);
 
                     Repeater1.DataBind();
+                    UpdatePanelLabels.Update();
                     System.Threading.Thread.Sleep(500);
                 }
                 else
@@ -55,14 +95,13 @@ namespace OscarsGame.CommonPages
 
         protected string ChangeTextIfUserBettedOnThisNomination(ICollection<Bet> nominationBets)
         {
-            string currentUserId = User.Identity.Name;
-            if (nominationBets.Any(x => x.UserId == currentUserId))
+            if (nominationBets.Any(x => x.UserId == CurrentUsereId))
             {
-                return "<span class='check-button glyphicon glyphicon-check'></span>"; 
+                return "<span class='check-button glyphicon glyphicon-check'></span>";
             }
             else
             {
-                return "<span class='check-button glyphicon glyphicon-unchecked'></span>"; 
+                return "<span class='check-button glyphicon glyphicon-unchecked'></span>";
             }
         }
 
@@ -75,12 +114,10 @@ namespace OscarsGame.CommonPages
 
         protected void ObjectDataSource1_Selected(object sender, ObjectDataSourceStatusEventArgs e)
         {
-            var currentUsereId = User.Identity.Name;
-
             var categories = (IEnumerable<Category>)e.ReturnValue;
             int categoryCount = categories.Count();
 
-            var bets = categories.SelectMany(x => x.Nominations).SelectMany(x => x.Bets).Where(x => x.UserId == currentUsereId).ToList();
+            var bets = categories.SelectMany(x => x.Nominations).SelectMany(x => x.Bets).Where(x => x.UserId == CurrentUsereId).ToList();
 
             int missedCategories = categoryCount - bets.Count;
 
@@ -89,7 +126,7 @@ namespace OscarsGame.CommonPages
 
             int counter = bets.Count(x => x.Nomination.IsWinner);
 
-            if (CheckIfTheUserIsLogged() == true && IsGameRunning() == true)
+            if (CheckIfTheUserIsLogged() && IsGameRunning())
             {
                 if (missedCategories > 0)
                 {
@@ -118,7 +155,7 @@ namespace OscarsGame.CommonPages
 
             //////////////// Show right suggestions statistic label /////////////////////
 
-            if (CheckIfTheUserIsLogged() == true && IsGameRunning() == false)
+            if (CheckIfTheUserIsLogged() && !IsGameRunning())
             {
                 if (winnersAreSet)
                 {
@@ -158,7 +195,7 @@ namespace OscarsGame.CommonPages
 
         protected void ObjectDataSource1_ObjectCreating(object sender, ObjectDataSourceEventArgs e)
         {
-            e.ObjectInstance = GetBuisnessService<ICategoryService>();
+            e.ObjectInstance = CategoryService;
         }
 
         public string GetCategoryUrl(int categoryId)

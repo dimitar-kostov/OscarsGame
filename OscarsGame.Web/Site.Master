@@ -74,7 +74,7 @@
                                     <span class="caret"></span>
                                 </a>
                                 <ul class="dropdown-menu">
-                                    <asp:Repeater runat="server" DataSourceID="ObjectDataSource1" ItemType="OscarsGame.Entities.Category">
+                                    <asp:Repeater runat="server" DataSourceID="ObjectDataSource1" ItemType="OscarsGame.Domain.Entities.Category">
                                         <ItemTemplate>                                           
                                             <li>
                                                 <a runat="server" href='<%# GetCategoryUrl(Item.Id) %>' > <%# Item.CategoryTtle %> </a>                                      
@@ -92,7 +92,7 @@
                         <AnonymousTemplate>
                             <ul class="nav navbar-nav navbar-right">
                                 <li><a runat="server" visible="false" href="~/Account/Register">Register</a></li>
-                                <li><a runat="server" href="~/Account/Login">Log in with Office 365</a></li>
+                                <li><a runat="server" href="~/Account/Login"><%: GetLoginLabel()  %></a></li>
                             </ul>
                         </AnonymousTemplate>
                         <LoggedInTemplate>

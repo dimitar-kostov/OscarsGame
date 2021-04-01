@@ -8,7 +8,7 @@
 
             <hr />
             <asp:Repeater ID="Repeater1" runat="server" DataSourceID="ObjectDataSource1"
-                ItemType="OscarsGame.Entities.Category" OnItemCommand="Repeater1_ItemCommand">
+                ItemType="OscarsGame.Domain.Entities.Category" OnItemCommand="Repeater1_ItemCommand">
                 <ItemTemplate>
                    <div class="item"> 
                         <div class="title">

@@ -19,7 +19,7 @@
         CellPadding="4"
         ForeColor="#333333"
         DataSourceID="ObjectDataSource1"
-        ItemType="OscarsGame.Entities.Nomination" RepeatLayout="Flow">
+        ItemType="OscarsGame.Domain.Entities.Nomination" RepeatLayout="Flow">
         <AlternatingItemStyle BackColor="White" />
         <FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
         <HeaderStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />

@@ -1,9 +1,6 @@
-﻿using OscarsGame.Entities;
+﻿using OscarsGame.Domain.Entities;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OscarsGame.Business.Interfaces
 {
@@ -13,9 +10,9 @@ namespace OscarsGame.Business.Interfaces
 
         IEnumerable<Watched> GetAllUsersWatchedAMovie();
 
-        IEnumerable<Watched> GetAllWatchedMovies(string userId);
+        IEnumerable<Watched> GetAllWatchedMovies(Guid userId);
 
-        Watched GetUserWatchedEntity(string userId);
-        
+        Watched GetUserWatchedEntity(Guid userId);
+
     }
 }

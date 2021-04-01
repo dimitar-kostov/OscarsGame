@@ -3,15 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31112.23
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OscarsGame.Entities", "OscarsGame.Entities\OscarsGame.Entities.csproj", "{BB500EB4-9987-494E-9C78-B2DD47F8D49B}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OscarsGame.Data", "OscarsGame.Data\OscarsGame.Data.csproj", "{DE250041-2DF1-41AA-8D8B-AF3C2DCA0594}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OscarsGame.Business", "OscarsGame.Business\OscarsGame.Business.csproj", "{FED25C81-CD20-4D5F-B3D1-176C31A7FAC7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OscarsGame.Tests", "OscarsGame.Tests\OscarsGame.Tests.csproj", "{2B093F1F-DD46-4AAF-86E2-3EB569ED1A39}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OscarsGame.Web", "OscarsGame.Web\OscarsGame.Web.csproj", "{79940E8E-B411-45A1-98E5-FC935909D261}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OscarsGame.Domain", "OscarsGame.Domain\OscarsGame.Domain.csproj", "{BB500EB4-9987-494E-9C78-B2DD47F8D49B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OscarsGame.Data", "OscarsGame.Data\OscarsGame.Data.csproj", "{DE250041-2DF1-41AA-8D8B-AF3C2DCA0594}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,14 +19,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{BB500EB4-9987-494E-9C78-B2DD47F8D49B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BB500EB4-9987-494E-9C78-B2DD47F8D49B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BB500EB4-9987-494E-9C78-B2DD47F8D49B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BB500EB4-9987-494E-9C78-B2DD47F8D49B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DE250041-2DF1-41AA-8D8B-AF3C2DCA0594}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DE250041-2DF1-41AA-8D8B-AF3C2DCA0594}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DE250041-2DF1-41AA-8D8B-AF3C2DCA0594}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DE250041-2DF1-41AA-8D8B-AF3C2DCA0594}.Release|Any CPU.Build.0 = Release|Any CPU
 		{FED25C81-CD20-4D5F-B3D1-176C31A7FAC7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{FED25C81-CD20-4D5F-B3D1-176C31A7FAC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FED25C81-CD20-4D5F-B3D1-176C31A7FAC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -39,6 +31,14 @@ Global
 		{79940E8E-B411-45A1-98E5-FC935909D261}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{79940E8E-B411-45A1-98E5-FC935909D261}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{79940E8E-B411-45A1-98E5-FC935909D261}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BB500EB4-9987-494E-9C78-B2DD47F8D49B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB500EB4-9987-494E-9C78-B2DD47F8D49B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB500EB4-9987-494E-9C78-B2DD47F8D49B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB500EB4-9987-494E-9C78-B2DD47F8D49B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DE250041-2DF1-41AA-8D8B-AF3C2DCA0594}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE250041-2DF1-41AA-8D8B-AF3C2DCA0594}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE250041-2DF1-41AA-8D8B-AF3C2DCA0594}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE250041-2DF1-41AA-8D8B-AF3C2DCA0594}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

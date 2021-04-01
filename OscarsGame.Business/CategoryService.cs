@@ -1,75 +1,68 @@
 ﻿using OscarsGame.Business.Interfaces;
-using OscarsGame.Entities;
+using OscarsGame.Domain;
+using OscarsGame.Domain.Entities;
 using System.Collections.Generic;
-using OscarsGame.Data.Interfaces;
 
 namespace OscarsGame.Business
 {
     public class CategoryService : ICategoryService
     {
-        private readonly ICategoryRepository _categoryRepository;
-        private readonly IMovieRepository _movieRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public CategoryService(ICategoryRepository categoryRepository)
+        public CategoryService(IUnitOfWork unitOfWork)
         {
-            _categoryRepository = categoryRepository;
-        }
-
-        public CategoryService(ICategoryRepository categoryRepository, IMovieRepository movieRepository)
-        {
-            _categoryRepository = categoryRepository;
-            _movieRepository = movieRepository;
+            _unitOfWork = unitOfWork;
         }
 
         public void AddCategory(Category category)
         {
-            _categoryRepository.AddCategory(category);
-        }         
+            _unitOfWork.CategoryRepository.AddCategory(category);
+        }
 
         public void AddMovieInCategory(int categoryId, Movie movie, List<string> creditIds)
-        {            
-            var hasMovie = _movieRepository.HasMovie(movie.Id);
+        {
+            var hasMovie = _unitOfWork.MovieRepository.HasMovie(movie.Id);
             if (!hasMovie)
             {
-                _movieRepository.AddMovie(movie);
+                _unitOfWork.MovieRepository.AddMovie(movie);
             }
             else
             {
-                _movieRepository.OverrideMovie(movie);
+                _unitOfWork.MovieRepository.OverrideMovie(movie);
             }
 
-            _categoryRepository.AddNomination(categoryId, movie.Id, creditIds ?? new List<string>());
-        }      
-      
+            _unitOfWork.CategoryRepository.AddNomination(categoryId, movie.Id, creditIds ?? new List<string>());
+        }
+
         public void DeleteCategory(int id)
         {
-            _categoryRepository.DeleteCategory(id);
-        }    
+            _unitOfWork.CategoryRepository.DeleteCategory(id);
+        }
 
         public void EditCategory(Category category)
         {
-            _categoryRepository.EditCategory(category);
-        }    
+            _unitOfWork.CategoryRepository.EditCategory(category);
+        }
 
         public IEnumerable<Category> GetAll()
         {
-            return _categoryRepository.GetAll();
-        }                                    
-        
+            return _unitOfWork.CategoryRepository.GetAll();
+        }
+
         public Category GetCategory(int id)
         {
-            return _categoryRepository.GetCategory(id);
+            return _unitOfWork.CategoryRepository.GetCategory(id);
         }
 
         public void MarkAsWinner(int categoryId, int nominationId)
         {
-            _categoryRepository.MarkAsWinner(categoryId, nominationId);
+            _unitOfWork.CategoryRepository.MarkAsWinner(categoryId, nominationId);
         }
 
         public void RemoveNominationFromCategory(int categoryId, int nominationId)
         {
-            _categoryRepository.RemoveNominationFromCategory(categoryId, nominationId);
-        }                                
+            _unitOfWork.CategoryRepository.RemoveNominationFromCategory(categoryId, nominationId);
+        }
 
     }
 }

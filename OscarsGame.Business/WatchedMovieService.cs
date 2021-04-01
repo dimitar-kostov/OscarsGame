@@ -1,40 +1,40 @@
 ﻿using OscarsGame.Business.Interfaces;
-using OscarsGame.Data;
-using OscarsGame.Data.Interfaces;
-using OscarsGame.Entities;
+using OscarsGame.Domain;
+using OscarsGame.Domain.Entities;
+using System;
 using System.Collections.Generic;
 
 namespace OscarsGame.Business
 {
-    public class WatchedMovieService: IWatchedMovieService
+    public class WatchedMovieService : IWatchedMovieService
     {
 
-        private readonly IWatchedMovieRepository _watchedMovieRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
 
-        public WatchedMovieService(IWatchedMovieRepository watchedMovieRepository)
+        public WatchedMovieService(IUnitOfWork unitOfWork)
         {
-            _watchedMovieRepository = watchedMovieRepository;
+            _unitOfWork = unitOfWork;
         }
 
         public Watched AddWatchedEntity(Watched watchedEntity)
-        {            
-            return _watchedMovieRepository.AddWatchedEntity(watchedEntity);
+        {
+            return _unitOfWork.WatchedMovieRepository.AddWatchedEntity(watchedEntity);
         }
 
         public IEnumerable<Watched> GetAllUsersWatchedAMovie()
         {
-            return _watchedMovieRepository.GetAllUsersWatchedAMovie();
+            return _unitOfWork.WatchedMovieRepository.GetAllUsersWatchedAMovie();
         }
 
-        public IEnumerable<Watched> GetAllWatchedMovies(string userId)
+        public IEnumerable<Watched> GetAllWatchedMovies(Guid userId)
         {
-            return _watchedMovieRepository.GetAllWatchedMovies(userId);
+            return _unitOfWork.WatchedMovieRepository.GetAllWatchedMovies(userId);
         }
 
-        public Watched GetUserWatchedEntity(string userId)
+        public Watched GetUserWatchedEntity(Guid userId)
         {
-            return _watchedMovieRepository.GetUserWatchedEntity(userId);
+            return _unitOfWork.WatchedMovieRepository.GetUserWatchedEntity(userId);
         }
     }
 }

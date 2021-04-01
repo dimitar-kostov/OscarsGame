@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using Microsoft.AspNet.Identity;
+﻿using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
+using OscarsGame.Web.Identity;
+using System;
+using System.Web;
 
 namespace OscarsGame.Account
 {
@@ -15,7 +12,7 @@ namespace OscarsGame.Account
         {
             var manager = Context.GetOwinContext().GetUserManager<ApplicationUserManager>();
             var phonenumber = Request.QueryString["PhoneNumber"];
-            var code = manager.GenerateChangePhoneNumberToken(User.Identity.GetUserId(), phonenumber);           
+            var code = manager.GenerateChangePhoneNumberToken(User.Identity.GetUserId().ToGuid(), phonenumber);
             PhoneNumber.Value = phonenumber;
         }
 
@@ -30,11 +27,11 @@ namespace OscarsGame.Account
             var manager = Context.GetOwinContext().GetUserManager<ApplicationUserManager>();
             var signInManager = Context.GetOwinContext().Get<ApplicationSignInManager>();
 
-            var result = manager.ChangePhoneNumber(User.Identity.GetUserId(), PhoneNumber.Value, Code.Text);
+            var result = manager.ChangePhoneNumber(User.Identity.GetUserId().ToGuid(), PhoneNumber.Value, Code.Text);
 
             if (result.Succeeded)
             {
-                var user = manager.FindById(User.Identity.GetUserId());
+                var user = manager.FindById(User.Identity.GetUserId().ToGuid());
 
                 if (user != null)
                 {

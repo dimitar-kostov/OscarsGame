@@ -1,6 +1,6 @@
-﻿using OscarsGame.Business.Interfaces;
-using OscarsGame.Entities;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
+using OscarsGame.Business.Interfaces;
+using OscarsGame.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -105,10 +105,10 @@ namespace OscarsGame
                 ReleaseDate = movieContent["release_date"]?.Value<string>(),
                 PosterPath = movieContent["poster_path"]?.Value<string>(),
                 Overview = movieContent["overview"]?.Value<string>(),
-                ImdbId = movieContent["imdb_id"] != null 
+                ImdbId = movieContent["imdb_id"] != null
                     ? movieContent["imdb_id"].Value<string>()
                     : string.Empty,
-                Credits = movieContent["credits"] != null 
+                Credits = movieContent["credits"] != null
                     ? MapToCredits(movieContent["credits"].Value<JObject>())
                     : null,
             };
@@ -122,15 +122,15 @@ namespace OscarsGame
 
             JArray castsContent = creditsContent["cast"].Value<JArray>();
 
-                cresdits.AddRange(
-                    castsContent.Select(item =>
-                        MapToCast(item.Value<JObject>())));
+            cresdits.AddRange(
+                castsContent.Select(item =>
+                    MapToCast(item.Value<JObject>())));
 
-                JArray crewsContent = creditsContent["crew"].Value<JArray>();
+            JArray crewsContent = creditsContent["crew"].Value<JArray>();
 
-                cresdits.AddRange(
-                    crewsContent.Select((item, index) =>
-                        MapToCrew(item.Value<JObject>(), index)));
+            cresdits.AddRange(
+                crewsContent.Select((item, index) =>
+                    MapToCrew(item.Value<JObject>(), index)));
 
             return cresdits;
         }

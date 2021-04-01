@@ -12,7 +12,7 @@
             </a>     
         </div>
 
-        <asp:Repeater runat="server" ItemType="OscarsGame.Entities.MovieCredit" DataSource="<%# GetTopMovieCredits() %>">
+        <asp:Repeater runat="server" ItemType="OscarsGame.Domain.Entities.MovieCredit" DataSource="<%# GetTopMovieCredits() %>">
             <ItemTemplate>
                 <img runat="server" visible="<%# PersonVisible %>" class="profile" src="<%# GetPersonProfileUrl(Item.ProfilePath) %>" title="<%# Item.Name %>" /> 
             </ItemTemplate>

@@ -1,4 +1,4 @@
-﻿using OscarsGame.Entities;
+﻿using OscarsGame.Domain.Entities;
 using System.Collections.Generic;
 
 namespace OscarsGame.Business.Interfaces

@@ -1,18 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Security.Claims;
-using System.Security.Principal;
+﻿using Microsoft.Owin.Security.Cookies;
+using Microsoft.Owin.Security.OpenIdConnect;
+using OscarsGame.Business.Interfaces;
+using OscarsGame.Extensions;
+using OscarsGame.Web.Identity;
+using System;
 using System.Web;
 using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Microsoft.AspNet.Identity;
-using OscarsGame.Business;
-using OscarsGame.Business.Interfaces;
-using Microsoft.Practices.Unity;
-using Microsoft.Owin.Security.OpenIdConnect;
-using Microsoft.Owin.Security.Cookies;
-using OscarsGame.Extensions;
 
 namespace OscarsGame
 {
@@ -21,6 +16,17 @@ namespace OscarsGame
         private const string AntiXsrfTokenKey = "__AntiXsrfToken";
         private const string AntiXsrfUserNameKey = "__AntiXsrfUserName";
         private string _antiXsrfTokenValue;
+
+        private readonly IGamePropertyService GamePropertyService;
+        private readonly ICategoryService CategoryService;
+
+        public SiteMaster(
+            IGamePropertyService gamePropertyService,
+            ICategoryService categoryService)
+        {
+            GamePropertyService = gamePropertyService;
+            CategoryService = categoryService;
+        }
 
         protected void Page_Init(object sender, EventArgs e)
         {
@@ -75,11 +81,9 @@ namespace OscarsGame
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            var gamePropertyService = GetBuisnessService<IGamePropertyService>();
-
             Admin.Visible = HttpContext.Current.User.IsInRole("admin");
 
-            if (gamePropertyService.IsGameStopped())
+            if (GamePropertyService.IsGameStopped())
             {
                 lblRemaining.Text = string.Empty;
             }
@@ -93,8 +97,7 @@ namespace OscarsGame
 
         private string GetRemainingTimeLabel()
         {
-            var gamePropertyService = GetBuisnessService<IGamePropertyService>();
-            DateTime endDate = gamePropertyService.GetGameStopDate();
+            DateTime endDate = GamePropertyService.GetGameStopDate();
             TimeSpan tsRemainingTime = endDate - DateTime.Now;
 
             return string.Format("Remaining time for voting: {0} {1} {2}",
@@ -105,32 +108,24 @@ namespace OscarsGame
 
         public string ShowGameStatus()
         {
-            var gamePropertyService = GetBuisnessService<IGamePropertyService>();
-            if (gamePropertyService.IsGameStopped() == true)
+            if (GamePropertyService.IsGameStopped())
             {
                 return "The Game is stopped!";
             }
-            else if(gamePropertyService.IsGameNotStartedYet()==true)
+            else if (GamePropertyService.IsGameNotStartedYet())
             {
                 return "The Game is not started yet";
             }
-
             else
             {
                 return "The Game is running!";
             }
         }
-    
+
 
         protected void Unnamed_LoggingOut(object sender, LoginCancelEventArgs e)
         {
             Context.GetOwinContext().Authentication.SignOut(OpenIdConnectAuthenticationDefaults.AuthenticationType, CookieAuthenticationDefaults.AuthenticationType);
-        }
-
-        protected T GetBuisnessService<T>()
-        {
-            IUnityContainer container = (IUnityContainer)Application["EntLibContainer"];
-            return container.Resolve<T>();
         }
 
         protected string GetOpenIdUserName()
@@ -138,9 +133,14 @@ namespace OscarsGame
             return Context.User.Identity.GetOpenIdName();
         }
 
+        protected string GetLoginLabel()
+        {
+            return IdentityHelper.IsProxiadClient() ? "Log in with Office 365" : "Log in";
+        }
+
         protected void ObjectDataSource1_ObjectCreating(object sender, ObjectDataSourceEventArgs e)
         {
-            e.ObjectInstance = GetBuisnessService<ICategoryService>();
+            e.ObjectInstance = CategoryService;
         }
 
         public string GetCategoryUrl(int categoryId)

@@ -1,17 +1,20 @@
 ﻿using OscarsGame.Business.Interfaces;
-using OscarsGame.Entities.StatisticsModels;
+using OscarsGame.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
 
 namespace OscarsGame.CommonPages
 {
     public partial class Leaderboard : BasePage
     {
+        private readonly IBetService BetService;
+
+        public Leaderboard(IBetService betService)
+        {
+            BetService = betService;
+        }
+
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!this.IsPostBack)
@@ -42,7 +45,7 @@ namespace OscarsGame.CommonPages
         {
             var dt = new DataTable();
             dt.Columns.Add(nameof(UserScore.Rank), typeof(int));
-            dt.Columns.Add(nameof(UserScore.Email), typeof(string));
+            dt.Columns.Add(nameof(UserScore.UserDisplayName), typeof(string));
             dt.Columns.Add(nameof(UserScore.Score), typeof(int));
             dt.Columns.Add(nameof(UserScore.WatchedMovies), typeof(int));
             dt.Columns.Add(nameof(UserScore.WatchedNominations), typeof(int));
@@ -52,14 +55,13 @@ namespace OscarsGame.CommonPages
 
         private DataTable FillDataTable(DataTable dt)
         {
-            var betService = GetBuisnessService<IBetService>();
-            IEnumerable<UserScore> allScores = betService.GetAllUserScores();
+            IEnumerable<UserScore> allScores = BetService.GetAllUserScores();
 
             foreach (var userScore in allScores)
             {
                 var row = dt.NewRow();
                 row[nameof(UserScore.Rank)] = userScore.Rank;
-                row[nameof(UserScore.Email)] = userScore.Email.Split('@')[0];
+                row[nameof(UserScore.UserDisplayName)] = userScore.UserDisplayName;
                 row[nameof(UserScore.Score)] = userScore.Score;
                 row[nameof(UserScore.WatchedMovies)] = userScore.WatchedMovies;
                 row[nameof(UserScore.WatchedNominations)] = userScore.WatchedNominations;

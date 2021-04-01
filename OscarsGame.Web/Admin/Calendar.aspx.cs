@@ -1,9 +1,5 @@
-﻿using OscarsGame.Business;
-using OscarsGame.Business.Interfaces;
+﻿using OscarsGame.Business.Interfaces;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -11,11 +7,17 @@ namespace OscarsGame.Admin
 {
     public partial class Calendar : BasePage
     {
+        private readonly IGamePropertyService GamePropertyService;
+
+        public Calendar(IGamePropertyService gamePropertyService)
+        {
+            GamePropertyService = gamePropertyService;
+        }
+
         protected void Page_Load(object sender, EventArgs e)
         {
-            var gamePropertyService = GetBuisnessService<IGamePropertyService>();
-            DateTime startGameDate = gamePropertyService.GetGameStartDate();
-            DateTime endGameDate = gamePropertyService.GetGameStopDate();
+            DateTime startGameDate = GamePropertyService.GetGameStartDate();
+            DateTime endGameDate = GamePropertyService.GetGameStopDate();
 
             lblServerDate.Text = string.Format("Server date and time: {0}", DateTime.Now);
             lblStartGameDate.Text = string.Format("Start game date and time: {0}", startGameDate);
@@ -35,11 +37,11 @@ namespace OscarsGame.Admin
 
         protected void StopGameValidator_ServerValidate(object source, ServerValidateEventArgs args)
         {
-            if (StartGameCalendar.SelectedDate == null 
+            if (StartGameCalendar.SelectedDate == null
                 || StartGameCalendar.SelectedDate == new DateTime(0001, 1, 1, 0, 0, 0)
-                ||StopGameCalendar.SelectedDate == null 
+                || StopGameCalendar.SelectedDate == null
                 || StopGameCalendar.SelectedDate == new DateTime(0001, 1, 1, 0, 0, 0)
-                || StartGameCalendar.SelectedDate>=StopGameCalendar.SelectedDate)// not click any date
+                || StartGameCalendar.SelectedDate >= StopGameCalendar.SelectedDate)// not click any date
                 args.IsValid = false;
             else
                 args.IsValid = true;
@@ -48,8 +50,6 @@ namespace OscarsGame.Admin
         {
             if (Page.IsValid)
             {
-                var gamePropertyService = GetBuisnessService<IGamePropertyService>();
-
                 var startDate = StartGameCalendar.SelectedDate;
                 var startTimeArray = StartGameTimeTextbox.Text.Split(':');
 
@@ -61,7 +61,7 @@ namespace OscarsGame.Admin
                     int.Parse(startTimeArray[1]),
                     0);
 
-                gamePropertyService.ChangeGameStartDate(startDate);
+                GamePropertyService.ChangeGameStartDate(startDate);
 
                 var stopDate = StopGameCalendar.SelectedDate;
                 var stopTimeArray = StopGameTimeTextbox.Text.Split(':');
@@ -74,7 +74,7 @@ namespace OscarsGame.Admin
                     int.Parse(stopTimeArray[1]),
                     0);
 
-                gamePropertyService.ChangeGameStopDate(stopDate);
+                GamePropertyService.ChangeGameStopDate(stopDate);
 
                 Response.Redirect("Calendar.aspx");
             }

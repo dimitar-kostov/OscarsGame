@@ -1,36 +1,33 @@
-﻿using OscarsGame.Business.Interfaces;
-using OscarsGame.Data;
-using OscarsGame.Entities;
+﻿using OscarsGame.Business.Enums;
+using OscarsGame.Business.Interfaces;
+using OscarsGame.Domain;
+using OscarsGame.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using OscarsGame.Data.Interfaces;
-using OscarsGame.Business.Enums;
 
 namespace OscarsGame.Business
 {
     public class MovieService : IMovieService
     {
-        private readonly IMovieRepository _movieRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public MovieService(IMovieRepository movieRepository)
+        public MovieService(IUnitOfWork unitOfWork)
         {
-            _movieRepository = movieRepository;
+            _unitOfWork = unitOfWork;
         }
 
-        public void ChangeMovieStatus(string userId, int movieId)
+        public void ChangeMovieStatus(Guid userId, int movieId)
         {
-            _movieRepository.ChangeMovieStatus(userId, movieId);
+            _unitOfWork.MovieRepository.ChangeMovieStatus(userId, movieId);
         }
 
         public IEnumerable<Movie> GetAllMovies()
         {
-            return _movieRepository.GetAllMovies();
+            return _unitOfWork.MovieRepository.GetAllMovies();
         }
 
-        public IEnumerable<Movie> GetAllMoviesByCriteria(string userId, OrderType orderType, FilterType filterType)
+        public IEnumerable<Movie> GetAllMoviesByCriteria(Guid userId, OrderType orderType, FilterType filterType)
         {
             IEnumerable<Movie> allMovies = new List<Movie>();
 
@@ -58,8 +55,7 @@ namespace OscarsGame.Business
         {
             return GetAllMovies()
                 .OrderByDescending(x => x.Nominations.Count)
-                .ThenByDescending(x => x.UsersWatchedThisMovie.Count)
-                .ThenByDescending(x => x.Title);
+                .ThenBy(x => x.Title);
         }
 
         private IEnumerable<Movie> MoviesByProxiadPopularity()
@@ -67,16 +63,16 @@ namespace OscarsGame.Business
             return GetAllMovies()
                 .OrderByDescending(x => x.UsersWatchedThisMovie.Count)
                 .ThenByDescending(x => x.Nominations.Count)
-                .ThenByDescending(x => x.Title);
+                .ThenBy(x => x.Title);
         }
 
-        private IEnumerable<Movie> FilterMovies(string userId, IEnumerable<Movie> moviesToFilter, FilterType filterType)
+        private IEnumerable<Movie> FilterMovies(Guid userId, IEnumerable<Movie> moviesToFilter, FilterType filterType)
         {
             if (filterType == FilterType.Watched)
             {
-                moviesToFilter = 
+                moviesToFilter =
                     moviesToFilter
-                    .Where(x => 
+                    .Where(x =>
                         x.UsersWatchedThisMovie
                         .Select(y => y.UserId)
                         .Contains(userId));
@@ -97,12 +93,12 @@ namespace OscarsGame.Business
 
         public Movie GetMovie(int id)
         {
-            return _movieRepository.GetMovie(id);
+            return _unitOfWork.MovieRepository.GetMovie(id);
         }
 
         public bool HasMovie(int id)
         {
-            return _movieRepository.HasMovie(id);
+            return _unitOfWork.MovieRepository.HasMovie(id);
         }
     }
 }

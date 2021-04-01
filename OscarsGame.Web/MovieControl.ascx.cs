@@ -1,9 +1,5 @@
-﻿
-using Microsoft.Practices.Unity;
-using OscarsGame.Business.Interfaces;
-using OscarsGame.Entities;
+﻿using OscarsGame.Domain.Entities;
 using System;
-using System.Web.Providers.Entities;
 
 namespace OscarsGame
 {
@@ -15,7 +11,7 @@ namespace OscarsGame
         {
 
         }
-      
+
 
         public string BuildPosterUrl(string path)
         {

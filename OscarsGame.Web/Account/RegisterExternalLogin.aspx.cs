@@ -1,10 +1,10 @@
-﻿using System;
-using System.Web;
-using Microsoft.AspNet.Identity;
+﻿using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
-using Owin;
-using OscarsGame.Models;
+using OscarsGame.Web.Identity;
+using System;
+using System.Security.Claims;
+using System.Web;
 
 namespace OscarsGame.Account
 {
@@ -62,7 +62,7 @@ namespace OscarsGame.Account
                         return;
                     }
 
-                    var result = manager.AddLogin(User.Identity.GetUserId(), verifiedloginInfo.Login);
+                    var result = manager.AddLogin(User.Identity.GetUserId().ToGuid(), verifiedloginInfo.Login);
                     if (result.Succeeded)
                     {
                         IdentityHelper.RedirectToReturnUrl(Request.QueryString["ReturnUrl"], Response);
@@ -73,13 +73,36 @@ namespace OscarsGame.Account
                         return;
                     }
                 }
+                else if (IdentityHelper.IsProxiadClient())
+                {
+                    string proxiadEmailDomain = "@proxiad.com";
+                    string identityUserName = null;
+
+                    if (loginInfo.Email != null
+                        && loginInfo.Email.EndsWith(proxiadEmailDomain))
+                    {
+                        identityUserName = loginInfo.Email;
+                    }
+                    else if (loginInfo.DefaultUserName != null
+                        && loginInfo.DefaultUserName.EndsWith(proxiadEmailDomain))
+                    {
+                        identityUserName = loginInfo.DefaultUserName;
+                    }
+
+                    if (identityUserName != null)
+                    {
+                        CreateAndLoginUser(identityUserName, identityUserName);
+                    }
+
+                    IdentityHelper.RedirectToReturnUrl(Request.QueryString["ReturnUrl"], Response);
+                }
                 else
                 {
                     email.Text = loginInfo.Email;
                 }
             }
-        }        
-        
+        }
+
         protected void LogIn_Click(object sender, EventArgs e)
         {
             CreateAndLoginUser();
@@ -91,9 +114,22 @@ namespace OscarsGame.Account
             {
                 return;
             }
+
+            CreateAndLoginUser(email.Text, email.Text);
+        }
+
+        private void CreateAndLoginUser(string identityUserName, string identityEmail)
+        {
             var manager = Context.GetOwinContext().GetUserManager<ApplicationUserManager>();
             var signInManager = Context.GetOwinContext().GetUserManager<ApplicationSignInManager>();
-            var user = new ApplicationUser() { UserName = email.Text, Email = email.Text };
+
+            var user = new IdentityUser()
+            {
+                UserName = identityUserName,
+                Email = identityEmail,
+                DisplayName = identityUserName
+            };
+
             IdentityResult result = manager.Create(user);
             if (result.Succeeded)
             {
@@ -106,6 +142,42 @@ namespace OscarsGame.Account
                 result = manager.AddLogin(user.Id, loginInfo.Login);
                 if (result.Succeeded)
                 {
+                    string displayName = null;
+
+                    if (loginInfo.ExternalIdentity.HasClaim(c => c.Type == "name"))
+                    {
+                        var claim = loginInfo.ExternalIdentity.FindFirst("name");
+
+                        manager.AddClaim(user.Id, claim);
+                        displayName = claim.Value;
+                    }
+
+                    if (loginInfo.ExternalIdentity.HasClaim(c => c.Type == ClaimTypes.Name))
+                    {
+                        var claim = loginInfo.ExternalIdentity.FindFirst(ClaimTypes.Name);
+
+                        manager.AddClaim(user.Id, claim);
+                        displayName = claim.Value;
+                    }
+
+                    if (loginInfo.ExternalIdentity.HasClaim(c => c.Type == ClaimTypes.GivenName))
+                    {
+                        manager.AddClaim(user.Id,
+                            loginInfo.ExternalIdentity.FindFirst(ClaimTypes.GivenName));
+                    }
+
+                    if (loginInfo.ExternalIdentity.HasClaim(c => c.Type == ClaimTypes.Surname))
+                    {
+                        manager.AddClaim(user.Id,
+                            loginInfo.ExternalIdentity.FindFirst(ClaimTypes.Surname));
+                    }
+
+                    if (!string.IsNullOrEmpty(displayName))
+                    {
+                        user.DisplayName = displayName;
+                        manager.Update(user);
+                    }
+
                     signInManager.SignIn(user, isPersistent: false, rememberBrowser: false);
 
                     // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
@@ -119,9 +191,9 @@ namespace OscarsGame.Account
             AddErrors(result);
         }
 
-        private void AddErrors(IdentityResult result) 
+        private void AddErrors(IdentityResult result)
         {
-            foreach (var error in result.Errors) 
+            foreach (var error in result.Errors)
             {
                 ModelState.AddModelError("", error);
             }

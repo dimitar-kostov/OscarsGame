@@ -1,53 +1,54 @@
 ﻿using OscarsGame.Business.Interfaces;
-using OscarsGame.Data;
-using OscarsGame.Data.Interfaces;
-using OscarsGame.Entities;
+using OscarsGame.Domain;
+using OscarsGame.Domain.Entities;
 using System;
 
 namespace OscarsGame.Business
 {
-    public class GamePropertyService: IGamePropertyService
+    public class GamePropertyService : IGamePropertyService
     {
-        private readonly IGamePropertyRepository _gamePropertyRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
 
-        public GamePropertyService(IGamePropertyRepository gamePropertyRepository)
+        public GamePropertyService(IUnitOfWork unitOfWork)
         {
-            _gamePropertyRepository = gamePropertyRepository;
+            _unitOfWork = unitOfWork;
         }
 
         public void ChangeGameStartDate(DateTime stopDate)
         {
-            _gamePropertyRepository.ChangeGameStartDate(stopDate);
+            _unitOfWork.GamePropertyRepository.ChangeGameStartDate(stopDate);
         }
 
         public void ChangeGameStopDate(DateTime stopDate)
         {
-            _gamePropertyRepository.ChangeGameStopDate(stopDate);
+            _unitOfWork.GamePropertyRepository.ChangeGameStopDate(stopDate);
         }
 
         public DateTime GetGameStartDate()
         {
-            return _gamePropertyRepository.GetGameStartDate();
+            return _unitOfWork.GamePropertyRepository.GetGameStartDate();
         }
 
         public DateTime GetGameStopDate()
-        {           
-            return _gamePropertyRepository.GetGameStopDate();
+        {
+            return _unitOfWork.GamePropertyRepository.GetGameStopDate();
         }
 
         public bool IsGameNotStartedYet()
         {
-            GameProperties dateObject = _gamePropertyRepository.GetDate();
-            DateTime startDate = (dateObject != null ? dateObject.StartGameDate : DateTime.Now);
-            return (startDate > DateTime.Now);
+            DateTime now = DateTime.Now;
+            GameProperties dateObject = _unitOfWork.GamePropertyRepository.GetDate();
+            DateTime startDate = (dateObject != null ? dateObject.StartGameDate : now);
+            return (startDate > now);
         }
 
         public bool IsGameStopped()
         {
-            GameProperties stopDateObject = _gamePropertyRepository.GetDate();
-            DateTime stopDate = (stopDateObject != null ? stopDateObject.StopGameDate : DateTime.Now);
-            return (stopDate < DateTime.Now);
+            DateTime now = DateTime.Now;
+            GameProperties stopDateObject = _unitOfWork.GamePropertyRepository.GetDate();
+            DateTime stopDate = (stopDateObject != null ? stopDateObject.StopGameDate : now);
+            return (stopDate < now);
         }
     }
 }

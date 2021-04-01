@@ -23,7 +23,7 @@
         <asp:DataList ID="MoviesDataList" runat="server" RepeatColumns="3" RepeatDirection="Horizontal" RepeatLayout="Flow" >
             <ItemTemplate>
                 <div class=" pattern">
-                    <My:MovieControl ID="MovieControl1" runat="server" Item="<%# ((OscarsGame.Entities.Movie)Container.DataItem) %>" /> 
+                    <My:MovieControl ID="MovieControl1" runat="server" Item="<%# ((OscarsGame.Domain.Entities.Movie)Container.DataItem) %>" /> 
                 </div>
             </ItemTemplate>
         </asp:DataList>

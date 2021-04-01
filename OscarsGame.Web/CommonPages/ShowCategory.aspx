@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ShowCategory.aspx.cs" Inherits="OscarsGame.CommonPages.ShowCategory" MasterPageFile="~/Site.Master" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ShowCategory.aspx.cs" Inherits="OscarsGame.CommonPages.ShowCategory" MasterPageFile="~/Site.Master" ClientIDMode="AutoId" %>
 
 <%@ Register TagPrefix="My" TagName="NominationControl" Src="~/NominationControl.ascx" %>
 
@@ -7,60 +7,57 @@
     <link href="/Content/MovieStyleSheet.css" rel="stylesheet" type="text/css" />
     <script src="/Scripts/LargePoster.js"></script>
 
-    <asp:UpdatePanel ID="CategoryDataUpdatePanel" runat="server">
+    <asp:UpdatePanel ID="CategoryDataUpdatePanel" UpdateMode="Conditional" runat="server">
         <ContentTemplate>
             <asp:Label ID="GreatingLabel" runat="server" CssClass="warning"></asp:Label>
             <asp:Label ID="WarningLabel" runat="server" CssClass="warning"></asp:Label>
             <asp:Label ID="WinnerLabel" runat="server" CssClass="greenBorder"></asp:Label>
-            <div>
 
-                <asp:Label ID="CategoryTtleLabel" CssClass="categoryTitle" runat="server" />
-                <hr />
-                <asp:Repeater 
-                    ID="NominationsRepeater" runat="server"
-                    ItemType="OscarsGame.Entities.Nomination"
-                    OnItemCommand="NominationsRepeater_ItemCommand" 
-                    OnItemDataBound="NominationsRepeater_ItemDataBound">
-                    <HeaderTemplate>
-                        <div>
-                    </HeaderTemplate>
-                    <ItemTemplate>
-                        <div class="pattern">
+            <asp:Label ID="CategoryTtleLabel" CssClass="categoryTitle" runat="server" />
+            <hr />
+            <asp:Repeater 
+                ID="NominationsRepeater" runat="server"
+                ItemType="OscarsGame.Domain.Entities.Nomination"
+                OnItemCommand="NominationsRepeater_ItemCommand" 
+                OnItemDataBound="NominationsRepeater_ItemDataBound">
+                <HeaderTemplate>
+                    <div>
+                </HeaderTemplate>
+                <ItemTemplate>
+                    <div class="pattern">
+                        <My:NominationControl ID="NominationControl1" runat="server" Item="<%# Item %>" />
+                        <div class="under-movie">
+                            <img class="winnerLogo" src="<%# CheckIfWinnerImage(Item) %>" />
 
-                            <My:NominationControl ID="NominationControl1" runat="server" Item="<%# Item %>" />
-                            <div class="under-movie">
-                                <img class="winnerLogo" src="<%# CheckIfWinnerImage(Item) %>" />
-                                <asp:LinkButton 
-                                    ID="MarkAsBettedButton"
-                                    runat="server"
-                                    Text=""
-                                    CommandName="MarkAsBetted"
-                                    CommandArgument='<%# Item.Id %>'
-                                    Enabled="<%# CheckIfTheUserIsLogged() & IsGameRunning()%>"
-                                    Visible="<%#!IsGameNotStartedYet()%>">
-                                          <%# ChangeTextIfUserBettedOnThisNomination(Item.Bets) %>
-                                </asp:LinkButton>
+                            <asp:LinkButton 
+                                ID="MarkAsBettedButton"
+                                runat="server"
+                                Text=""
+                                CommandName="MarkAsBetted"
+                                CommandArgument='<%# Item.Id %>'
+                                Enabled="<%# CheckIfTheUserIsLogged() & IsGameRunning()%>"
+                                Visible="<%#!IsGameNotStartedYet()%>">
+                                        <%# ChangeTextIfUserBettedOnThisNomination(Item.Bets) %>
+                            </asp:LinkButton>
 
-                                <span class="label leftLabel" visible="<%#!IsGameNotStartedYet()%>">Bet for this nomination!</span>
-                            </div>
-
+                            <span class="label leftLabel" visible="<%#!IsGameNotStartedYet()%>">Bet for this nomination!</span>
                         </div>
-                    </ItemTemplate>
-                    <FooterTemplate>
-                        </div>
-                           
-                    </FooterTemplate>
-                </asp:Repeater>
+
+                    </div>
+                </ItemTemplate>
+                <FooterTemplate>
+                    </div>
+                </FooterTemplate>
+            </asp:Repeater>
         </ContentTemplate>
     </asp:UpdatePanel>
 
     <br />
+    <br />
 
-
-    <asp:UpdatePanel ID="GridsUpdatePanel" runat="server" >
+    <asp:Label runat="server">See how many votes and views each nomination has</asp:Label>
+    <asp:UpdatePanel ID="MoviesScoresGridUpdatePanel" UpdateMode="Conditional" runat="server" >
         <ContentTemplate>
-            <br />
-            <asp:Label runat="server">See how many votes and views each nomination has</asp:Label>
             <asp:GridView
                 ID="MoviesScoresGridView"
                 CssClass="mGrid"
@@ -68,7 +65,7 @@
                 AlternatingRowStyle-CssClass="alt"
                 GridLines="None"
                 runat="server"
-                AllowSorting="false"
+                AllowSorting="true"
                 AutoGenerateColumns="false"
                 OnSorting="MoviesScoresGridView_Sorting">
                 <Columns>
@@ -86,9 +83,14 @@
                         SortExpression="Watched" />
                 </Columns>
             </asp:GridView>
+        </ContentTemplate>
+    </asp:UpdatePanel>
 
-            <br />
-            <asp:Label runat="server">See how others have voted for this category</asp:Label>
+    <br />
+
+    <asp:Label runat="server">See how others have voted for this category</asp:Label>
+    <asp:UpdatePanel ID="UserVotesGridUpdatePanel" UpdateMode="Conditional" runat="server" >
+        <ContentTemplate>
             <asp:GridView
                 ID="UserVotesGridView"
                 CssClass="mGrid"
@@ -97,12 +99,17 @@
                 GridLines="None"
                 runat="server"
                 AutoGenerateColumns="false"
-                AllowSorting="false"
+                AllowSorting="true"
                 OnSorting="UserVotesGridView_Sorting">
             </asp:GridView>
+        </ContentTemplate>
+    </asp:UpdatePanel>
 
-            <br />
-            <asp:Label runat="server">See which of these movies others have watched</asp:Label>
+    <br />
+
+    <asp:Label runat="server">See which of these movies others have watched</asp:Label>
+    <asp:UpdatePanel ID="UserWatchedGridUpdatePanel" UpdateMode="Conditional" runat="server" >
+        <ContentTemplate>
             <asp:GridView
                 ID="UserWatchedGridView"
                 CssClass="mGrid"
@@ -111,10 +118,9 @@
                 GridLines="None"
                 runat="server"
                 AutoGenerateColumns="false"
-                AllowSorting="false"
+                AllowSorting="true"
                 OnSorting="UserWatchedGridView_Sorting">
             </asp:GridView>
-
         </ContentTemplate>
     </asp:UpdatePanel>
 

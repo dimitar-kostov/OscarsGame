@@ -1,56 +1,47 @@
 ﻿using OscarsGame.Business.Interfaces;
-using OscarsGame.Data;
-using OscarsGame.Data.Interfaces;
-using OscarsGame.Entities.StatisticsModels;
+using OscarsGame.Domain;
+using OscarsGame.Domain.Models;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 
 namespace OscarsGame.Business
 {
-    public class WatcheMoviesStatisticService: IWatcheMoviesStatisticService
+    public class WatcheMoviesStatisticService : IWatcheMoviesStatisticService
     {
-        private readonly IViewModelsRepository _viewModelsRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
-
-        public WatcheMoviesStatisticService(IViewModelsRepository viewModelsRepository)
+        public WatcheMoviesStatisticService(IUnitOfWork unitOfWork)
         {
-            _viewModelsRepository = viewModelsRepository;
+            _unitOfWork = unitOfWork;
         }
 
         public List<WatchedObject> GetData()
-        {           
-            List<WatchedMovies> watchedEntities = _viewModelsRepository.GetWatchedMoviesData();
+        {
+            List<WatchedMovies> watchedEntities = _unitOfWork.ViewModelsRepository.GetWatchedMoviesData();
 
-            Dictionary<string, List<string>> watchedDict = new Dictionary<string, List<string>>();
+            var watchedDict = new Dictionary<Guid, WatchedObject>();
 
             foreach (var watchedEntity in watchedEntities)
             {
-                if (watchedEntity.Email != null)
-                {                   
-                    List<string> watchedMoviesList;
-
-                    if (!watchedDict.TryGetValue(watchedEntity.Email, out watchedMoviesList))
+                if (watchedEntity.UserId.HasValue)
+                {
+                    if (!watchedDict.TryGetValue(watchedEntity.UserId.Value, out WatchedObject watchedObject))
                     {
-                        watchedMoviesList = new List<string>();
-                        watchedDict.Add(watchedEntity.Email, watchedMoviesList);
+                        watchedObject = new WatchedObject
+                        {
+                            UserDisplayMail = watchedEntity.UserDisplayName,
+                            MovieTitles = new List<string>()
+                        };
+
+                        watchedDict.Add(watchedEntity.UserId.Value, watchedObject);
                     }
 
-                    watchedMoviesList.Add(watchedEntity.Title);
+                    watchedObject.MovieTitles.Add(watchedEntity.MovieTitle);
                 }
             }
 
-            return watchedDict.Select(x => new WatchedObject { UserEmail = x.Key, MovieTitles = x.Value }).ToList();       
-        }      
-
-        public string [] GetTitles()
-        {
-            var watchedMovies = _viewModelsRepository.GetWatchedMoviesData();
-            var stringArrTitles =  watchedMovies.Select(m => m.Title).ToArray();
-            var collectionWithDistinctTitles = stringArrTitles.Distinct().ToArray();
-            int titlesCount = collectionWithDistinctTitles.Count();                                             
-            return collectionWithDistinctTitles;
+            return watchedDict.Values.ToList();
         }
 
     }

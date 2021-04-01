@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Security.Claims;
 using System.Security.Principal;
 
@@ -35,7 +33,8 @@ namespace OscarsGame.Extensions
             if (identity.IsAuthenticated)
             {
                 var claimsIdentity = identity as ClaimsIdentity;
-                return claimsIdentity?.FindFirst("Name")?.Value;
+                return claimsIdentity?.FindFirst("Name")?.Value
+                    ?? claimsIdentity?.FindAll(ClaimTypes.Name)?.Skip(1)?.FirstOrDefault()?.Value;
             }
 
             return null;

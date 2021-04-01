@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity.Owin;
+using Microsoft.Owin.Security;
+using Microsoft.Owin.Security.OpenIdConnect;
+using OscarsGame.Web.Identity;
+using System;
+using System.Globalization;
 using System.Web;
 using System.Web.UI;
-using Microsoft.AspNet.Identity.Owin;
-using Microsoft.Owin.Security.OpenIdConnect;
-using System.Globalization;
-using Microsoft.Owin.Security;
 
 namespace OscarsGame.Account
 {
@@ -12,30 +13,35 @@ namespace OscarsGame.Account
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            //RegisterHyperLink.NavigateUrl = "Register";
-            //// Enable this once you have account confirmation enabled for password reset functionality
-            ////ForgotPasswordHyperLink.NavigateUrl = "Forgot";
-            //OpenAuthLogin.ReturnUrl = Request.QueryString["ReturnUrl"];
-            //var returnUrl = HttpUtility.UrlEncode(Request.QueryString["ReturnUrl"]);
-            //if (!String.IsNullOrEmpty(returnUrl))
-            //{
-            //    RegisterHyperLink.NavigateUrl += "?ReturnUrl=" + returnUrl;
-            //}
+            var returnUrl = Request.QueryString["ReturnUrl"];
 
-            string returnUrl = Request.QueryString["ReturnUrl"] ?? "/";
+            if (IdentityHelper.IsProxiadClient())
+            {
+                string provider = OpenIdConnectAuthenticationDefaults.AuthenticationType;
 
-            if (User.Identity.IsAuthenticated)
-            {
-                Response.Redirect(returnUrl);
-            }
-            else
-            {
+                string redirectUrl = ResolveUrl(
+                    String.Format(CultureInfo.InvariantCulture, "~/Account/RegisterExternalLogin?{0}={1}&returnUrl={2}",
+                        IdentityHelper.ProviderNameKey, provider, returnUrl));
+
                 Context.GetOwinContext().Authentication.Challenge(
-                    new AuthenticationProperties { RedirectUri = returnUrl },
-                    OpenIdConnectAuthenticationDefaults.AuthenticationType);
+                    new AuthenticationProperties { RedirectUri = redirectUrl },
+                    provider);
 
                 Response.StatusCode = 401;
                 Response.End();
+            }
+            else
+            {
+                RegisterHyperLink.NavigateUrl = "Register";
+                // Enable this once you have account confirmation enabled for password reset functionality
+                //ForgotPasswordHyperLink.NavigateUrl = "Forgot";
+                OpenAuthLogin.ReturnUrl = returnUrl;
+                var encodedReturnUrl = HttpUtility.UrlEncode(returnUrl);
+
+                if (!String.IsNullOrEmpty(encodedReturnUrl))
+                {
+                    RegisterHyperLink.NavigateUrl += "?ReturnUrl=" + encodedReturnUrl;
+                }
             }
         }
 
@@ -60,7 +66,7 @@ namespace OscarsGame.Account
                         Response.Redirect("/Account/Lockout");
                         break;
                     case SignInStatus.RequiresVerification:
-                        Response.Redirect(String.Format("/Account/TwoFactorAuthenticationSignIn?ReturnUrl={0}&RememberMe={1}", 
+                        Response.Redirect(String.Format("/Account/TwoFactorAuthenticationSignIn?ReturnUrl={0}&RememberMe={1}",
                                                         Request.QueryString["ReturnUrl"],
                                                         RememberMe.Checked),
                                           true);

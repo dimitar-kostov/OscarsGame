@@ -1,39 +1,39 @@
 ﻿using OscarsGame.Business.Interfaces;
-using OscarsGame.Data.Interfaces;
-using OscarsGame.Entities;
-using OscarsGame.Entities.StatisticsModels;
+using OscarsGame.Domain;
+using OscarsGame.Domain.Entities;
+using OscarsGame.Domain.Models;
 using System;
 using System.Collections.Generic;
 
 namespace OscarsGame.Business
 {
-    public class BetService: IBetService
+    public class BetService : IBetService
     {
-        private readonly IBetRepository _betRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public BetService(IBetRepository betRepository)
+        public BetService(IUnitOfWork unitOfWork)
         {
-            _betRepository = betRepository;
+            _unitOfWork = unitOfWork;
         }
 
-        public IEnumerable<Bet> GetAllUserBets(string userId)
+        public IEnumerable<Bet> GetAllUserBets(Guid userId)
         {
-            return _betRepository.GetAllUserBets(userId);
+            return _unitOfWork.BetRepository.GetAllUserBets(userId);
         }
 
         public IEnumerable<Bet> GetAllBetsByCategory(int categoryId)
         {
-            return _betRepository.GetAllBetsByCategory(categoryId);
+            return _unitOfWork.BetRepository.GetAllBetsByCategory(categoryId);
         }
 
-        public void MakeBetEntity(string userId, int nominationId)
+        public void MakeBetEntity(Guid userId, int nominationId)
         {
-            _betRepository.MakeBetEntity(userId, nominationId);
+            _unitOfWork.BetRepository.MakeBetEntity(userId, nominationId);
         }
 
         public IEnumerable<UserScore> GetAllUserScores()
         {
-            var allScores = _betRepository.GetAllUserScores();
+            var allScores = _unitOfWork.BetRepository.GetAllUserScores();
 
             int rank = 1;
             foreach (UserScore userScore in allScores)
