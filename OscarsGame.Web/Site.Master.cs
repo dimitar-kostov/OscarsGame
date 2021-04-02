@@ -93,6 +93,11 @@ namespace OscarsGame
             }
 
             stopGameLabel.Text = ShowGameStatus();
+
+            if (!Page.IsPostBack)
+            {
+                LoginView1.DataBind();
+            }
         }
 
         private string GetRemainingTimeLabel()
@@ -136,6 +141,11 @@ namespace OscarsGame
         protected string GetLoginLabel()
         {
             return IdentityHelper.IsProxiadClient() ? "Log in with Office 365" : "Log in";
+        }
+
+        protected string GetManageUrl()
+        {
+            return IdentityHelper.IsProxiadClient() ? "~/Account/ManageOpenId" : "~/Account/Manage";
         }
 
         protected void ObjectDataSource1_ObjectCreating(object sender, ObjectDataSourceEventArgs e)

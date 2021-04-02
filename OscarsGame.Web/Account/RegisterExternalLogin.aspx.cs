@@ -144,17 +144,17 @@ namespace OscarsGame.Account
                 {
                     string displayName = null;
 
-                    if (loginInfo.ExternalIdentity.HasClaim(c => c.Type == "name"))
+                    if (loginInfo.ExternalIdentity.HasClaim(c => c.Type == ClaimTypes.Name))
                     {
-                        var claim = loginInfo.ExternalIdentity.FindFirst("name");
+                        var claim = loginInfo.ExternalIdentity.FindFirst(ClaimTypes.Name);
 
                         manager.AddClaim(user.Id, claim);
                         displayName = claim.Value;
                     }
 
-                    if (loginInfo.ExternalIdentity.HasClaim(c => c.Type == ClaimTypes.Name))
+                    if (loginInfo.ExternalIdentity.HasClaim(c => c.Type == "name"))
                     {
-                        var claim = loginInfo.ExternalIdentity.FindFirst(ClaimTypes.Name);
+                        var claim = loginInfo.ExternalIdentity.FindFirst("name");
 
                         manager.AddClaim(user.Id, claim);
                         displayName = claim.Value;
