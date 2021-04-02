@@ -28,7 +28,7 @@ jobs:
       run: nuget restore
 
     - name: Publish to folder
-      run: msbuild src\OscarsGame.Web\OscarsGame.Web.csproj /nologo /verbosity:m /t:Build /t:pipelinePreDeployCopyAllFilesToOneFolder /p:_PackageTempDir="\published\"
+      run: msbuild OscarsGame.Web\OscarsGame.Web.csproj /nologo /verbosity:m /t:Build /t:pipelinePreDeployCopyAllFilesToOneFolder /p:_PackageTempDir="\published\"
 
     - name: Run Azure webapp deploy action using publish profile credentials
       uses: azure/webapps-deploy@v2
