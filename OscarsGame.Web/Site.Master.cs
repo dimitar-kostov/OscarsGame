@@ -1,5 +1,5 @@
-﻿using Microsoft.Owin.Security.Cookies;
-using Microsoft.Owin.Security.OpenIdConnect;
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.Owin.Security.Cookies;
 using OscarsGame.Business.Interfaces;
 using OscarsGame.Extensions;
 using OscarsGame.Web.Identity;
@@ -130,7 +130,10 @@ namespace OscarsGame
 
         protected void Unnamed_LoggingOut(object sender, LoginCancelEventArgs e)
         {
-            Context.GetOwinContext().Authentication.SignOut(OpenIdConnectAuthenticationDefaults.AuthenticationType, CookieAuthenticationDefaults.AuthenticationType);
+            Context.GetOwinContext().Authentication.SignOut(
+                CookieAuthenticationDefaults.AuthenticationType,
+                DefaultAuthenticationTypes.ApplicationCookie,
+                DefaultAuthenticationTypes.ExternalCookie);
         }
 
         protected string GetOpenIdUserName()
