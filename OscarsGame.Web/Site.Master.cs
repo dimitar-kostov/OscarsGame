@@ -136,6 +136,16 @@ namespace OscarsGame
                 DefaultAuthenticationTypes.ExternalCookie);
         }
 
+        protected string GetLoginLabel()
+        {
+            return IdentityHelper.IsProxiadClient() ? "Log in with Office 365" : "Log in";
+        }
+
+        protected string GetLoginUrl()
+        {
+            return $"~/Account/Login?ReturnUrl={ new Uri(Request.Url.PathAndQuery, UriKind.Relative) }";
+        }
+
         protected string GetUserDisplayName()
         {
             var manager = Context.GetOwinContext().GetUserManager<ApplicationUserManager>();
@@ -143,11 +153,6 @@ namespace OscarsGame
             return currentUser.DisplayName;
 
             //return Context.User.Identity.GetOpenIdName();
-        }
-
-        protected string GetLoginLabel()
-        {
-            return IdentityHelper.IsProxiadClient() ? "Log in with Office 365" : "Log in";
         }
 
         protected string GetManageUrl()
