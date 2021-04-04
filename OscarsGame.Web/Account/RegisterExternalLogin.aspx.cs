@@ -98,7 +98,19 @@ namespace OscarsGame.Account
                 }
                 else
                 {
-                    email.Text = loginInfo.Email;
+                    IdentityUser anotherUserByEmail =
+                        loginInfo.Email != null ?
+                            manager.FindByEmail(loginInfo.Email) :
+                            null;
+
+                    if (anotherUserByEmail == null)
+                    {
+                        CreateAndLoginUser(loginInfo.Email, loginInfo.Email);
+                    }
+                    else
+                    {
+                        email.Text = loginInfo.Email;
+                    }
                 }
             }
         }
