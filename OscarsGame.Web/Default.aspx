@@ -1,12 +1,21 @@
-﻿<%@ Page Title="Home Page" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="OscarsGame._Default" %>
+﻿<%@ Page Title="Home Page" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="OscarsGame.Default" %>
 
 <asp:Content ID="BodyContent" runat="server" ContentPlaceHolderID="MainContent">
     <div class="text-large">
         <h2>Welcome!</h2>
         <br />
-        <p>You have reached the the Proxiad Oscars challenge game website.</p>
 
-        <p>Every Proxiad member can participate in the game by <a href="Account/Login">login</a> with the Proxiad office 365 account.</p>
+        <asp:Literal ID="LiteralProxiad" runat="server">
+            <p>You have reached the the Proxiad Oscars challenge game website.</p>
+
+            <p>Every Proxiad member can participate in the game by <a href="Account/Login">login</a> with the Proxiad office 365 account.</p>
+        </asp:Literal>
+
+        <asp:Literal ID="LiteralDefault" runat="server">
+            <p>You have reached the the Oscars challenge game website.</p>
+
+            <p>Everyone can participate in the game by <a href="Account/Login">login</a> with Google or Facebook.</p>
+        </asp:Literal>
 
         <p>
             You have the chance to show off your incredible predictive skills by guessing the Winners.<br />

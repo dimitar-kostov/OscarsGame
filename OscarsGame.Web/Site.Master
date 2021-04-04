@@ -98,7 +98,7 @@
                         <LoggedInTemplate>
                             <ul class="nav navbar-nav navbar-right">
                                 <li>
-                                    <a runat="server" href="<%# GetManageUrl() %>" title="Manage your account">Hello, <%: GetOpenIdUserName()  %> !</a>
+                                    <a runat="server" href="<%# GetManageUrl() %>" title="Manage your account">Hello, <%: GetUserDisplayName()  %> !</a>
                                 </li>
                                 <li>
                                     <asp:LoginStatus runat="server" LogoutAction="Redirect" LogoutText="Log off" LogoutPageUrl="~/" OnLoggingOut="Unnamed_LoggingOut" />
