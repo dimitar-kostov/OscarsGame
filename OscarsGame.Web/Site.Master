@@ -92,7 +92,7 @@
                         <AnonymousTemplate>
                             <ul class="nav navbar-nav navbar-right">
                                 <li><a runat="server" visible="false" href="~/Account/Register">Register</a></li>
-                                <li><a runat="server" href="<%# GetLoginUrl() %> "><%: GetLoginLabel()  %></a></li>
+                                <li><a runat="server" href="<%# GetLoginUrl() %>"><%: GetLoginLabel() %></a></li>
                             </ul>
                         </AnonymousTemplate>
                         <LoggedInTemplate>

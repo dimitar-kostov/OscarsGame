@@ -1,12 +1,17 @@
 ﻿$(document).ready(function () {
-		
+
+	Sys.WebForms.PageRequestManager.getInstance().add_pageLoaded(PageLoaded);
+
+});
+
+function PageLoaded(sender, args) {
+
 	$.each($('.movieItem'), function (index, item) {
 		$(item).find('.poster').attr('data-poster', index);
 		$(item).find('.modal').attr('data-modal', index);
 		$(item).find('.modal-content').attr('data-modalposter', index);
 		$(item).find('.close').attr('data-close', index);
 	});
-
 
 	$(".poster").each(function (index, element) {
 		var poster = $(this);
@@ -28,8 +33,7 @@
 				modal[0].style.display = "none";
 			}
 		});
-		
+
 	});
-	
-	
-})
+
+}
