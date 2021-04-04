@@ -14,7 +14,9 @@ namespace OscarsGame.Web.Identity
         IUserClaimStore<IdentityUser, Guid>,
         IUserPasswordStore<IdentityUser, Guid>,
         IUserSecurityStampStore<IdentityUser, Guid>,
-        IUserEmailStore<IdentityUser, Guid>
+        IUserEmailStore<IdentityUser, Guid>,
+        IUserLockoutStore<IdentityUser, Guid>,
+        IUserTwoFactorStore<IdentityUser, Guid>
     {
         private readonly IUnitOfWork _unitOfWork;
 
@@ -317,6 +319,51 @@ namespace OscarsGame.Web.Identity
         {
             var user = _unitOfWork.UserRepository.FindByEmail(email);
             return Task.FromResult<IdentityUser>(GetIdentityUser(user));
+        }
+
+        public Task<DateTimeOffset> GetLockoutEndDateAsync(IdentityUser user)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task SetLockoutEndDateAsync(IdentityUser user, DateTimeOffset lockoutEnd)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<int> IncrementAccessFailedCountAsync(IdentityUser user)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task ResetAccessFailedCountAsync(IdentityUser user)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<int> GetAccessFailedCountAsync(IdentityUser user)
+        {
+            return Task.FromResult(0);
+        }
+
+        public Task<bool> GetLockoutEnabledAsync(IdentityUser user)
+        {
+            return Task.FromResult(false);
+        }
+
+        public Task SetLockoutEnabledAsync(IdentityUser user, bool enabled)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task SetTwoFactorEnabledAsync(IdentityUser user, bool enabled)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> GetTwoFactorEnabledAsync(IdentityUser user)
+        {
+            return Task.FromResult(false);
         }
         #endregion
     }

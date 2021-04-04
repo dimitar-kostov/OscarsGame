@@ -35,23 +35,23 @@ namespace OscarsGame.Web.Identity
 
             // Register two factor authentication providers. This application uses Phone and Emails as a step of receiving a code for verifying the user
             // You can write your own provider and plug it in here.
-            RegisterTwoFactorProvider("Phone Code", new PhoneNumberTokenProvider<IdentityUser, Guid>
-            {
-                MessageFormat = "Your security code is {0}"
-            });
-            RegisterTwoFactorProvider("Email Code", new EmailTokenProvider<IdentityUser, Guid>
-            {
-                Subject = "Security Code",
-                BodyFormat = "Your security code is {0}"
-            });
+            //RegisterTwoFactorProvider("Phone Code", new PhoneNumberTokenProvider<IdentityUser, Guid>
+            //{
+            //    MessageFormat = "Your security code is {0}"
+            //});
+            //RegisterTwoFactorProvider("Email Code", new EmailTokenProvider<IdentityUser, Guid>
+            //{
+            //    Subject = "Security Code",
+            //    BodyFormat = "Your security code is {0}"
+            //});
 
             // Configure user lockout defaults
-            UserLockoutEnabledByDefault = true;
-            DefaultAccountLockoutTimeSpan = TimeSpan.FromMinutes(5);
-            MaxFailedAccessAttemptsBeforeLockout = 5;
+            UserLockoutEnabledByDefault = false;
+            //DefaultAccountLockoutTimeSpan = TimeSpan.FromMinutes(5);
+            //MaxFailedAccessAttemptsBeforeLockout = 5;
 
-            EmailService = new EmailService();
-            SmsService = new SmsService();
+            //EmailService = new EmailService();
+            //SmsService = new SmsService();
             if (dataProtectionProvider != null)
             {
                 UserTokenProvider = new DataProtectorTokenProvider<IdentityUser, Guid>(

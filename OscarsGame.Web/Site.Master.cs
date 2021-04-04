@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security.Cookies;
 using OscarsGame.Business.Interfaces;
-using OscarsGame.Extensions;
 using OscarsGame.Web.Identity;
 using System;
 using System.Web;
@@ -136,9 +136,13 @@ namespace OscarsGame
                 DefaultAuthenticationTypes.ExternalCookie);
         }
 
-        protected string GetOpenIdUserName()
+        protected string GetUserDisplayName()
         {
-            return Context.User.Identity.GetOpenIdName();
+            var manager = Context.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            var currentUser = manager.FindById(Context.User.Identity.GetUserId().ToGuid());
+            return currentUser.DisplayName;
+
+            //return Context.User.Identity.GetOpenIdName();
         }
 
         protected string GetLoginLabel()
