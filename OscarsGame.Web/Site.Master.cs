@@ -1,7 +1,7 @@
-﻿using Microsoft.Owin.Security.Cookies;
-using Microsoft.Owin.Security.OpenIdConnect;
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.Owin.Security.Cookies;
 using OscarsGame.Business.Interfaces;
-using OscarsGame.Extensions;
 using OscarsGame.Web.Identity;
 using System;
 using System.Web;
@@ -130,17 +130,29 @@ namespace OscarsGame
 
         protected void Unnamed_LoggingOut(object sender, LoginCancelEventArgs e)
         {
-            Context.GetOwinContext().Authentication.SignOut(OpenIdConnectAuthenticationDefaults.AuthenticationType, CookieAuthenticationDefaults.AuthenticationType);
-        }
-
-        protected string GetOpenIdUserName()
-        {
-            return Context.User.Identity.GetOpenIdName();
+            Context.GetOwinContext().Authentication.SignOut(
+                CookieAuthenticationDefaults.AuthenticationType,
+                DefaultAuthenticationTypes.ApplicationCookie,
+                DefaultAuthenticationTypes.ExternalCookie);
         }
 
         protected string GetLoginLabel()
         {
             return IdentityHelper.IsProxiadClient() ? "Log in with Office 365" : "Log in";
+        }
+
+        protected string GetLoginUrl()
+        {
+            return $"~/Account/Login?ReturnUrl={ new Uri(Request.Url.PathAndQuery, UriKind.Relative) }";
+        }
+
+        protected string GetUserDisplayName()
+        {
+            var manager = Context.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            var currentUser = manager.FindById(Context.User.Identity.GetUserId().ToGuid());
+            return currentUser.DisplayName;
+
+            //return Context.User.Identity.GetOpenIdName();
         }
 
         protected string GetManageUrl()
