@@ -6,13 +6,13 @@
         <br />
 
         <asp:Literal ID="LiteralProxiad" runat="server">
-            <p>You have reached the the Proxiad Oscars challenge game website.</p>
+            <p>You have reached the Proxiad Oscars challenge game website.</p>
 
             <p>Every Proxiad member can participate in the game by <a href="Account/Login">login</a> with the Proxiad office 365 account.</p>
         </asp:Literal>
 
         <asp:Literal ID="LiteralDefault" runat="server">
-            <p>You have reached the the Oscars challenge game website.</p>
+            <p>You have reached the Oscars challenge game website.</p>
 
             <p>Everyone can participate in the game by <a href="Account/Login">login</a> with Google or Facebook.</p>
         </asp:Literal>
