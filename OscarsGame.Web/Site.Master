@@ -14,7 +14,6 @@
     <webopt:BundleReference runat="server" Path="~/Content/css" />
     <link href="/images/icons/favicon.ico" rel="shortcut icon" type="image/x-icon" />
     <link href="/Content/SiteMaster.css" rel="stylesheet" type="text/css" />
-
 </head>
 <body>
     <form runat="server">
@@ -38,7 +37,7 @@
                 <%--Site Scripts--%>
             </Scripts>
         </asp:ScriptManager>
-         <asp:ObjectDataSource
+        <asp:ObjectDataSource
             ID="ObjectDataSource1"
             runat="server"
             SelectMethod="GetAll"
@@ -75,9 +74,9 @@
                                 </a>
                                 <ul class="dropdown-menu">
                                     <asp:Repeater runat="server" DataSourceID="ObjectDataSource1" ItemType="OscarsGame.Domain.Entities.Category">
-                                        <ItemTemplate>                                           
+                                        <ItemTemplate>
                                             <li>
-                                                <a runat="server" href='<%# GetCategoryUrl(Item.Id) %>' > <%# Item.CategoryTtle %> </a>                                      
+                                                <a runat="server" href='<%# GetCategoryUrl(Item.Id) %>'><%# Item.CategoryTtle %> </a>
                                             </li>
                                         </ItemTemplate>
                                     </asp:Repeater>
@@ -88,7 +87,7 @@
                         <li><a runat="server" id="Leaderboard" href="~/CommonPages/Leaderboard">Leaderboard</a></li>
                     </ul>
 
-                    <asp:LoginView id="LoginView1" runat="server" ViewStateMode="Disabled">
+                    <asp:LoginView ID="LoginView1" runat="server" ViewStateMode="Disabled">
                         <AnonymousTemplate>
                             <ul class="nav navbar-nav navbar-right">
                                 <li><a runat="server" visible="false" href="~/Account/Register">Register</a></li>
@@ -114,12 +113,15 @@
             </asp:ContentPlaceHolder>
             <hr />
             <footer>
-                <p>&copy; <%: DateTime.Now.Year %> - Oscars Bets ASP.NET Application.</p>
+                <p>
+                    &copy; <%: DateTime.Now.Year %> - Oscars Bets ASP.NET Application.
+                    <asp:HyperLink ID="PrivacyPolicyLink" Text="Privacy Policy" NavigateUrl="~/CommonPages/PrivacyPolicy.aspx" runat="server" />
+                </p>
                 <a href="https://www.themoviedb.org" target="_newtab">
-                        <img style="margin-top: 5px;" 
-                            src="https://www.themoviedb.org/assets/1/v4/logos/powered-by-rectangle-blue-61ce76f69ce1e4f68a6031d975df16cc184d5f04fa7f9f58ae6412646f2481c1.svg" 
-                            alt="POWERED BY tHE MOVIE DB"
-                            width="152" />
+                    <img style="margin-top: 5px;"
+                        src="https://www.themoviedb.org/assets/1/v4/logos/powered-by-rectangle-blue-61ce76f69ce1e4f68a6031d975df16cc184d5f04fa7f9f58ae6412646f2481c1.svg"
+                        alt="POWERED BY tHE MOVIE DB"
+                        width="152" />
                 </a>
                 <a style="margin-left: 10px;" href="https://www.statuscake.com" title="Website Uptime Monitoring">
                     <img src="https://app.statuscake.com/button/index.php?Track=ZC84x0akbQ&Days=1&Design=2" />
