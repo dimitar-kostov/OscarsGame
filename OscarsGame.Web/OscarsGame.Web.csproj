@@ -206,6 +206,7 @@
     <Content Include="Account\TwoFactorAuthenticationSignIn.aspx" />
     <Content Include="Account\VerifyPhoneNumber.aspx" />
     <Content Include="CommonPages\Leaderboard.aspx" />
+    <Content Include="CommonPages\PrivacyPolicy.aspx" />
     <Content Include="CommonPages\ShowCategory.aspx" />
     <Content Include="Content\AdminStyleSheet.css" />
     <Content Include="Admin\Calendar.aspx" />
@@ -472,6 +473,13 @@
     </Compile>
     <Compile Include="CommonPages\Leaderboard.aspx.designer.cs">
       <DependentUpon>Leaderboard.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CommonPages\PrivacyPolicy.aspx.cs">
+      <DependentUpon>PrivacyPolicy.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CommonPages\PrivacyPolicy.aspx.designer.cs">
+      <DependentUpon>PrivacyPolicy.aspx</DependentUpon>
     </Compile>
     <Compile Include="CommonPages\ShowAllDBMovies.aspx.cs">
       <DependentUpon>ShowAllDBMovies.aspx</DependentUpon>

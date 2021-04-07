@@ -98,6 +98,8 @@ namespace OscarsGame
             {
                 LoginView1.DataBind();
             }
+
+            SetControlsVisibility();
         }
 
         private string GetRemainingTimeLabel()
@@ -127,6 +129,10 @@ namespace OscarsGame
             }
         }
 
+        private void SetControlsVisibility()
+        {
+            PrivacyPolicyLink.Visible = !IdentityHelper.IsProxiadClient();
+        }
 
         protected void Unnamed_LoggingOut(object sender, LoginCancelEventArgs e)
         {
@@ -170,5 +176,4 @@ namespace OscarsGame
             return String.Format("~/CommonPages/ShowCategory?ID={0}", categoryId);
         }
     }
-
 }
