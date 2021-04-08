@@ -43,7 +43,7 @@
 
     <h2>8. Your Privacy</h2>
 
-    <p>Please read our Privacy Policy.</p>
+    <p>Please read our <a runat="server" href="~/CommonPages/PrivacyPolicy.aspx">Privacy Policy</a>.</p>
 
     <h2>9. Governing Law</h2>
 
