@@ -69,6 +69,15 @@ namespace OscarsGame
         protected global::System.Web.UI.HtmlControls.HtmlAnchor Leaderboard;
 
         /// <summary>
+        /// LoginView1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LoginView LoginView1;
+
+        /// <summary>
         /// MainContent control.
         /// </summary>
         /// <remarks>
@@ -76,5 +85,32 @@ namespace OscarsGame
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ContentPlaceHolder MainContent;
+
+        /// <summary>
+        /// PrivacyPolicyLink control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HyperLink PrivacyPolicyLink;
+
+        /// <summary>
+        /// TermsOfServiceLink control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HyperLink TermsOfServiceLink;
+
+        /// <summary>
+        /// UserDataDeletionLink control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HyperLink UserDataDeletionLink;
     }
 }

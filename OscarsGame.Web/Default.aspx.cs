@@ -1,17 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using OscarsGame.Web.Identity;
+using System;
 using System.Web.UI;
-using System.Web.UI.WebControls;
 
 namespace OscarsGame
 {
-    public partial class _Default : Page
+    public partial class Default : Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (IdentityHelper.IsProxiadClient())
+            {
+                LiteralProxiad.Visible = true;
+                LiteralDefault.Visible = false;
+            }
+            else
+            {
+                LiteralProxiad.Visible = false;
+                LiteralDefault.Visible = true;
 
+            }
         }
     }
 }

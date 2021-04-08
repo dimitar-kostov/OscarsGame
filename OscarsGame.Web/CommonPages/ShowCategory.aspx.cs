@@ -470,7 +470,7 @@ namespace OscarsGame.CommonPages
 
             //////////////// Show right suggestions statistic label /////////////////////
 
-            if (CheckIfTheUserIsLogged() && IsGameRunning())
+            if (CheckIfTheUserIsLogged() && !IsGameRunning())
             {
                 if (winnersAreSet)
                 {
