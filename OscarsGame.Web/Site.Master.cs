@@ -135,6 +135,7 @@ namespace OscarsGame
 
             PrivacyPolicyLink.Visible = !isProxiadClient;
             TermsOfServiceLink.Visible = !isProxiadClient;
+            UserDataDeletionLink.Visible = !isProxiadClient;
         }
 
         protected void Unnamed_LoggingOut(object sender, LoginCancelEventArgs e)
