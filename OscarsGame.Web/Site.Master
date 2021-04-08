@@ -114,8 +114,10 @@
             <hr />
             <footer>
                 <p>
-                    &copy; <%: DateTime.Now.Year %> - Oscars Bets ASP.NET Application.
+                    &copy; <%: DateTime.Now.Year %> - Oscars Bets ASP.NET Application. &nbsp
                     <asp:HyperLink ID="PrivacyPolicyLink" Text="Privacy Policy" NavigateUrl="~/CommonPages/PrivacyPolicy.aspx" runat="server" />
+                    &nbsp
+                    <asp:HyperLink ID="TermsOfServiceLink" Text="Terms Of Service" NavigateUrl="~/CommonPages/TermsOfService.aspx" runat="server" />
                 </p>
                 <a href="https://www.themoviedb.org" target="_newtab">
                     <img style="margin-top: 5px;"

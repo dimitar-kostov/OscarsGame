@@ -131,7 +131,10 @@ namespace OscarsGame
 
         private void SetControlsVisibility()
         {
-            PrivacyPolicyLink.Visible = !IdentityHelper.IsProxiadClient();
+            bool isProxiadClient = IdentityHelper.IsProxiadClient();
+
+            PrivacyPolicyLink.Visible = !isProxiadClient;
+            TermsOfServiceLink.Visible = !isProxiadClient;
         }
 
         protected void Unnamed_LoggingOut(object sender, LoginCancelEventArgs e)

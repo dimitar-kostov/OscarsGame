@@ -208,6 +208,7 @@
     <Content Include="CommonPages\Leaderboard.aspx" />
     <Content Include="CommonPages\PrivacyPolicy.aspx" />
     <Content Include="CommonPages\ShowCategory.aspx" />
+    <Content Include="CommonPages\TermsOfService.aspx" />
     <Content Include="Content\AdminStyleSheet.css" />
     <Content Include="Admin\Calendar.aspx" />
     <Content Include="Admin\EditCategory.aspx" />
@@ -501,6 +502,13 @@
     </Compile>
     <Compile Include="CommonPages\ShowCategory.aspx.designer.cs">
       <DependentUpon>ShowCategory.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CommonPages\TermsOfService.aspx.cs">
+      <DependentUpon>TermsOfService.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CommonPages\TermsOfService.aspx.designer.cs">
+      <DependentUpon>TermsOfService.aspx</DependentUpon>
     </Compile>
     <Compile Include="Extensions\IdentityExtensions.cs" />
     <Compile Include="Identity\ApplicationSignInManager.cs" />
