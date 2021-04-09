@@ -73,6 +73,7 @@
                                     <span class="caret"></span>
                                 </a>
                                 <ul class="dropdown-menu">
+                                    <li><a runat="server" href="~/CommonPages/ShowCategories">ALL CATEGORIES</a></li>
                                     <asp:Repeater runat="server" DataSourceID="ObjectDataSource1" ItemType="OscarsGame.Domain.Entities.Category">
                                         <ItemTemplate>
                                             <li>
