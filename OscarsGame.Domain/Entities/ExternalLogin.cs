@@ -7,9 +7,9 @@ namespace OscarsGame.Domain.Entities
         private User _user;
 
         #region Scalar Properties
-        public virtual string LoginProvider { get; set; }
-        public virtual string ProviderKey { get; set; }
-        public virtual Guid UserId { get; set; }
+        public string LoginProvider { get; set; }
+        public string ProviderKey { get; set; }
+        public Guid UserId { get; set; }
         #endregion
 
         #region Navigation Properties
@@ -19,7 +19,10 @@ namespace OscarsGame.Domain.Entities
             set
             {
                 _user = value;
-                UserId = value.UserId;
+                if (value != null)
+                {
+                    UserId = value.UserId;
+                }
             }
         }
         #endregion
