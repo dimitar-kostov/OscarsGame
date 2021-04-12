@@ -266,6 +266,7 @@
     </Content>
     <Content Include="images\oscar.ico" />
     <Content Include="images\Oscar_logo.png" />
+    <Content Include="Ping.aspx" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
@@ -545,6 +546,13 @@
     <Compile Include="MovieControl.ascx.designer.cs">
       <DependentUpon>MovieControl.ascx</DependentUpon>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Compile>
+    <Compile Include="Ping.aspx.cs">
+      <DependentUpon>Ping.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Ping.aspx.designer.cs">
+      <DependentUpon>Ping.aspx</DependentUpon>
     </Compile>
     <Compile Include="Roles\RoleConfigurationElement.cs" />
     <Compile Include="Roles\RoleConfigurationElementCollection.cs" />
