@@ -65,12 +65,14 @@
     <Compile Include="Interfaces\IMovieClient.cs" />
     <Compile Include="Interfaces\IMovieService.cs" />
     <Compile Include="Interfaces\INominationService.cs" />
+    <Compile Include="Interfaces\IUserService.cs" />
     <Compile Include="Interfaces\IWatchedMovieService.cs" />
     <Compile Include="Interfaces\IWatcheMoviesStatisticService.cs" />
     <Compile Include="MovieClient.cs" />
     <Compile Include="MovieService.cs" />
     <Compile Include="NominationService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UserService.cs" />
     <Compile Include="WatchedMovieService.cs" />
     <Compile Include="WatchedObject.cs" />
     <Compile Include="WatcheMoviesStatisticService.cs" />
