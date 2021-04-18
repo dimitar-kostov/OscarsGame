@@ -15,6 +15,7 @@ namespace OscarsGame.Business
             container.RegisterType<IWatchedMovieService, WatchedMovieService>();
             container.RegisterType<IWatcheMoviesStatisticService, WatcheMoviesStatisticService>();
             container.RegisterType<INominationService, NominationService>();
+            container.RegisterType<IUserService, UserService>();
         }
     }
 }
