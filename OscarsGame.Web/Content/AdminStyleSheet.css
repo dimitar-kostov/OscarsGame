@@ -79,5 +79,13 @@
     font-weight: bold;
 }
 
+.usersTable tr th {
+    padding: 4px;
+}
+
+.usersTable tr td {
+    padding: 4px;
+}
+
 
 

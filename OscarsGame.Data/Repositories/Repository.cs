@@ -86,6 +86,11 @@ namespace OscarsGame.Data
 
         public void Remove(TEntity entity)
         {
+            var entry = Context.Entry(entity);
+            if (entry.State == EntityState.Detached)
+            {
+                Set.Attach(entity);
+            }
             Set.Remove(entity);
         }
     }
