@@ -15,10 +15,10 @@
 
             <asp:Label ID="CategoryTtleLabel" CssClass="categoryTitle" runat="server" />
             <hr />
-            <asp:Repeater 
+            <asp:Repeater
                 ID="NominationsRepeater" runat="server"
                 ItemType="OscarsGame.Domain.Entities.Nomination"
-                OnItemCommand="NominationsRepeater_ItemCommand" 
+                OnItemCommand="NominationsRepeater_ItemCommand"
                 OnItemDataBound="NominationsRepeater_ItemDataBound">
                 <HeaderTemplate>
                     <div>
@@ -29,7 +29,7 @@
                         <div class="under-movie">
                             <img class="winnerLogo" src="<%# CheckIfWinnerImage(Item) %>" />
 
-                            <asp:LinkButton 
+                            <asp:LinkButton
                                 ID="MarkAsBettedButton"
                                 runat="server"
                                 Text=""
@@ -42,7 +42,6 @@
 
                             <span class="label leftLabel" visible="<%#!IsGameNotStartedYet()%>">Bet for this nomination!</span>
                         </div>
-
                     </div>
                 </ItemTemplate>
                 <FooterTemplate>
@@ -56,7 +55,7 @@
     <br />
 
     <asp:Label runat="server">See how many votes and views each nomination has</asp:Label>
-    <asp:UpdatePanel ID="MoviesScoresGridUpdatePanel" UpdateMode="Conditional" runat="server" >
+    <asp:UpdatePanel ID="MoviesScoresGridUpdatePanel" UpdateMode="Conditional" runat="server">
         <ContentTemplate>
             <asp:GridView
                 ID="MoviesScoresGridView"
@@ -89,7 +88,7 @@
     <br />
 
     <asp:Label runat="server">See how others have voted for this category</asp:Label>
-    <asp:UpdatePanel ID="UserVotesGridUpdatePanel" UpdateMode="Conditional" runat="server" >
+    <asp:UpdatePanel ID="UserVotesGridUpdatePanel" UpdateMode="Conditional" runat="server">
         <ContentTemplate>
             <asp:GridView
                 ID="UserVotesGridView"
@@ -100,7 +99,8 @@
                 runat="server"
                 AutoGenerateColumns="false"
                 AllowSorting="true"
-                OnSorting="UserVotesGridView_Sorting">
+                OnSorting="UserVotesGridView_Sorting"
+                OnRowDataBound="UserVotesGridView_RowDataBound">
             </asp:GridView>
         </ContentTemplate>
     </asp:UpdatePanel>
@@ -108,7 +108,7 @@
     <br />
 
     <asp:Label runat="server">See which of these movies others have watched</asp:Label>
-    <asp:UpdatePanel ID="UserWatchedGridUpdatePanel" UpdateMode="Conditional" runat="server" >
+    <asp:UpdatePanel ID="UserWatchedGridUpdatePanel" UpdateMode="Conditional" runat="server">
         <ContentTemplate>
             <asp:GridView
                 ID="UserWatchedGridView"
@@ -119,7 +119,8 @@
                 runat="server"
                 AutoGenerateColumns="false"
                 AllowSorting="true"
-                OnSorting="UserWatchedGridView_Sorting">
+                OnSorting="UserWatchedGridView_Sorting"
+                OnRowDataBound="UserWatchedGridView_RowDataBound">
             </asp:GridView>
         </ContentTemplate>
     </asp:UpdatePanel>

@@ -74,9 +74,10 @@ namespace OscarsGame.CommonPages
             set { ViewState["UserWatchedSortDirection"] = value; }
         }
 
-        #endregion
+        #endregion SortDirectionProperties
 
         private bool? _isGameRunning = null;
+
         protected bool IsGameRunning()
         {
             if (!_isGameRunning.HasValue)
@@ -88,6 +89,7 @@ namespace OscarsGame.CommonPages
         }
 
         private bool? _isGameNotStartedYet = null;
+
         protected bool IsGameNotStartedYet()
         {
             if (!_isGameNotStartedYet.HasValue)
@@ -208,6 +210,7 @@ namespace OscarsGame.CommonPages
                 field = new BoundField();
                 field.HeaderStyle.Width = Unit.Pixel(46);
                 field.HeaderImageUrl = BuildPosterUrl(nomination.Movie.PosterPath);
+                field.HeaderText = nomination.Credits.Any() ? nomination.Credits.First().Name + $" ({nomination.Movie.Title})" : nomination.Movie.Title;
                 field.DataField = nomination.Id.ToString();
                 field.HtmlEncode = false;
                 UserVotesGridView.Columns.Add(field);
@@ -229,6 +232,7 @@ namespace OscarsGame.CommonPages
                 field = new BoundField();
                 field.HeaderStyle.Width = Unit.Pixel(46);
                 field.HeaderImageUrl = BuildPosterUrl(movie.PosterPath);
+                field.HeaderText = movie.Title;
                 field.DataField = movie.Title;
                 field.HtmlEncode = false;
                 UserWatchedGridView.Columns.Add(field);
@@ -261,7 +265,7 @@ namespace OscarsGame.CommonPages
             return dataTable;
         }
 
-        #endregion
+        #endregion CreateAndInitGridViews
 
         #region FillGridViews
 
@@ -298,7 +302,7 @@ namespace OscarsGame.CommonPages
             return dataTable;
         }
 
-        #endregion
+        #endregion FillGridViews
 
         #region SortingEventsAndMethods
 
@@ -315,12 +319,15 @@ namespace OscarsGame.CommonPages
                     case "Movie":
                         MoviesScoresGridView.DataSource = currentCategory.Nominations.OrderBy(n => n.Movie.Title);
                         break;
+
                     case "Bets":
                         MoviesScoresGridView.DataSource = currentCategory.Nominations.OrderBy(n => n.Bets.Count);
                         break;
+
                     case "Watched":
                         MoviesScoresGridView.DataSource = currentCategory.Nominations.OrderBy(n => n.Movie.UsersWatchedThisMovie.Count);
                         break;
+
                     default:
                         MoviesScoresGridView.DataSource = currentCategory.Nominations.OrderBy(n => n.Id);
                         break;
@@ -333,12 +340,15 @@ namespace OscarsGame.CommonPages
                     case "Movie":
                         MoviesScoresGridView.DataSource = currentCategory.Nominations.OrderByDescending(n => n.Movie.Title);
                         break;
+
                     case "Bets":
                         MoviesScoresGridView.DataSource = currentCategory.Nominations.OrderByDescending(n => n.Bets.Count);
                         break;
+
                     case "Watched":
                         MoviesScoresGridView.DataSource = currentCategory.Nominations.OrderByDescending(n => n.Movie.UsersWatchedThisMovie.Count);
                         break;
+
                     default:
                         MoviesScoresGridView.DataSource = currentCategory.Nominations.OrderBy(n => n.Id);
                         break;
@@ -374,7 +384,33 @@ namespace OscarsGame.CommonPages
             SetSortingArrows(UserWatchedGridView, UserWatchedGridViewSortDirection, e.SortExpression);
         }
 
-        #endregion
+        #endregion SortingEventsAndMethods
+
+        #region RowDataBoundEvents
+
+        protected void UserWatchedGridView_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if (e.Row.RowType == DataControlRowType.Header)
+            {
+                for (int i = 0; i < UserWatchedGridView.Columns.Count; i++)
+                {
+                    e.Row.Cells[i].ToolTip = UserWatchedGridView.Columns[i].HeaderText;
+                }
+            }
+        }
+
+        protected void UserVotesGridView_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if (e.Row.RowType == DataControlRowType.Header)
+            {
+                for (int i = 0; i < UserVotesGridView.Columns.Count; i++)
+                {
+                    e.Row.Cells[i].ToolTip = UserVotesGridView.Columns[i].HeaderText;
+                }
+            }
+        }
+
+        #endregion RowDataBoundEvents
 
         #region NominationRepeaterEvents
 
@@ -407,7 +443,7 @@ namespace OscarsGame.CommonPages
             BetUpdate();
         }
 
-        #endregion
+        #endregion NominationRepeaterEvents
 
         #region BetMethods
 
@@ -506,6 +542,6 @@ namespace OscarsGame.CommonPages
             }
         }
 
-        #endregion
+        #endregion BetMethods
     }
 }
