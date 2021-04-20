@@ -156,13 +156,13 @@ namespace OscarsGame.CommonPages
             if (prevCategory != null)
             {
                 PreviousCategoryLink.HRef = $"~/CommonPages/ShowCategory?ID={prevCategory.Id}";
-                PreviousCategoryLink.InnerText = $"Previous catgory: {prevCategory.CategoryTtle}";
+                PreviousCategoryLink.InnerText = $"Previous category: {prevCategory.CategoryTtle}";
             }
 
             if (nextCategory != null)
             {
                 NextCategoryLink.HRef = $"~/CommonPages/ShowCategory?ID={nextCategory.Id}";
-                NextCategoryLink.InnerText = $"Next catgory: {nextCategory.CategoryTtle}";
+                NextCategoryLink.InnerText = $"Next category: {nextCategory.CategoryTtle}";
             }
         }
 
