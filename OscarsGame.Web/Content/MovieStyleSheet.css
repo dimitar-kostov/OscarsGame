@@ -1,5 +1,5 @@
 ﻿body {
-    background-color:ghostwhite;
+    background-color: ghostwhite;
 }
 
 .hidden {
@@ -9,14 +9,14 @@
 .categoryTitle {
     color: rgb(179,0,0);
     text-transform: uppercase;
-    font-size:18px;
-}
-
-.categoryTitle a{
-    color: rgb(179,0,0);
-    text-transform: uppercase;
     font-size: 18px;
 }
+
+    .categoryTitle a {
+        color: rgb(179,0,0);
+        text-transform: uppercase;
+        font-size: 18px;
+    }
 
 .linkTitle {
     margin-bottom: 5px;
@@ -29,12 +29,14 @@
     top: 10px;
     position: absolute;
 }
+
 .rightLabel {
     color: rgb(179,0,0);
     top: 10px;
     position: absolute;
     right: 3px;
 }
+
 .pattern {
     display: inline-block;
     margin-bottom: 5px;
@@ -57,7 +59,7 @@
 
 .dropdown-separator {
     margin: 5px;
-    font-weight:bold;
+    font-weight: bold;
 }
 
 .under-movie {
@@ -68,10 +70,12 @@
     border-bottom-right-radius: 7px;
     position: relative;
 }
+
 .check-button {
     color: rgb(179,0,0);
     margin: 7px;
 }
+
 .movieItem {
     width: 270px;
     align-items: center;
@@ -83,17 +87,16 @@
 .items {
     display: block;
     padding: 3px;
-    margin:0px;
+    margin: 0px;
     font-size: 16px;
     width: 120px;
 }
 
-
 .title {
     color: gray;
-    font-size:16px;
+    font-size: 16px;
     width: 60%;
-    align-self: flex-start; 
+    align-self: flex-start;
 }
 
 .poster {
@@ -101,7 +104,7 @@
     float: right;
     margin: 5px;
     border: 3px solid LightGray;
-    border-radius:7px;
+    border-radius: 7px;
     width: 150px;
 }
 
@@ -113,15 +116,13 @@
 
 .categoryTtleLabel {
     text-transform: uppercase;
-    font-weight:bold;
-    font-size:20px;
+    font-weight: bold;
+    font-size: 20px;
 }
 
 a {
-    color:darkgray;
+    color: darkgray;
 }
-
-
 
 .greatingLabel {
     margin: 3px;
@@ -139,6 +140,7 @@ a {
     font-weight: bold;
     float: right;
 }
+
 .warning-left {
     margin: 5px;
     padding: 5px;
@@ -148,23 +150,25 @@ a {
     font-weight: bold;
     display: inline-block;
 }
+
 .greenBorder {
     margin: 5px;
-    padding: 5px;    
+    padding: 5px;
     border: 3px solid green;
     border-radius: 7px;
     font-size: 18px;
     font-weight: bold;
     float: right;
 }
+
 .goldBorder {
     margin: 5px;
-    padding: 5px;    
+    padding: 5px;
     border: 3px solid rgb(237,192,116);
     border-radius: 7px;
     font-size: 18px;
     font-weight: bold;
-    float:right;
+    float: right;
 }
 
 .goldBorder-left {
@@ -173,23 +177,26 @@ a {
     border: 3px solid rgb(237,192,116);
     border-radius: 7px;
     font-size: 18px;
-    font-weight: bold;   
+    font-weight: bold;
 }
+
 .imdb {
-    width:30px;
+    width: 30px;
 }
+
 .notWinner {
     padding: 5px;
-    border: 3px solid grey;    
+    border: 3px solid grey;
     border-radius: 7px;
 }
 
 .winner {
     padding: 5px;
     border: 3px solid;
-    border-color: rgb(237,192,116); 
-    border-radius:7px;
+    border-color: rgb(237,192,116);
+    border-radius: 7px;
 }
+
 .winnerLogo {
     width: 50px;
     position: absolute;
@@ -201,11 +208,10 @@ a {
     border: none;
     background-color: LightGray;
     color: white;
-    text-decoration:underline;
+    text-decoration: underline;
     font-size: 15px;
     margin: 3px;
 }
-
 
 /* Style the Image Used to Trigger the Modal */
 #myImg {
@@ -241,7 +247,6 @@ a {
 }
 
 /* Caption of Modal Image (Image Text) - Same Width as the Image */
-
 
 /* Add Animation - Zoom in the Modal */
 .modal-content, #caption {
@@ -293,7 +298,6 @@ a {
 @media only screen and (max-width: 700px) {
         .modal-content {
         width: 100%;
-
     }
 }
 
@@ -317,3 +321,23 @@ a {
     z-index: 999999;
 }
 
+.previousCategoryLink {
+    color: darkgrey;
+    font-size: 15px;
+    float: left;
+}
+
+    .previousCategoryLink:hover {
+        color: rgb(179, 0, 0);
+    }
+
+.nextCategoryLink {
+    color: darkgrey;
+    font-size: 15px;
+    float: right;
+    margin-right: 10px;
+}
+
+    .nextCategoryLink:hover {
+        color: rgb(179, 0, 0);
+    }
