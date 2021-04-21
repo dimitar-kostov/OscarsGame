@@ -110,6 +110,7 @@ namespace OscarsGame.CommonPages
             if (!IsPostBack)
             {
                 BindCategory();
+                SetPreviousAndNextCategory();
                 DataBind();
             }
 
@@ -144,6 +145,25 @@ namespace OscarsGame.CommonPages
 
             CreateAndFillUserVotesDataTable(currentCategory.Id, nominations);
             CreateAndFillUserWatchedDataTable(nominations);
+        }
+
+        private void SetPreviousAndNextCategory()
+        {
+            int.TryParse(Request.QueryString["ID"], out int id);
+            var nextCategory = CategoryService.GetCategory(id + 1);
+            var prevCategory = CategoryService.GetCategory(id - 1);
+
+            if (prevCategory != null)
+            {
+                PreviousCategoryLink.HRef = $"~/CommonPages/ShowCategory?ID={prevCategory.Id}";
+                PreviousCategoryLink.InnerText = $"Previous category: {prevCategory.CategoryTtle}";
+            }
+
+            if (nextCategory != null)
+            {
+                NextCategoryLink.HRef = $"~/CommonPages/ShowCategory?ID={nextCategory.Id}";
+                NextCategoryLink.InnerText = $"Next category: {nextCategory.CategoryTtle}";
+            }
         }
 
         private Category GetCurrentCategory()

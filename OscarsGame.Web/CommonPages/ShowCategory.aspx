@@ -14,7 +14,11 @@
             <asp:Label ID="WinnerLabel" runat="server" CssClass="greenBorder"></asp:Label>
 
             <asp:Label ID="CategoryTtleLabel" CssClass="categoryTitle" runat="server" />
-            <hr />
+            <br />
+            <a runat="server" id="PreviousCategoryLink" class="previousCategoryLink"></a>
+            <a runat="server" id="NextCategoryLink" class="nextCategoryLink"></a>
+
+            <hr style="margin-top: 30px;" />
             <asp:Repeater
                 ID="NominationsRepeater" runat="server"
                 ItemType="OscarsGame.Domain.Entities.Nomination"
