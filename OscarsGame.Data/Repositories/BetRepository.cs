@@ -94,6 +94,7 @@ namespace OscarsGame.Data
                 .GroupBy(x => x.User)
                 .Select(g => new UserScore
                 {
+                    UserId = g.Key.UserId,
                     UserDisplayName = g.Key.DisplayName,
                     Score = g.Sum(x => x.Score),
                     WatchedMovies = g.Sum(x => x.WatchedMovies),

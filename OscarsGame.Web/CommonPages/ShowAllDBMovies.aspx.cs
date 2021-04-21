@@ -18,6 +18,7 @@ namespace OscarsGame.CommonPages
         private readonly IGamePropertyService GamePropertyService;
         private readonly IMovieService MovieService;
         private readonly IWatchedMovieService WatchedMovieService;
+        private readonly IUserService UserService;
 
         private Guid CurrentUsereId
         {
@@ -25,31 +26,69 @@ namespace OscarsGame.CommonPages
             set { Session["CurrentUser"] = value; }
         }
 
+        private bool IsGuest { get; set; }
+
         public ShowAllDBMovies(
             IGamePropertyService gamePropertyService,
             IMovieService movieService,
-            IWatchedMovieService watchedMovieService)
+            IWatchedMovieService watchedMovieService,
+            IUserService userService)
         {
             GamePropertyService = gamePropertyService;
             MovieService = movieService;
             WatchedMovieService = watchedMovieService;
+            UserService = userService;
         }
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!User.Identity.IsAuthenticated)
+            if (!Page.IsPostBack)
             {
-                GreatingLabel.Text = "You must be logged in to mark a movie as watched!";
-            }
-            else
-            {
-                GreatingLabel.CssClass = "hidden";
-                CurrentUsereId = User.Identity.GetUserId().ToGuid();
-            }
-            if (IsGameNotStartedYet())
-            {
-                GreatingLabel.CssClass = "hidden";
-                WarningLabel.CssClass = "hidden";
+                if (Request.QueryString["userId"] != null)
+                {
+                    CurrentUsereId = Request.QueryString["userId"].ToString().ToGuid();
+                }
+                else if (User.Identity.IsAuthenticated)
+                {
+                    CurrentUsereId = User.Identity.GetUserId().ToGuid();
+                }
+                else
+                {
+                    CurrentUsereId = Guid.Empty;
+                }
+
+                string filterQueryString = Request.QueryString["filter"];
+                if (filterQueryString != null)
+                {
+                    var item = DdlFilter.Items.FindByValue(filterQueryString);
+                    if (item != null)
+                    {
+                        DdlFilter.SelectedValue = filterQueryString;
+                    }
+                }
+
+                IsGuest = (CurrentUsereId != User.Identity.GetUserId().ToGuid());
+
+                if (IsGuest)
+                {
+                    var user = UserService.GetUser(CurrentUsereId);
+                    GreatingLabel.Text = $"{user.DisplayName} watched movies";
+                    ExitHyperLink.Visible = true;
+                }
+                else if (!User.Identity.IsAuthenticated)
+                {
+                    GreatingLabel.Text = "You must be logged in to mark a movie as watched!";
+                }
+                else
+                {
+                    GreatingLabel.CssClass = "hidden";
+                }
+
+                if (IsGameNotStartedYet())
+                {
+                    GreatingLabel.CssClass = "hidden";
+                    WarningLabel.CssClass = "hidden";
+                }
             }
         }
 
@@ -76,6 +115,13 @@ namespace OscarsGame.CommonPages
             return _isGameNotStartedYet.Value;
         }
 
+        protected bool CanEdit()
+        {
+            return
+                !IsGuest
+                && IsGameRunning()
+                && User.Identity.IsAuthenticated;
+        }
 
         public string BuildPosterUrl(string path)
         {
@@ -110,12 +156,11 @@ namespace OscarsGame.CommonPages
         }
 
 
-
         protected void Repeater1_ItemCommand(object source, RepeaterCommandEventArgs e)
         {
             if (e.CommandName == "MarkAsWatchedOrUnwatched")
             {
-                if (IsGameRunning())
+                if (CanEdit())
                 {
                     int movieId = int.Parse((e.CommandArgument).ToString());
 
@@ -136,20 +181,16 @@ namespace OscarsGame.CommonPages
             }
         }
 
-        protected bool DoesUserWatchedThisMovie(ICollection<Watched> users)
-        {
-            return !users.Any(x => x.UserId == CurrentUsereId);
-        }
-
         protected string ChangeTextIfUserWatchedThisMovie(ICollection<Watched> users)
         {
-            if (!users.Any(x => x.UserId == CurrentUsereId))
+            if (CurrentUsereId != Guid.Empty
+                && users.Any(x => x.UserId == CurrentUsereId))
             {
-                return "<span class='check-button glyphicon glyphicon-unchecked'></span>";
+                return "<span class='check-button glyphicon glyphicon-check'></span>";
             }
             else
             {
-                return "<span class='check-button glyphicon glyphicon-check'></span>";
+                return "<span class='check-button glyphicon glyphicon-unchecked'></span>";
             }
         }
 
@@ -173,36 +214,83 @@ namespace OscarsGame.CommonPages
 
         protected void ObjectDataSource1_Selected(object sender, ObjectDataSourceStatusEventArgs e)
         {
-            IEnumerable<Movie> movies = (IEnumerable<Movie>)e.ReturnValue;
-            var moviesCount = movies.Count();
-            //var bettedCategories = categories.Sum(x => x.Bets.Count(b => b.UserId == currentUsereId));
-            var watchedMovies = movies.Sum(x => x.UsersWatchedThisMovie.Count(u => u.UserId == CurrentUsereId));
-
-            var missedMovies = moviesCount - watchedMovies;
-            if (CheckIfTheUserIsLogged())
+            if (CurrentUsereId == Guid.Empty || IsGameNotStartedYet())
             {
-                if (missedMovies > 0)
-                {
-                    if (missedMovies == 1)
-                    {
-                        WarningLabel.Text = "There are " + moviesCount + " nominated movies. " +
-                            "You have " + (missedMovies) + " more movie to watch!";
-                    }
-                    else
-                    {
-                        WarningLabel.Text = "There are " + moviesCount + " nominated movies. " +
-                            "You have " + (missedMovies) + " more movies to watch!";
-                    }
-                }
-                else
-                {
-                    WarningLabel.CssClass = "goldBorder-left";
-                    WarningLabel.Text = "Congratulations! You have watched all the " + moviesCount + " movies!";
-                }
+                WarningLabel.CssClass = "hidden";
+                return;
+            }
+
+            IEnumerable<Movie> movies = (IEnumerable<Movie>)e.ReturnValue;
+
+            switch (DdlFilter.SelectedValue)
+            {
+                case "1":
+                    DisplayWatchedMoviesMessage(movies.Count());
+                    break;
+
+                case "2":
+                    DisplayUnwatchedMoviesMessage(movies.Count());
+                    break;
+
+                default:
+                    var watchedMoviesCount = movies.Sum(x => x.UsersWatchedThisMovie.Count(u => u.UserId == CurrentUsereId));
+                    DisplayAllMoviesMessage(watchedMoviesCount, movies.Count());
+                    break;
+            }
+        }
+
+        private void DisplayAllMoviesMessage(int watchedMoviesCount, int allMoviesCount)
+        {
+            var unwatchedMoviesCount = allMoviesCount - watchedMoviesCount;
+
+            if (unwatchedMoviesCount == 0)
+            {
+                WarningLabel.CssClass = "goldBorder-left";
+                WarningLabel.Text = $"Congratulations! You have watched all the { allMoviesCount } movies!";
+            }
+            else if (unwatchedMoviesCount == 1)
+            {
+                WarningLabel.CssClass = "warning-left";
+                WarningLabel.Text = $"There are { allMoviesCount } nominated movies. " +
+                            "You have 1 more movie to watch!";
             }
             else
             {
-                WarningLabel.CssClass = "hidden";
+                WarningLabel.CssClass = "warning-left";
+                WarningLabel.Text = $"There are { allMoviesCount } nominated movies. " +
+                            $"You have { unwatchedMoviesCount } more movies to watch!";
+            }
+        }
+
+        private void DisplayWatchedMoviesMessage(int watchedMoviesCount)
+        {
+            WarningLabel.CssClass = "goldBorder-left";
+            if (watchedMoviesCount == 1)
+            {
+                WarningLabel.Text = $"You have watched 1 movie!";
+            }
+            else
+            {
+                WarningLabel.Text = $"You have watched { watchedMoviesCount } movies!";
+            }
+        }
+
+        private void DisplayUnwatchedMoviesMessage(int unwatchedMoviesCount)
+        {
+            if (unwatchedMoviesCount == 0)
+            {
+                WarningLabel.CssClass = "goldBorder-left";
+                WarningLabel.Text = "Congratulations! You have watched all the movies!";
+            }
+            else if (unwatchedMoviesCount == 1)
+            {
+                WarningLabel.CssClass = "warning-left";
+                WarningLabel.Text = $"You have 1 more movie to watch!";
+            }
+            else
+            {
+                WarningLabel.CssClass = "warning-left";
+                WarningLabel.Text = $"You have { unwatchedMoviesCount } more movies to watch!";
             }
         }
 
@@ -213,7 +301,7 @@ namespace OscarsGame.CommonPages
 
         protected string SetFadeFilter(Movie movie)
         {
-            if (!User.Identity.IsAuthenticated)
+            if (CurrentUsereId == Guid.Empty)
                 return NormalOpacity;
 
             int selectedFilter = int.Parse(DdlFilter.SelectedValue);

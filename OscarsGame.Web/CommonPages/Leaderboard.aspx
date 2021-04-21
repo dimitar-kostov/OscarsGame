@@ -14,7 +14,13 @@
             <asp:BoundField DataField="Rank" HeaderText="Rank" SortExpression="Rank"></asp:BoundField>
             <asp:BoundField DataField="UserDisplayName" HeaderText="User" SortExpression="UserDisplayName"></asp:BoundField>
             <asp:BoundField DataField="Score" HeaderText="Score" SortExpression="Score"></asp:BoundField>
-            <asp:BoundField DataField="WatchedMovies" HeaderText="Watched Movies" SortExpression="WatchedMovies"></asp:BoundField>
+            <asp:HyperLinkField
+                DataTextField="WatchedMovies" 
+                HeaderText="Watched Movies" 
+                SortExpression="WatchedMovies" 
+                DataNavigateUrlFields="UserId" 
+                DataNavigateUrlFormatString="~//CommonPages/ShowAllDBMovies?userId={0}&filter=1">
+            </asp:HyperLinkField>
             <asp:BoundField DataField="WatchedNominations" HeaderText="Watched Nominations" SortExpression="WatchedNominations"></asp:BoundField>
             <asp:BoundField DataField="Bets" HeaderText="Bets" SortExpression="Bets"></asp:BoundField>
         </Columns>
