@@ -151,6 +151,16 @@ a {
     display: inline-block;
 }
 
+.goldBorder-left {
+    margin: 5px;
+    padding: 5px;
+    border: 3px solid rgb(237,192,116);
+    border-radius: 7px;
+    font-size: 18px;
+    font-weight: bold;
+    display: inline-block;
+}
+
 .greenBorder {
     margin: 5px;
     padding: 5px;
@@ -169,15 +179,6 @@ a {
     font-size: 18px;
     font-weight: bold;
     float: right;
-}
-
-.goldBorder-left {
-    margin: 5px;
-    padding: 5px;
-    border: 3px solid rgb(237,192,116);
-    border-radius: 7px;
-    font-size: 18px;
-    font-weight: bold;
 }
 
 .imdb {
