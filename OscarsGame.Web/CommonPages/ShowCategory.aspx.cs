@@ -150,8 +150,8 @@ namespace OscarsGame.CommonPages
         private void SetPreviousAndNextCategory()
         {
             int.TryParse(Request.QueryString["ID"], out int id);
-            var nextCategory = CategoryService.GetCategory(id + 1);
-            var prevCategory = CategoryService.GetCategory(id - 1);
+            var nextCategory = CategoryService.GetNextCategoryOrDefault(id);
+            var prevCategory = CategoryService.GetPreviousCategoryOrDefault(id);
 
             if (prevCategory != null)
             {
