@@ -5,14 +5,17 @@
     <link href="../Content/MovieStyleSheet.css" rel="stylesheet" type="text/css" />
     <script src="../Scripts/LargePoster.js"></script>
 
-    <asp:Label ID="GreatingLabel" runat="server" Text="" CssClass="warning-left"></asp:Label>
-    <asp:Label ID="WarningLabel" runat="server" CssClass="warning-left"></asp:Label>
-    <br />
-    <br />
-
     <asp:UpdatePanel ID="UPMovies" UpdateMode="Conditional" runat="server">
         <ContentTemplate>
-
+            <asp:Label ID="GreatingLabel" runat="server" Text="" CssClass="warning-left"></asp:Label>
+            <asp:Label ID="WarningLabel" runat="server" CssClass="warning-left"></asp:Label>
+            <asp:HyperLink ID="ExitHyperLink" 
+                runat="server" 
+                Visible="false" 
+                NavigateUrl="~/CommonPages/Leaderboard.aspx" 
+                CssClass="warning-left">Exit</asp:HyperLink>
+            <br />
+            <br />
             <div style="display:flex; flex-wrap: wrap">
                 <div>
                     <asp:Label
@@ -73,7 +76,7 @@
                                 ClientIDMode="AutoID"
                                 CommandName="MarkAsWatchedOrUnwatched"
                                 CommandArgument="<%#((OscarsGame.Domain.Entities.Movie)((IDataItemContainer)Container).DataItem).Id%>"
-                                Enabled="<%# CheckIfTheUserIsLogged() & IsGameRunning() %>"
+                                Enabled="<%# CanEdit() %>"
                                 Visible="<%#!IsGameNotStartedYet()%>">
                         <%# ChangeTextIfUserWatchedThisMovie(((OscarsGame.Domain.Entities.Movie)((IDataItemContainer)Container).DataItem).UsersWatchedThisMovie) %>
                             </asp:LinkButton>
@@ -112,25 +115,4 @@
             </div>
         </ProgressTemplate>
     </asp:UpdateProgress>
-    <style>
-        .loading-panel {
-            background: rgba(0, 0, 0, 0.2) none repeat scroll 0 0;
-            position: relative;
-            width: 100%;
-        }
-
-        .loading-container {
-            background: rgba(49, 133, 156, 0.4) none repeat scroll 0 0;
-            color: #fff;
-            font-size: 90px;
-            height: 100%;
-            left: 0;
-            padding-top: 15%;
-            position: fixed;
-            text-align: center;
-            top: 0;
-            width: 100%;
-            z-index: 999999;
-        }
-    </style>
 </asp:Content>

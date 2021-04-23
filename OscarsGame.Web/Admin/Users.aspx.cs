@@ -45,7 +45,10 @@ namespace OscarsGame.Admin
             {
                 DetailsViewRow row = DetailsView1.Rows[commandRowIndex];
                 var btnDelete = row.Controls[0].Controls.OfType<LinkButton>().FirstOrDefault(b => b.CommandName == "Delete");
-                btnDelete.Attributes["onclick"] = "return confirm('Do you want to delete this User?')";
+                if (btnDelete != null)
+                {
+                    btnDelete.Attributes["onclick"] = "return confirm('Do you want to delete this User?')";
+                }
             }
         }
     }

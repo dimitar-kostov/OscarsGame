@@ -95,47 +95,15 @@
                     <asp:ControlParameter ControlID="GridView1" DefaultValue="00000000-0000-0000-0000-000000000000" Name="UserId" PropertyName="SelectedValue" DbType="Guid" />
                 </SelectParameters>
             </asp:ObjectDataSource>
-            <%--<asp:SqlDataSource ID="SqlDataSource2" runat="server" 
-                ConnectionString="<%$ ConnectionStrings:DefaultConnection %>" 
-                DeleteCommand="DELETE FROM [AspNetUsers] WHERE [Id] = @Id" 
-                InsertCommand="INSERT INTO [AspNetUsers] ([Id], [Email], [EmailConfirmed], [PasswordHash], [SecurityStamp], [PhoneNumber], [PhoneNumberConfirmed], [TwoFactorEnabled], [LockoutEndDateUtc], [LockoutEnabled], [AccessFailedCount], [UserName]) VALUES (@Id, @Email, @EmailConfirmed, @PasswordHash, @SecurityStamp, @PhoneNumber, @PhoneNumberConfirmed, @TwoFactorEnabled, @LockoutEndDateUtc, @LockoutEnabled, @AccessFailedCount, @UserName)" 
-                SelectCommand="SELECT * FROM [AspNetUsers] WHERE ([Id] = @Id)" 
-                UpdateCommand="UPDATE [AspNetUsers] SET [Email] = @Email, [EmailConfirmed] = @EmailConfirmed, [PasswordHash] = @PasswordHash, [SecurityStamp] = @SecurityStamp, [PhoneNumber] = @PhoneNumber, [PhoneNumberConfirmed] = @PhoneNumberConfirmed, [TwoFactorEnabled] = @TwoFactorEnabled, [LockoutEndDateUtc] = @LockoutEndDateUtc, [LockoutEnabled] = @LockoutEnabled, [AccessFailedCount] = @AccessFailedCount, [UserName] = @UserName WHERE [Id] = @Id">
-                <DeleteParameters>
-                    <asp:Parameter Name="Id" Type="String" />
-                </DeleteParameters>
-                <InsertParameters>
-                    <asp:Parameter Name="Id" Type="String" />
-                    <asp:Parameter Name="Email" Type="String" />
-                    <asp:Parameter Name="EmailConfirmed" Type="Boolean" />
-                    <asp:Parameter Name="PasswordHash" Type="String" />
-                    <asp:Parameter Name="SecurityStamp" Type="String" />
-                    <asp:Parameter Name="PhoneNumber" Type="String" />
-                    <asp:Parameter Name="PhoneNumberConfirmed" Type="Boolean" />
-                    <asp:Parameter Name="TwoFactorEnabled" Type="Boolean" />
-                    <asp:Parameter Name="LockoutEndDateUtc" Type="DateTime" />
-                    <asp:Parameter Name="LockoutEnabled" Type="Boolean" />
-                    <asp:Parameter Name="AccessFailedCount" Type="Int32" />
-                    <asp:Parameter Name="UserName" Type="String" />
-                </InsertParameters>
-                <SelectParameters>
-                    <asp:ControlParameter ControlID="GridView1" DefaultValue="NULL" Name="Id" PropertyName="SelectedValue" Type="String" />
-                </SelectParameters>
-                <UpdateParameters>
-                    <asp:Parameter Name="Email" Type="String" />
-                    <asp:Parameter Name="EmailConfirmed" Type="Boolean" />
-                    <asp:Parameter Name="PasswordHash" Type="String" />
-                    <asp:Parameter Name="SecurityStamp" Type="String" />
-                    <asp:Parameter Name="PhoneNumber" Type="String" />
-                    <asp:Parameter Name="PhoneNumberConfirmed" Type="Boolean" />
-                    <asp:Parameter Name="TwoFactorEnabled" Type="Boolean" />
-                    <asp:Parameter Name="LockoutEndDateUtc" Type="DateTime" />
-                    <asp:Parameter Name="LockoutEnabled" Type="Boolean" />
-                    <asp:Parameter Name="AccessFailedCount" Type="Int32" />
-                    <asp:Parameter Name="UserName" Type="String" />
-                    <asp:Parameter Name="Id" Type="String" />
-                </UpdateParameters>
-            </asp:SqlDataSource>--%>
         </ContentTemplate>
     </asp:UpdatePanel>
+    <asp:UpdateProgress ID="updateProgress" runat="server">
+        <ProgressTemplate>
+            <div class="loading-panel">
+                <div class="loading-container">
+                    <img src="<%= this.ResolveUrl("~/images/DoubleRing.gif")%>" />
+                </div>
+            </div>
+        </ProgressTemplate>
+    </asp:UpdateProgress>
 </asp:Content>

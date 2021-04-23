@@ -45,6 +45,7 @@ namespace OscarsGame.CommonPages
         {
             var dt = new DataTable();
             dt.Columns.Add(nameof(UserScore.Rank), typeof(int));
+            dt.Columns.Add(nameof(UserScore.UserId), typeof(Guid));
             dt.Columns.Add(nameof(UserScore.UserDisplayName), typeof(string));
             dt.Columns.Add(nameof(UserScore.Score), typeof(int));
             dt.Columns.Add(nameof(UserScore.WatchedMovies), typeof(int));
@@ -61,6 +62,7 @@ namespace OscarsGame.CommonPages
             {
                 var row = dt.NewRow();
                 row[nameof(UserScore.Rank)] = userScore.Rank;
+                row[nameof(UserScore.UserId)] = userScore.UserId;
                 row[nameof(UserScore.UserDisplayName)] = userScore.UserDisplayName;
                 row[nameof(UserScore.Score)] = userScore.Score;
                 row[nameof(UserScore.WatchedMovies)] = userScore.WatchedMovies;
