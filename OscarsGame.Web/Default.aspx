@@ -11,7 +11,7 @@
         <p>
             You have the chance to show off your incredible predictive skills by guessing the Winners.<br />
             Take a look of all the Categories and Nomination at the <a href="CommonPages/ShowCategories">Categories</a> page.<br />
-            Make your picks before the starting of the 92nd Academy Awards ceremony on February 9, 2020.
+            Make your picks before the starting of the 91nd Academy Awards ceremony on February 24, 2019.
         </p>
 
         <p>
