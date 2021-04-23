@@ -150,19 +150,19 @@ namespace OscarsGame.CommonPages
         private void SetPreviousAndNextCategory()
         {
             int.TryParse(Request.QueryString["ID"], out int id);
-            var nextCategory = CategoryService.GetCategory(id + 1);
-            var prevCategory = CategoryService.GetCategory(id - 1);
+            var nextCategory = CategoryService.GetNextCategoryOrDefault(id);
+            var prevCategory = CategoryService.GetPreviousCategoryOrDefault(id);
 
             if (prevCategory != null)
             {
-                PreviousCategoryLink.HRef = $"~/CommonPages/ShowCategory?ID={prevCategory.Id}";
-                PreviousCategoryLink.InnerText = $"Previous category: {prevCategory.CategoryTtle}";
+                PreviousCategoryLink.NavigateUrl = $"~/CommonPages/ShowCategory?ID={prevCategory.Id}";
+                PreviousCategoryLink.Text = $"Previous category: {prevCategory.CategoryTtle}";
             }
 
             if (nextCategory != null)
             {
-                NextCategoryLink.HRef = $"~/CommonPages/ShowCategory?ID={nextCategory.Id}";
-                NextCategoryLink.InnerText = $"Next category: {nextCategory.CategoryTtle}";
+                NextCategoryLink.NavigateUrl = $"~/CommonPages/ShowCategory?ID={nextCategory.Id}";
+                NextCategoryLink.Text = $"Next category: {nextCategory.CategoryTtle}";
             }
         }
 

@@ -66,7 +66,7 @@ namespace OscarsGame.CommonPages
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlAnchor PreviousCategoryLink;
+        protected global::System.Web.UI.WebControls.HyperLink PreviousCategoryLink;
 
         /// <summary>
         /// NextCategoryLink control.
@@ -75,7 +75,7 @@ namespace OscarsGame.CommonPages
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlAnchor NextCategoryLink;
+        protected global::System.Web.UI.WebControls.HyperLink NextCategoryLink;
 
         /// <summary>
         /// NominationsRepeater control.

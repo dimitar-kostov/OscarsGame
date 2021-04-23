@@ -2,6 +2,7 @@
 using OscarsGame.Domain;
 using OscarsGame.Domain.Entities;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace OscarsGame.Business
 {
@@ -54,6 +55,18 @@ namespace OscarsGame.Business
             return _unitOfWork.CategoryRepository.GetCategory(id);
         }
 
+        public Category GetNextCategoryOrDefault(int currentId)
+        {
+            var categories = GetAll();
+            return categories.SkipWhile(x => x.Id != currentId).Skip(1).FirstOrDefault();
+        }
+
+        public Category GetPreviousCategoryOrDefault(int currentId)
+        {
+            var categories = GetAll();
+            return categories.TakeWhile(x => x.Id != currentId).LastOrDefault();
+        }
+
         public void MarkAsWinner(int categoryId, int nominationId)
         {
             _unitOfWork.CategoryRepository.MarkAsWinner(categoryId, nominationId);
@@ -63,6 +76,5 @@ namespace OscarsGame.Business
         {
             _unitOfWork.CategoryRepository.RemoveNominationFromCategory(categoryId, nominationId);
         }
-
     }
 }

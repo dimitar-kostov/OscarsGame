@@ -13,12 +13,14 @@
             <asp:Label ID="WarningLabel" runat="server" CssClass="warning"></asp:Label>
             <asp:Label ID="WinnerLabel" runat="server" CssClass="greenBorder"></asp:Label>
 
-            <asp:Label ID="CategoryTtleLabel" CssClass="categoryTitle" runat="server" />
-            <br />
-            <a runat="server" id="PreviousCategoryLink" class="previousCategoryLink"></a>
-            <a runat="server" id="NextCategoryLink" class="nextCategoryLink"></a>
+            <div style="margin-top: 15px;">
+                <asp:Label ID="CategoryTtleLabel" CssClass="categoryTitle" runat="server" />
+                <br />
+                <asp:HyperLink runat="server" ID="PreviousCategoryLink" CssClass="previousCategoryLink"></asp:HyperLink>
+                <asp:HyperLink runat="server" ID="NextCategoryLink" CssClass="nextCategoryLink"></asp:HyperLink>
+            </div>
 
-            <hr style="margin-top: 30px;" />
+            <hr style="margin-top: 35px;" />
             <asp:Repeater
                 ID="NominationsRepeater" runat="server"
                 ItemType="OscarsGame.Domain.Entities.Nomination"

@@ -17,6 +17,10 @@ namespace OscarsGame.Business.Interfaces
 
         Category GetCategory(int id);
 
+        Category GetNextCategoryOrDefault(int currentId);
+
+        Category GetPreviousCategoryOrDefault(int currentId);
+
         void MarkAsWinner(int categoryId, int nominationId);
 
         void RemoveNominationFromCategory(int categoryId, int nominationId);
