@@ -4,7 +4,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-4">
-                <img src="images/Oscars_Poster_Square_1080x1080-Navy.jpg" style="height: 340px; max-width: 100%" />
+                <img src="images/Oscars_Poster_2022.jpg" style="height: 450px; max-width: 100%" />
             </div>
 
             <div class="text-large col-8">
@@ -26,7 +26,7 @@
                 <p>
                     You have the chance to show off your incredible predictive skills by guessing the Winners.<br />
                     Take a look of all the Categories and Nomination at the <a href="CommonPages/ShowCategories">Categories</a> page.<br />
-                    Make your picks before the starting of the 93nd Academy Awards ceremony on April 25, 2021.
+                    Make your picks before the starting of the 94nd Academy Awards ceremony on Mars 28, 2022.
                 </p>
 
                 <p>

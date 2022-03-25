@@ -227,6 +227,7 @@
     <Content Include="Content\Site.css" />
     <Content Include="Default.aspx" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="images\Oscars_Poster_2022.jpg" />
     <Content Include="images\Oscars_Poster_Square_1080x1080-Navy.jpg" />
     <Content Include="images\DoubleRing.gif" />
     <Content Include="images\grd_alt.png" />
