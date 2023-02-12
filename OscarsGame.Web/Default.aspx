@@ -26,7 +26,7 @@
                 <p>
                     You have the chance to show off your incredible predictive skills by guessing the Winners.<br />
                     Take a look of all the Categories and Nomination at the <a href="CommonPages/ShowCategories">Categories</a> page.<br />
-                    Make your picks before the starting of the 94nd Academy Awards ceremony on March 12, 2023.
+                    Make your picks before the starting of the 95th Academy Awards ceremony on March 12, 2023.
                 </p>
 
                 <p>
